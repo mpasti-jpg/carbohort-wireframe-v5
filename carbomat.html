@@ -78,8 +78,10 @@
 .c5-hero__lead{display:flex;flex-direction:column;gap:var(--w-space-3);font-size:1.125rem;color:var(--w-text-secondary);max-width:486px;}
 .c5-hero__visual{display:flex;flex-direction:column;gap:var(--w-space-4);}
 .c5-hero__visual .wf-ph{aspect-ratio:605/494;width:100%;border-radius:0;}
-.c5-trust{display:flex;flex-wrap:nowrap;white-space:nowrap;gap:var(--w-space-2);align-items:center;font-size:clamp(0.75rem,1.05vw,0.9375rem);color:var(--w-text-primary);margin:0;padding:0;list-style:none;}
-.c5-trust li{display:inline-flex;align-items:center;gap:var(--w-space-3);}
+/* Placeholdery bez opisów – neutralne pola pod zdjęcia (kadry ustala grafik). */
+.wf-ph__label{display:none;}
+.c5-trust{display:flex;flex-wrap:wrap;gap:var(--w-space-2);align-items:center;font-size:clamp(0.6875rem,0.9vw,0.8125rem);color:var(--w-text-primary);margin:0;padding:0;list-style:none;}
+.c5-trust li{display:inline-flex;align-items:center;gap:var(--w-space-3);white-space:nowrap;}
 .c5-trust li:not(:last-child)::after{content:"|";color:var(--w-text-tertiary);margin-left:var(--w-space-2);}
 
 /* --- PARAMETRY (ciemna sekcja pod hero) ----------------------------------- */
@@ -254,7 +256,6 @@
 .c5-pro{position:relative;background:var(--w-gray-600);color:var(--w-text-inverse);overflow:hidden;}
 .c5-pro__photo{position:absolute;inset:0 0 0 50%;}
 .c5-pro__photo .wf-ph{width:100%;height:100%;border:0;border-radius:0;background:var(--w-gray-500);}
-.c5-pro__photo .wf-ph__label{color:rgb(255 255 255 / .5);}
 .c5-pro .c5-wrap{position:relative;z-index:1;}
 .c5-pro__grid{display:flex;flex-direction:column;gap:22px;max-width:486px;}
 .c5-pro__grid h2{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:var(--w-weight-medium);letter-spacing:-0.01em;}
@@ -304,7 +305,6 @@
 /* --- Responsywność ----------------------------------------------------------- */
 @media (max-width:899px){
   .c5-hero{grid-template-columns:1fr;min-height:0;}
-  .c5-trust{flex-wrap:wrap;white-space:normal;}
   /* taby: bez przyklejania (zjadłyby pół ekranu) – zostają zwykłymi skrótami */
   .c5-ways{grid-template-columns:1fr;position:static;}
   .c5-pro__photo{position:static;inset:auto;margin-top:clamp(2rem,6vw,3rem);height:220px;}
@@ -557,7 +557,7 @@
           </div>
         </div>
         <div class="c5-hero__visual">
-          <div class="wf-ph"><span class="wf-ph__label">PACKSHOT: dwa worki 20 l obok siebie – CARBOMAT ECO i CARBOMAT ECO Ściółka (nowe opakowania – brand ID w opracowaniu), lekko nachodzące na siebie, neutralne tło studyjne</span></div>
+          <div class="wf-ph"></div>
           <ul class="c5-trust">
             <li>Produkt Ekologiczny</li>
             <li>Czysta organika</li>
@@ -619,7 +619,7 @@
       <!-- Blok: CARBOMAT ECO -->
       <div class="c5-variant" id="wariant-eco" data-variant-block="eco">
         <div class="c5-variant__grid">
-          <div class="wf-ph"><span class="wf-ph__label">DUŻE FOTO: worek 20 l CARBOMAT ECO i gruzełki frakcji drobnej na dłoni</span></div>
+          <div class="wf-ph"></div>
           <div class="c5-variant__info">
             <h3 class="c5-variant__name">CARBOMAT ECO</h3>
             <div class="c5-variant__block">
@@ -657,17 +657,17 @@
               <div class="c5-price">
                 <!-- Ceny brutto wg Darka (AC #30867): big bagi – niższa cena = pH 4,5–5,0, wyższa = 6,0–6,5 -->
                 <div class="c5-price__row">
-                  <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">worek</span></div>
+                  <div class="wf-ph" aria-hidden="true"></div>
                   <div class="c5-price__body"><span class="c5-price__name">worek 20 l</span><a class="c5-btn c5-btn--light c5-btn--sm" href="sklep.html?grupa=carbomat"><svg class="wf-icon" aria-hidden="true"><use href="#ti-plus"></use></svg> dodaj do koszyka</a></div>
                   <span class="c5-price__val">43 zł</span>
                 </div>
                 <div class="c5-price__row">
-                  <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">big bag</span></div>
+                  <div class="wf-ph" aria-hidden="true"></div>
                   <div class="c5-price__body"><span class="c5-price__name">big bag 1000 l</span><a class="c5-btn c5-btn--light c5-btn--sm" href="sklep.html?grupa=carbomat"><svg class="wf-icon" aria-hidden="true"><use href="#ti-plus"></use></svg> dodaj do koszyka</a></div>
                   <span class="c5-price__val">600–650 zł</span>
                 </div>
                 <div class="c5-price__row">
-                  <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">big bag</span></div>
+                  <div class="wf-ph" aria-hidden="true"></div>
                   <div class="c5-price__body"><span class="c5-price__name">big bag 1500 l</span><a class="c5-btn c5-btn--light c5-btn--sm" href="sklep.html?grupa=carbomat"><svg class="wf-icon" aria-hidden="true"><use href="#ti-plus"></use></svg> dodaj do koszyka</a></div>
                   <span class="c5-price__val">800–850 zł</span>
                 </div>
@@ -680,7 +680,7 @@
       <!-- Blok: CARBOMAT ECO Ściółka (leży pod poprzednim, oba widoczne) -->
       <div class="c5-variant" id="wariant-sciolka" data-variant-block="sciolka">
         <div class="c5-variant__grid">
-          <div class="wf-ph"><span class="wf-ph__label">DUŻE FOTO: ściółka lignitowa 8–20 mm rozsypana wokół krzewu borówki</span></div>
+          <div class="wf-ph"></div>
           <div class="c5-variant__info">
             <h3 class="c5-variant__name">CARBOMAT ECO Ściółka</h3>
             <div class="c5-variant__block">
@@ -715,17 +715,17 @@
               <div class="c5-price">
                 <!-- Ceny brutto wg Darka (AC #30867): Ściółka „odpowiednio jak dla pH 4" -->
                 <div class="c5-price__row">
-                  <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">worek</span></div>
+                  <div class="wf-ph" aria-hidden="true"></div>
                   <div class="c5-price__body"><span class="c5-price__name">worek 20 l <span class="wf-badge wf-badge--outline">nowość</span></span><a class="c5-btn c5-btn--light c5-btn--sm" href="sklep.html?grupa=carbomat"><svg class="wf-icon" aria-hidden="true"><use href="#ti-plus"></use></svg> dodaj do koszyka</a></div>
                   <span class="c5-price__val">43 zł</span>
                 </div>
                 <div class="c5-price__row">
-                  <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">big bag</span></div>
+                  <div class="wf-ph" aria-hidden="true"></div>
                   <div class="c5-price__body"><span class="c5-price__name">big bag 1000 l</span><a class="c5-btn c5-btn--light c5-btn--sm" href="sklep.html?grupa=carbomat"><svg class="wf-icon" aria-hidden="true"><use href="#ti-plus"></use></svg> dodaj do koszyka</a></div>
                   <span class="c5-price__val">600 zł</span>
                 </div>
                 <div class="c5-price__row">
-                  <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">big bag</span></div>
+                  <div class="wf-ph" aria-hidden="true"></div>
                   <div class="c5-price__body"><span class="c5-price__name">big bag 1500 l</span><a class="c5-btn c5-btn--light c5-btn--sm" href="sklep.html?grupa=carbomat"><svg class="wf-icon" aria-hidden="true"><use href="#ti-plus"></use></svg> dodaj do koszyka</a></div>
                   <span class="c5-price__val">800 zł</span>
                 </div>
@@ -737,7 +737,7 @@
       </div><!-- /.c5-variants – tu kończy się przyklejenie tabów -->
 
       <div class="c5-alert" role="status">
-        <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">FOTO: borówki</span></div>
+        <div class="wf-ph" aria-hidden="true"></div>
         <div class="c5-alert__body">
           <p><span class="wf-w-semibold">Uprawiasz borówkę lub inne kwasolubne?</span><br>
           <span class="c5-muted">Wybierz wersję CARBOMAT ECO o niższym pH – zwykła może podnieść odczyn ponad tolerancję roślin.</span></p>
@@ -816,8 +816,6 @@
         </div>
         <div class="c5-facts__visual">
 
-          <!-- 01 · Pochodzenie. Docelowo: makro gruzełka z włóknami prastarych drzew
-               ALBO ta grafika w wersji dopracowanej przez grafika. -->
           <figure class="c5-viz" data-fact-viz="1" data-on="true">
             <span class="c5-viz__tag">01 · Pochodzenie</span>
             <div class="c5-viz__body">
@@ -839,7 +837,6 @@
             <figcaption class="c5-viz__cap">Lignit zatrzymany na etapie stabilnego humusu. Zastosowany w glebie zamiast spalony – wspiera sekwestrację CO₂.</figcaption>
           </figure>
 
-          <!-- 02 · Zasobność. Docelowo: schemat gruzełka z otoczką kwasów humusowych. -->
           <figure class="c5-viz" data-fact-viz="2">
             <span class="c5-viz__tag">02 · Zasobność</span>
             <div class="c5-viz__body">
@@ -899,7 +896,6 @@
             <figcaption class="c5-viz__cap">Badanie akredytowanego laboratorium PCBC S.A. (2022).</figcaption>
           </figure>
 
-          <!-- 05 · Struktura. Docelowo: makro 3D przekroju gruzełka. -->
           <figure class="c5-viz" data-fact-viz="5">
             <span class="c5-viz__tag">05 · Struktura</span>
             <div class="c5-viz__body">
@@ -950,9 +946,9 @@
           <h3 class="c5-recipe__prod">CARBOMAT ECO – dodatek do gleby</h3>
           <p class="c5-recipe__sub">Uprawy gruntowe:</p>
           <div class="c5-scene">
-            <div class="wf-ph"><span class="wf-ph__label">FOTO PANORAMICZNE: przemieszanie CARBOMAT ECO z glebą przy zakładaniu grządki – szeroki kadr</span></div>
+            <div class="wf-ph"></div>
             <div class="c5-scene__cards">
-              <div class="c5-scene__card is-on" data-card data-scene-photo="FOTO PANORAMICZNE: przemieszanie CARBOMAT ECO z glebą przy zakładaniu grządki – szeroki kadr">
+              <div class="c5-scene__card is-on" data-card data-scene-photo="1">
                 <button type="button" class="c5-scene__cardhead" aria-expanded="true">Powierzchniowo:</button>
                 <div class="c5-scene__cardbody">
             <div class="c5-scene__cardbodyin">
@@ -960,7 +956,7 @@
                 </div>
           </div>
               </div>
-              <div class="c5-scene__card" data-card data-scene-photo="FOTO PANORAMICZNE: aplikacja punktowa – CARBOMAT ECO wsypywany do dołka przy sadzeniu rozsady">
+              <div class="c5-scene__card" data-card data-scene-photo="2">
                 <button type="button" class="c5-scene__cardhead" aria-expanded="false">Punktowo:</button>
                 <div class="c5-scene__cardbody">
             <div class="c5-scene__cardbodyin">
@@ -972,7 +968,7 @@
           </div>
           <p class="c5-recipe__sub">Uprawy doniczkowe:</p>
           <div class="c5-scene">
-            <div class="wf-ph"><span class="wf-ph__label">FOTO PANORAMICZNE: przygotowanie mieszanki podłoża i przesadzanie rośliny doniczkowej</span></div>
+            <div class="wf-ph"></div>
             <div class="c5-scene__cards">
               <div class="c5-scene__card is-on" data-card>
                 <ul>
@@ -988,9 +984,9 @@
           <h3 class="c5-recipe__prod">CARBOMAT ECO Ściółka</h3>
           <p class="c5-recipe__sub">Uprawy gruntowe:</p>
           <div class="c5-scene">
-            <div class="wf-ph"><span class="wf-ph__label">FOTO PANORAMICZNE: rozsypywanie CARBOMAT ECO Ściółki w rzędzie borówek</span></div>
+            <div class="wf-ph"></div>
             <div class="c5-scene__cards">
-              <div class="c5-scene__card is-on" data-card data-scene-photo="FOTO PANORAMICZNE: rozsypywanie CARBOMAT ECO Ściółki w rzędzie borówek">
+              <div class="c5-scene__card is-on" data-card data-scene-photo="1">
                 <button type="button" class="c5-scene__cardhead" aria-expanded="true">Powierzchniowo:</button>
                 <div class="c5-scene__cardbody">
             <div class="c5-scene__cardbodyin">
@@ -998,7 +994,7 @@
                 </div>
           </div>
               </div>
-              <div class="c5-scene__card" data-card data-scene-photo="FOTO PANORAMICZNE: ściółka lignitowa usypana wokół pojedynczego krzewu – obwód części nadziemnej rośliny">
+              <div class="c5-scene__card" data-card data-scene-photo="2">
                 <button type="button" class="c5-scene__cardhead" aria-expanded="false">Punktowo:</button>
                 <div class="c5-scene__cardbody">
             <div class="c5-scene__cardbodyin">
@@ -1010,7 +1006,7 @@
           </div>
           <p class="c5-recipe__sub">Uprawy doniczkowe:</p>
           <div class="c5-scene">
-            <div class="wf-ph"><span class="wf-ph__label">FOTO PANORAMICZNE: doniczki z roślinami przykryte warstwą ściółki lignitowej</span></div>
+            <div class="wf-ph"></div>
             <div class="c5-scene__cards">
               <div class="c5-scene__card is-on" data-card>
                 <p>Przykryj całą powierzchnię doniczki warstwą 3–5 cm.</p>
@@ -1043,7 +1039,7 @@
           <!-- ⚠ cel linku do potwierdzenia: moduł dawek w konfiguratorze (dziś konfigurator dobiera produkt) -->
           <a class="c5-btn c5-btn--dark" href="konfigurator.html">dobierz właściwe dawki</a>
         </div>
-        <div class="wf-ph"><span class="wf-ph__label">ILUSTRACJA: podgląd konfiguratora – suwak powierzchni i wynik dawki</span></div>
+        <div class="wf-ph"></div>
       </div>
     </div>
   </section>
@@ -1073,7 +1069,7 @@
           <button type="button" class="c5-season__head" data-season="1" aria-expanded="true" aria-controls="season-1">Start · przygotowanie gleby</button>
           <div class="c5-season__panel" id="season-1">
             <div class="c5-season__panelin">
-            <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">Worek CARBOMAT ECO</span></div>
+            <div class="wf-ph" aria-hidden="true"></div>
             <div class="c5-season__info">
               <h3>CARBOMAT ECO – baza doglebowa</h3>
               <p class="c5-muted">Stosujesz raz, gdy gleba jest odkryta – przy sadzeniu lub zakładaniu uprawy. Potem już jej nie rozkopujesz, żeby nie niszczyć budowanej próchnicy.</p>
@@ -1086,7 +1082,7 @@
           <button type="button" class="c5-season__head" data-season="2" aria-expanded="false" aria-controls="season-2">W roku · wiosna i jesień</button>
           <div class="c5-season__panel" id="season-2">
             <div class="c5-season__panelin">
-            <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">Kanister CARBOHUMIC niefiltrowany</span></div>
+            <div class="wf-ph" aria-hidden="true"></div>
             <div class="c5-season__info">
               <h3>CARBOHUMIC niefiltrowany – uzupełnienie doglebowe</h3>
               <p class="c5-muted">Płynne kwasy humusowe podajesz bez rozkopywania – podlewając. Zabiegi można powtarzać, kilka razy w roku.</p>
@@ -1099,7 +1095,7 @@
           <button type="button" class="c5-season__head" data-season="3" aria-expanded="false" aria-controls="season-3">W sezonie · wzrost i owocowanie</button>
           <div class="c5-season__panel" id="season-3">
             <div class="c5-season__panelin">
-            <div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">Butelki MAXI PLUS i CALBOR</span></div>
+            <div class="wf-ph" aria-hidden="true"></div>
             <div class="c5-season__info">
               <h3>MAXI PLUS, w sadzie CALBOR – wzmocnienie nalistne</h3>
               <p class="c5-muted">MAXI PLUS w fazie wzrostu, CALBOR na jakość owocu (wyłącznie sady). Opryski nalistne można powtarzać kilka razy w sezonie.</p>
@@ -1151,10 +1147,10 @@
         </div>
         <p class="wf-small wf-w-semibold" style="margin-top:clamp(1.75rem,3.5vw,3rem);">Pokaż produkt na wykresie:</p>
         <div class="c5-legend">
-          <button type="button" class="c5-legend__item" data-filter="carbomat" aria-pressed="false"><div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">worek</span></div><div class="c5-legend__txt"><span class="c5-dot c5-dot--carbomat" aria-hidden="true"></span>CARBOMAT ECO<span class="c5-muted">(raz)</span></div></button>
-          <button type="button" class="c5-legend__item" data-filter="niefiltr" aria-pressed="false"><div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">kanister</span></div><div class="c5-legend__txt"><span class="c5-dot c5-dot--niefiltr" aria-hidden="true"></span>CARBOHUMIC niefiltrowany<span class="c5-muted">(powtarzalnie)</span></div></button>
-          <button type="button" class="c5-legend__item" data-filter="maxi" aria-pressed="false"><div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">butelka</span></div><div class="c5-legend__txt"><span class="c5-dot c5-dot--maxi" aria-hidden="true"></span>MAXI PLUS<span class="c5-muted">(nalistnie)</span></div></button>
-          <button type="button" class="c5-legend__item" data-filter="calbor" aria-pressed="false"><div class="wf-ph" aria-hidden="true"><span class="wf-ph__label">butelka</span></div><div class="c5-legend__txt"><span class="c5-dot c5-dot--calbor" aria-hidden="true"></span>CALBOR<span class="c5-muted">(wyłącznie sady)</span></div></button>
+          <button type="button" class="c5-legend__item" data-filter="carbomat" aria-pressed="false"><div class="wf-ph" aria-hidden="true"></div><div class="c5-legend__txt"><span class="c5-dot c5-dot--carbomat" aria-hidden="true"></span>CARBOMAT ECO<span class="c5-muted">(raz)</span></div></button>
+          <button type="button" class="c5-legend__item" data-filter="niefiltr" aria-pressed="false"><div class="wf-ph" aria-hidden="true"></div><div class="c5-legend__txt"><span class="c5-dot c5-dot--niefiltr" aria-hidden="true"></span>CARBOHUMIC niefiltrowany<span class="c5-muted">(powtarzalnie)</span></div></button>
+          <button type="button" class="c5-legend__item" data-filter="maxi" aria-pressed="false"><div class="wf-ph" aria-hidden="true"></div><div class="c5-legend__txt"><span class="c5-dot c5-dot--maxi" aria-hidden="true"></span>MAXI PLUS<span class="c5-muted">(nalistnie)</span></div></button>
+          <button type="button" class="c5-legend__item" data-filter="calbor" aria-pressed="false"><div class="wf-ph" aria-hidden="true"></div><div class="c5-legend__txt"><span class="c5-dot c5-dot--calbor" aria-hidden="true"></span>CALBOR<span class="c5-muted">(wyłącznie sady)</span></div></button>
         </div>
         <p class="wf-caption wf-t-tertiary" style="margin-top:var(--w-space-5);">Układ poglądowy – momenty przykładowe. Dokładne terminy i dawki: <a class="wf-link--muted" href="zalecenia.html#dawki">zalecenia dla uprawy</a>.</p>
       </div>
@@ -1163,7 +1159,7 @@
     <!-- Pas PRO (ciemny) – copy 1:1 z V4; Darek 24.07: „Fajne, podoba mi się taka narracja." -->
     <div class="c5-pro c5-sec" id="uprawy-profesjonalne">
       <!-- Foto na prawej połowie pasa (Figma 9:152) -->
-      <div class="c5-pro__photo" aria-hidden="true"><div class="wf-ph"><span class="wf-ph__label">FOTO: pole uprawne z lotu ptaka – ciągnik z rozsiewaczem w rzędach</span></div></div>
+      <div class="c5-pro__photo" aria-hidden="true"><div class="wf-ph"></div></div>
       <div class="c5-wrap">
         <div class="c5-pro__grid">
           <h2>Prowadzisz uprawę profesjonalną – sad, plantację, pole lub szkółkę?</h2>
@@ -1482,7 +1478,7 @@
   $$(".c5-scene").forEach(function (scene) {
     var cards = $$("[data-card]", scene);
     if (cards.length < 2) return;
-    var photoLabel = $(".wf-ph__label", scene);
+    var photoBox = $(".wf-ph", scene);
     function activate(card) {
       cards.forEach(function (c) {
         var on = c === card;
@@ -1492,14 +1488,17 @@
         if (head) head.setAttribute("aria-expanded", on ? "true" : "false");
         panelSet(body, on);
       });
+      /* każda karta ma swoje zdjęcie sceny – tu tylko neutralny znacznik wariantu */
       var photo = card.getAttribute("data-scene-photo");
-      if (photoLabel && photo) photoLabel.textContent = photo;
+      if (photoBox && photo) photoBox.setAttribute("data-photo", photo);
     }
     cards.forEach(function (card) {
       card.addEventListener("click", function () {
         if (!card.classList.contains("is-on")) activate(card);
       });
     });
+    var startowa = cards.filter(function (c) { return c.classList.contains("is-on"); })[0];
+    if (startowa && photoBox) photoBox.setAttribute("data-photo", startowa.getAttribute("data-scene-photo"));
   });
 
   /* --- Sezon: oś czasu sterowana scrollem -------------------------------------
