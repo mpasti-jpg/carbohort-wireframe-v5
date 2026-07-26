@@ -1,0 +1,210 @@
+/* ============================================================================
+   WIREFRAME DESIGN SYSTEM — tokens.css
+   Single source of truth. Every value used in a wireframe MUST come from here.
+   ----------------------------------------------------------------------------
+   Namespace: all custom properties are prefixed `--w-` so this file can be
+   dropped into ANY project without colliding with the host's own variables.
+   Grounded in the "Website Wireframes UI Kit" (Brix), then NEUTRALISED:
+   the kit's cool-purple cast (#19213D / #4A3AFF) is removed so nothing reads
+   as a brand. Wireframes are black / white / true-neutral grey only.
+   ----------------------------------------------------------------------------
+   Rule for agents: never hardcode a hex, px, or shadow. Reference a token.
+   If a value you "want" isn't on a scale, snap to the nearest token.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------- */
+  /* 1. GREYSCALE RAMP — true neutral (equal R=G=B). No hue, no brand.       */
+  /*    12 steps give enough nuance to build hierarchy WITHOUT colour.       */
+  /* ---------------------------------------------------------------------- */
+  --w-white:     #ffffff;
+  --w-gray-50:   #fafafa;
+  --w-gray-100:  #f5f5f5;
+  --w-gray-150:  #ededed;
+  --w-gray-200:  #e5e5e5;
+  --w-gray-300:  #d4d4d4;
+  --w-gray-400:  #a3a3a3;
+  --w-gray-500:  #737373;
+  --w-gray-600:  #525252;
+  --w-gray-700:  #404040;
+  --w-gray-800:  #262626;
+  --w-gray-900:  #171717;
+  --w-gray-950:  #0a0a0a;
+  --w-black:     #000000;
+
+  /* ---------------------------------------------------------------------- */
+  /* 2. SEMANTIC ROLES — always reference these in components, not raw greys */
+  /*    Swapping a brand palette in later = re-point these, nothing else.    */
+  /* ---------------------------------------------------------------------- */
+  /* Text / ink */
+  --w-text-primary:    var(--w-gray-900);  /* headings, key labels          */
+  --w-text-secondary:  var(--w-gray-600);  /* body, supporting copy         */
+  --w-text-tertiary:   var(--w-gray-500);  /* meta, captions, hints         */
+  --w-text-disabled:   var(--w-gray-400);  /* disabled / non-interactive    */
+  --w-text-placeholder:var(--w-gray-400);  /* input placeholder ink         */
+  --w-text-inverse:    var(--w-white);     /* on dark surfaces              */
+
+  /* Surfaces / backgrounds */
+  --w-surface-page:    var(--w-white);     /* default page background       */
+  --w-surface-subtle:  var(--w-gray-50);   /* alternating / quiet band      */
+  --w-surface-sunken:  var(--w-gray-100);  /* wells, tracks, hovered rows   */
+  --w-surface-raised:  var(--w-white);     /* cards, menus (with border)    */
+  --w-surface-inverse: var(--w-gray-900);  /* dark sections, primary button */
+  --w-surface-hover:   var(--w-gray-100);  /* generic hover wash            */
+  --w-surface-active:  var(--w-gray-150);  /* generic pressed wash          */
+
+  /* Borders / dividers */
+  --w-border-subtle:   var(--w-gray-200);  /* dividers, quiet separators    */
+  --w-border-default:  var(--w-gray-300);  /* inputs, cards, default stroke */
+  --w-border-strong:   var(--w-gray-400);  /* emphasis, focus-adjacent      */
+  --w-border-inverse:  var(--w-gray-900);
+
+  /* Placeholders (the signature wireframe element: image/avatar/logo boxes) */
+  --w-placeholder-fill:   var(--w-gray-100);
+  --w-placeholder-stroke: var(--w-gray-300);
+  --w-placeholder-ink:    var(--w-gray-400);
+
+  /* Focus — visible WITHOUT colour. Solid dark ring + offset.               */
+  --w-focus-ring:        var(--w-gray-900);
+  --w-focus-ring-inverse:var(--w-white);
+  --w-focus-ring-width:  2px;
+  --w-focus-ring-offset: 2px;
+
+  /* Icons */
+  --w-icon-default:   var(--w-gray-600);
+  --w-icon-muted:     var(--w-gray-400);
+  --w-icon-inverse:   var(--w-white);
+  --w-icon-stroke:    1.5px;   /* line-icon stroke weight, 24px grid         */
+
+  /* ---------------------------------------------------------------------- */
+  /* 3. TYPOGRAPHY — neutral grotesque. No expressive/display brand fonts.   */
+  /*    Inter if available, else the system stack (still neutral).           */
+  /* ---------------------------------------------------------------------- */
+  --w-font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto,
+                 Helvetica, Arial, sans-serif;
+  --w-font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas,
+                 monospace;
+
+  /* Type scale (rem @ 16px base). Each role = size / line-height / weight.  */
+  --w-font-display-size: 3.5rem;   --w-font-display-lh: 1.08;  /* 56 hero    */
+  --w-font-h1-size:      2.5rem;   --w-font-h1-lh:      1.14;  /* 40         */
+  --w-font-h2-size:      2rem;     --w-font-h2-lh:      1.20;  /* 32         */
+  --w-font-h3-size:      1.5rem;   --w-font-h3-lh:      1.30;  /* 24         */
+  --w-font-h4-size:      1.25rem;  --w-font-h4-lh:      1.35;  /* 20         */
+  --w-font-h5-size:      1.125rem; --w-font-h5-lh:      1.40;  /* 18         */
+  --w-font-body-lg-size: 1.125rem; --w-font-body-lg-lh: 1.60;  /* 18         */
+  --w-font-body-size:    1rem;     --w-font-body-lh:    1.60;  /* 16 default */
+  --w-font-sm-size:      0.875rem; --w-font-sm-lh:      1.55;  /* 14         */
+  --w-font-caption-size: 0.75rem;  --w-font-caption-lh: 1.45;  /* 12         */
+  --w-font-overline-size:0.75rem;  --w-font-overline-lh:1.40;  /* 12 UPPER   */
+
+  --w-weight-regular:  400;
+  --w-weight-medium:   500;
+  --w-weight-semibold: 600;  /* default for UI labels, buttons               */
+  --w-weight-bold:     700;  /* headings                                     */
+
+  --w-tracking-tight:   -0.02em;  /* large headings                          */
+  --w-tracking-normal:   0;
+  --w-tracking-wide:     0.08em;  /* overline / caps                         */
+  --w-measure:          68ch;     /* max line length for body text           */
+
+  /* ---------------------------------------------------------------------- */
+  /* 4. SPACING — 4px base. The backbone of consistency. Use ONLY these.     */
+  /* ---------------------------------------------------------------------- */
+  --w-space-0:   0;
+  --w-space-1:   0.25rem;  /*  4 */
+  --w-space-2:   0.5rem;   /*  8 */
+  --w-space-3:   0.75rem;  /* 12 */
+  --w-space-4:   1rem;     /* 16 */
+  --w-space-5:   1.25rem;  /* 20 */
+  --w-space-6:   1.5rem;   /* 24 */
+  --w-space-8:   2rem;     /* 32 */
+  --w-space-10:  2.5rem;   /* 40 */
+  --w-space-12:  3rem;     /* 48 */
+  --w-space-16:  4rem;     /* 64 */
+  --w-space-20:  5rem;     /* 80 */
+  --w-space-24:  6rem;     /* 96 */
+  --w-space-32:  8rem;     /* 128 */
+  --w-space-40:  10rem;    /* 160 */
+
+  /* Section rhythm (vertical padding of full-width page sections)           */
+  --w-section-y:        var(--w-space-20);  /* 80 desktop default            */
+  --w-section-y-sm:     var(--w-space-12);  /* 48 mobile                     */
+  --w-section-y-lg:     var(--w-space-32);  /* 128 spacious hero/landing     */
+
+  /* ---------------------------------------------------------------------- */
+  /* 5. RADIUS — soft but restrained. Cards use border, not heavy rounding.  */
+  /* ---------------------------------------------------------------------- */
+  --w-radius-xs:    4px;
+  --w-radius-sm:    8px;
+  --w-radius-control: 8px;  /* buttons & small controls — tighter than cards */
+  --w-radius-md:    12px;   /* modals, panels, alerts, small cards          */
+  --w-radius-lg:    16px;   /* cards, panels                                 */
+  --w-radius-xl:    24px;   /* large containers, hero panels                 */
+  --w-radius-pill:  999px;  /* chips, tags, avatars-as-pill                  */
+  --w-radius-circle:50%;
+
+  /* ---------------------------------------------------------------------- */
+  /* 6. ELEVATION — neutral shadows. Use SPARINGLY: only for things that     */
+  /*    genuinely float (menus, modals, popovers, sticky bars, toasts).      */
+  /*    Default cards/sections rely on BORDERS to keep the schematic feel.   */
+  /* ---------------------------------------------------------------------- */
+  --w-shadow-none: none;
+  --w-shadow-xs:  0 1px 2px 0 rgba(16,16,16,.06);
+  --w-shadow-sm:  0 2px 6px 0 rgba(16,16,16,.06);
+  --w-shadow-md:  0 8px 24px -4px rgba(16,16,16,.08);
+  --w-shadow-lg:  0 16px 40px -8px rgba(16,16,16,.10);
+  --w-shadow-xl:  0 28px 64px -12px rgba(16,16,16,.12);
+
+  /* ---------------------------------------------------------------------- */
+  /* 7. LAYOUT — container, grid, page gutters.                              */
+  /* ---------------------------------------------------------------------- */
+  --w-container:       1280px;  /* outer max-width; with -lg padding ⇒ ~1200 content */
+  --w-container-narrow: 768px;  /* article / single-column reading           */
+  --w-container-wide:  1440px;  /* dashboards / dense apps                    */
+  --w-gutter:          var(--w-space-6);  /* 24 grid gutter desktop          */
+  --w-gutter-sm:       var(--w-space-4);  /* 16 grid gutter mobile           */
+  --w-page-padding:    var(--w-space-6);  /* 24 mobile page side padding     */
+  --w-page-padding-lg: var(--w-space-10); /* 40 desktop side padding ⇒ content ≈1200 */
+  --w-grid-columns:    12;
+
+  /* Control sizing (touch-friendly defaults)                                */
+  --w-control-h-sm:  32px;
+  --w-control-h-md:  40px;   /* default                                      */
+  --w-control-h-lg:  48px;
+  --w-tap-min:       44px;   /* minimum touch target                         */
+
+  /* ---------------------------------------------------------------------- */
+  /* 8. MOTION — minimal. Feedback only, never decoration. Respect reduce.   */
+  /* ---------------------------------------------------------------------- */
+  --w-duration-fast: 120ms;
+  --w-duration-base: 200ms;
+  --w-duration-slow: 320ms;
+  --w-ease: cubic-bezier(0.2, 0, 0, 1);          /* standard ease-out        */
+  --w-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---------------------------------------------------------------------- */
+  /* 9. Z-INDEX — single scale, no magic numbers elsewhere.                  */
+  /* ---------------------------------------------------------------------- */
+  --w-z-base:     0;
+  --w-z-sticky:   100;
+  --w-z-dropdown: 1000;
+  --w-z-overlay:  1100;
+  --w-z-modal:    1200;
+  --w-z-popover:  1300;
+  --w-z-toast:    1400;
+}
+
+/* Breakpoints are PLAIN PX CONSTANTS, never custom properties — CSS variables
+   cannot be used inside @media queries. Use these literals in media queries:
+     sm = 480px   md = 768px   lg = 1024px   xl = 1280px
+   (Mobile-first: write `@media (min-width: 768px)`, etc.)
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --w-duration-fast: 0ms;
+    --w-duration-base: 0ms;
+    --w-duration-slow: 0ms;
+  }
+}

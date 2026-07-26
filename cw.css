@@ -1,0 +1,326 @@
+/* =====================================================================
+   CarboHort — project layer (cw-*) on top of the universal wireframe kit.
+   Loaded AFTER tokens.css + wireframe.css. Greyscale only, tokens only.
+   Holds only project-specific patterns that don't already exist as wf-*:
+   brand wordmark, mega-menu, page scrim, dr Jurek dock/ask, cart count.
+   Everything else uses wf-* primitives directly.
+   ===================================================================== */
+
+:root {
+  --cw-mega-w: 720px;        /* product/uprawy mega panel width */
+  --cw-dock-w: 560px;        /* dr Jurek floating bar width */
+  --cw-z-scrim: 99;          /* page dim: under sticky navbar (100) + mega */
+}
+
+/* --- Sticky chrome (kit navbar has no position; project pins it) --------- */
+.wf-navbar { position: sticky; top: 0; z-index: var(--w-z-sticky); }
+/* Kontekst pozycjonowania dla mega na pełną szerokość kontenera. */
+.wf-navbar__inner { position: relative; }
+
+/* --- Brand wordmark — neutral text, single tone, NOT a colour logo ------- */
+.cw-brand {
+  display: inline-flex; align-items: baseline; gap: var(--w-space-2);
+  font-family: var(--w-font-sans); font-size: var(--w-font-h4-size);
+  font-weight: var(--w-weight-bold); color: var(--w-text-primary);
+  letter-spacing: -0.01em; text-decoration: none; white-space: nowrap;
+}
+.cw-brand:hover { color: var(--w-text-primary); }
+.cw-brand:focus-visible {
+  outline: var(--w-focus-ring-width) solid var(--w-focus-ring);
+  outline-offset: var(--w-focus-ring-offset); border-radius: var(--w-radius-xs);
+}
+
+/* --- Nav with mega-menus (project extends wf-navbar links) --------------- */
+.cw-nav { display: flex; align-items: center; gap: var(--w-space-5); }
+@media (max-width: 980px) { .cw-nav { display: none; } }
+
+.cw-haspopup { position: relative; }
+/* Trigger matches a wf-navbar__link but is a real <button> (disclosure). */
+.cw-nav-trigger {
+  display: inline-flex; align-items: center; gap: var(--w-space-1);
+  font-size: var(--w-font-sm-size); font-weight: var(--w-weight-medium);
+  color: var(--w-text-secondary); background: none; border: 0; cursor: pointer;
+  padding: var(--w-space-2) 0; white-space: nowrap;
+}
+.cw-nav-trigger:hover,
+.cw-nav-trigger[aria-expanded="true"] { color: var(--w-text-primary); }
+.cw-nav-trigger:focus-visible {
+  outline: var(--w-focus-ring-width) solid var(--w-focus-ring);
+  outline-offset: var(--w-focus-ring-offset); border-radius: var(--w-radius-xs);
+}
+.cw-nav-trigger .wf-icon { transition: transform var(--w-duration-base) var(--w-ease); }
+.cw-nav-trigger[aria-expanded="true"] .wf-icon { transform: rotate(180deg); }
+
+/* Mega panel — floats, so a shadow is allowed (kit rule). Hidden by default. */
+.cw-mega {
+  position: absolute; top: calc(100% + var(--w-space-3)); left: 0;
+  width: min(var(--cw-mega-w), 92vw);
+  background: var(--w-surface-raised); border: 1px solid var(--w-border-subtle);
+  border-radius: var(--w-radius-lg); box-shadow: var(--w-shadow-lg);
+  padding: var(--w-space-6); z-index: var(--w-z-dropdown);
+  display: none;
+}
+.cw-mega[data-open="true"] { display: block; }
+/* Mega „Nasze produkty" = pełna szerokość kontenera treści (wyrównanie do
+   krawędzi jak brand/koszyk). Pozycjonowana względem .wf-navbar__inner. */
+.cw-haspopup:has(> .cw-mega--wide) { position: static; }
+.cw-mega--wide {
+  left: var(--w-page-padding-lg); right: var(--w-page-padding-lg);
+  width: auto;
+}
+.cw-mega--right { left: auto; right: 0; }
+/* Wąski dropdown (np. „Programy i badania" – pojedyncze pozycje) */
+.cw-mega--narrow { width: auto; min-width: 14rem; }
+.cw-mega__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--w-space-8); align-items: stretch; }
+.cw-mega__grid--3 { grid-template-columns: 1.2fr 1fr 1fr; }
+.cw-mega__col { display: flex; flex-direction: column; }
+.cw-mega__foot {
+  margin-top: var(--w-space-5); padding-top: var(--w-space-4);
+  border-top: 1px solid var(--w-border-subtle);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--w-space-4);
+}
+
+/* Mega „Nasze produkty" (V5, 24.07): nagłówek z CTA → 4 boxy-linki na pełną
+   szerokość → pasek „wg potrzeby" na dole. Cały box jest klikalny, więc nie ma
+   już przycisków „Poznaj rodzinę"; miejsce na miniaturę produktu dojdzie. */
+.cw-mega__head {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--w-space-4);
+  padding-bottom: var(--w-space-4); margin-bottom: var(--w-space-5);
+  border-bottom: 1px solid var(--w-border-subtle);
+}
+.cw-mega__layout {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--w-space-4);
+  align-items: stretch;
+}
+.cw-prodbox {
+  display: flex; flex-direction: column; gap: var(--w-space-2);
+  border: 1px solid var(--w-border-default); border-radius: var(--w-radius-md);
+  padding: var(--w-space-4);
+  text-decoration: none; color: inherit;
+  transition: border-color var(--w-duration-base) var(--w-ease), background var(--w-duration-base) var(--w-ease);
+}
+.cw-prodbox:hover, .cw-prodbox:focus-visible { border-color: var(--w-border-strong); background: var(--w-surface-subtle); }
+.cw-prodbox__name { display: block; }
+/* Przy 4 boxach overline musi się zawijać (np. „Płynne · doglebowe i nalistne"). */
+.cw-prodbox > .wf-overline { white-space: normal; }
+/* „Wg potrzeby" – pasek na dole panelu, etykieta z lewej, pozycje w rzędzie. */
+.cw-mega__needs {
+  margin-top: var(--w-space-5); padding-top: var(--w-space-4);
+  border-top: 1px solid var(--w-border-subtle);
+  display: flex; align-items: baseline; gap: var(--w-space-6) var(--w-space-8); flex-wrap: wrap;
+}
+.cw-mega__needs > .wf-overline { flex: none; }
+.cw-mega__needs .cw-mega__list {
+  margin-top: 0; flex-direction: row; flex-wrap: wrap;
+  gap: var(--w-space-3) var(--w-space-6); flex: 1;
+}
+@media (max-width: 900px) {
+  .cw-mega__layout { grid-template-columns: 1fr 1fr; }
+  .cw-mega__head { flex-wrap: wrap; }
+}
+
+/* Wyraźny odstęp nagłówka kolumny od jej listy (obie mega-menu). */
+.cw-mega__list { display: flex; flex-direction: column; gap: var(--w-space-2); margin-top: var(--w-space-4); }
+/* CTA kolumny („Wszystkie uprawy") wyrównany do dołu kolumny, jak przycisk. */
+.cw-mega__col > .wf-btn { margin-top: auto; align-self: flex-start; }
+
+/* Page scrim shown while a mega/dock is open (dim + click-to-close). */
+.cw-scrim {
+  position: fixed; inset: 0; background: rgba(0,0,0,.2);
+  z-index: var(--cw-z-scrim); display: none;
+}
+.cw-scrim[data-open="true"] { display: block; }
+
+/* --- Mobile nav (disclosure panel < 980px) ------------------------------ */
+.cw-navtoggle { display: none; }
+@media (max-width: 980px) { .cw-navtoggle { display: inline-grid; } }
+.cw-mobilenav {
+  display: none; border-top: 1px solid var(--w-border-subtle);
+  background: var(--w-surface-page); padding: var(--w-space-4) 0;
+}
+.cw-mobilenav[data-open="true"] { display: block; }
+.cw-mobilenav .wf-navitem { font-size: var(--w-font-body-size); }
+
+/* --- dr Jurek — floating dock (this genuinely floats → shadow allowed) --- */
+.cw-jurek-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.2);
+  z-index: var(--w-z-overlay); display: none;
+}
+.cw-jurek-backdrop[data-open="true"] { display: block; }
+
+.cw-jurek {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: var(--w-space-5); width: min(var(--cw-dock-w), 92vw);
+  z-index: var(--w-z-modal); display: flex; flex-direction: column; gap: var(--w-space-3);
+}
+.cw-jurek__panel {
+  display: none; background: var(--w-surface-raised);
+  border: 1px solid var(--w-border-default); border-radius: var(--w-radius-lg);
+  box-shadow: var(--w-shadow-xl); overflow: hidden;
+}
+.cw-jurek[data-open="true"] .cw-jurek__panel { display: block; }
+.cw-jurek__head {
+  display: flex; align-items: center; gap: var(--w-space-3);
+  padding: var(--w-space-4); border-bottom: 1px solid var(--w-border-subtle);
+}
+.cw-jurek__msgs {
+  min-height: 180px; max-height: 42vh; overflow-y: auto;
+  padding: var(--w-space-4); display: flex; flex-direction: column; gap: var(--w-space-3);
+  background: var(--w-surface-subtle);
+}
+.cw-jurek__bar {
+  display: flex; align-items: stretch; gap: var(--w-space-2);
+  background: var(--w-surface-raised); border: 1px solid var(--w-border-default);
+  border-radius: var(--w-radius-pill); box-shadow: var(--w-shadow-md);
+  padding: var(--w-space-2) var(--w-space-2) var(--w-space-2) var(--w-space-4);
+}
+.cw-jurek__bar .wf-input { border: 0; background: none; flex: 1; }
+.cw-jurek__bar .wf-input:focus { outline: none; }
+
+/* Inline "ask dr Jurek" block reused in page content (composed of wf-* bits) */
+.cw-ask {
+  display: flex; align-items: center; gap: var(--w-space-4); flex-wrap: wrap;
+  padding: var(--w-space-5); border: 1px solid var(--w-border-default);
+  border-radius: var(--w-radius-lg); background: var(--w-surface-subtle);
+}
+.cw-ask__txt { flex: 1; min-width: 16rem; }
+
+/* Featured tier card — distinguished by tone + weight (border), never colour.
+   Full border emphasis (no left rail); inner contrast from a sunken header zone. */
+.cw-tier--lead { border-color: var(--w-border-strong); border-width: 2px; }
+
+/* --- Cart count helper (wraps wf-badge--count usage) -------------------- */
+.cw-cart { position: relative; }
+
+/* --- Feature icon chip (ikona Tabler w ramce, np. „jak działają") -------- */
+.cw-feat-icon {
+  display: inline-grid; place-items: center; flex: none;
+  width: 40px; height: 40px;
+  border: 1px solid var(--w-border-default); border-radius: var(--w-radius-md);
+  color: var(--w-icon-default);
+}
+
+/* --- Cart layout: pozycje (szersza kolumna) + podsumowanie (węższa) ------
+   Asymetryczny split 2fr/1fr, którego nie ma w kicie; zwija się do jednej
+   kolumny poniżej md (jak wf-split). Tokeny + skala szarości, bez koloru.   */
+.cw-cart-grid {
+  display: grid;
+  gap: var(--w-space-8);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  align-items: start;
+}
+@media (max-width: 768px) {
+  /* minmax(0,…) jak w wariancie desktop: goły 1fr = minmax(auto,1fr), a min-content
+     karty z tabelą (523px) rozpychał kolumnę i scrollowała strona, nie wrapper. */
+  .cw-cart-grid { grid-template-columns: minmax(0, 1fr); gap: var(--w-space-6); }
+}
+
+/* --- Chat bubbles inside dr Jurek panel (demo) ------------------------- */
+.cw-msg {
+  max-width: 85%; padding: var(--w-space-3) var(--w-space-4);
+  border-radius: var(--w-radius-md); font-size: var(--w-font-sm-size);
+  border: 1px solid var(--w-border-subtle); background: var(--w-surface-raised);
+  color: var(--w-text-secondary);
+}
+.cw-msg--user { align-self: flex-end; background: var(--w-surface-inverse); color: var(--w-text-inverse); border-color: var(--w-surface-inverse); }
+
+/* --- Scoped horizontal scroll for wide tables (admin + treść) ----------- */
+/* DS §5a: keep one source of truth, make the region keyboard-scrollable
+   (paired with tabindex="0" on the element). No new colour/shape.
+   position:relative = containing block dla absolutnych potomków (kitowy
+   .wf-sr-only jest position:absolute i bez tego ucieka z regionu scrolla,
+   rozciągając scrollWidth strony – patrz koszyk „Akcje" na 375px). */
+.cw-scrollx { overflow-x: auto; position: relative; }
+
+/* --- Konfigurator (state machine) — composed from wf-* primitives ------- */
+/* Kreator = STOS AKORDEONÓW. Nowe pytania „wpadają" od dołu; odpowiedziane
+   zostają zwinięte z pillem odpowiedzi po prawej; klik w nagłówek = edycja.
+   Brak przycisku „Dalej" — auto-przejście po wyborze. Ostatnia zakładka =
+   Twój dobór (produkty 2–3/wiersz + agrotechnika + zakup). */
+.cw-acc { max-width: 60rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--w-space-4); }
+.cw-acc [hidden] { display: none !important; }        /* [hidden] musi wygrać z display:flex wf-* */
+.cw-acc__item { border: 1px solid var(--w-border-default); border-radius: var(--w-radius-lg);
+  background: var(--w-surface-page); scroll-margin-top: calc(72px + var(--w-space-4)); }
+.cw-acc__item[data-state="hidden"] { display: none; }
+.cw-acc__item.cw-tier--lead { border-color: var(--w-border-strong); border-width: 2px; }
+.cw-acc__h { margin: 0; }
+.cw-acc__head { display: flex; align-items: center; gap: var(--w-space-4); width: 100%;
+  padding: var(--w-space-5) var(--w-space-6); background: none; border: 0; cursor: pointer;
+  text-align: left; color: inherit; font: inherit; border-radius: var(--w-radius-lg); }
+.cw-acc__item[data-state="open"] .cw-acc__head { cursor: default; }
+.cw-acc__no { flex: none; min-width: 1.5rem; font-size: var(--w-font-h5-size); font-weight: var(--w-weight-bold);
+  color: var(--w-text-tertiary); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; }
+.cw-acc__item[data-answered="true"] .cw-acc__no, .cw-acc__item[data-state="open"] .cw-acc__no { color: var(--w-text-primary); }
+.cw-acc__title { flex: 1 1 auto; font-size: var(--w-font-h4-size); line-height: var(--w-font-h4-lh); font-weight: var(--w-weight-semibold); }
+.cw-acc__pill { flex: none; max-width: 45%; padding: var(--w-space-1) var(--w-space-3); border: 1px solid var(--w-border-strong);
+  border-radius: var(--w-radius-pill); font-size: var(--w-font-sm-size); font-weight: var(--w-weight-medium);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cw-acc__chev { flex: none; color: var(--w-icon-muted); transition: transform .2s ease; }
+.cw-acc__item[data-state="open"] .cw-acc__chev { transform: rotate(180deg); }
+.cw-acc__body { padding: 0 var(--w-space-6) var(--w-space-6); display: flex; flex-direction: column; gap: var(--w-space-4); }
+.cw-acc__item[data-state="collapsed"] .cw-acc__body { display: none; }
+.cw-acc__intro { margin: 0; }
+/* „wpadanie" nowej zakładki od dołu */
+@keyframes cw-acc-fall { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+.cw-acc__item--enter { animation: cw-acc-fall .4s cubic-bezier(.2,.7,.3,1); }
+/* Wynik: karty produktów 2–3 w wierszu (przy >3 zawijają się do 2 rzędów) */
+.cw-prod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: var(--w-space-4); }
+.cw-prod-card { display: flex; flex-direction: column; gap: var(--w-space-2); padding: var(--w-space-5);
+  border: 1px solid var(--w-border-default); border-radius: var(--w-radius-md); background: var(--w-surface-raised); }
+.cw-prod-card--off { opacity: 0.55; }
+.cw-prod-card__top { display: flex; align-items: center; justify-content: space-between; gap: var(--w-space-2); }
+.cw-prod-card__pick { display: inline-flex; align-items: center; min-height: var(--w-tap-min); cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .cw-acc__item--enter { animation: none; } .cw-acc__chev { transition: none; } }
+
+/* Option button grid (Q1–Q4). Buttons wrap multi-line, left-aligned, taller
+   than a control. Selected = filled-dark (aria-pressed) + weight — never hue. */
+.cw-opt-grid { gap: var(--w-space-3); }
+.cw-opt.wf-btn {
+  height: auto; min-height: var(--w-tap-min); padding: var(--w-space-3) var(--w-space-4);
+  justify-content: flex-start; text-align: left; white-space: normal; line-height: 1.3;
+}
+.cw-opt.wf-btn[aria-pressed="true"] {
+  background: var(--w-surface-inverse); color: var(--w-text-inverse);
+  border-color: var(--w-surface-inverse); font-weight: var(--w-weight-semibold);
+}
+.cw-opt.wf-btn[aria-pressed="true"]:hover { background: var(--w-gray-700); border-color: var(--w-gray-700); }
+.cw-opt.wf-btn[aria-pressed="true"] .wf-t-secondary { color: var(--w-text-inverse); }
+.cw-opt--row { width: 100%; gap: var(--w-space-4); align-items: center; justify-content: space-between; }
+
+/* Quantity stepper inside a dobór item (composed of wf-btn--icon + value). */
+.cw-qty { display: flex; align-items: center; flex-wrap: wrap; gap: var(--w-space-2); }
+.cw-qty > [data-prog-qty] { min-width: 1.5rem; text-align: center; }
+
+/* Dobór item row: checkbox + thumbnail + body. Off = dimmed via tone (the
+   checkbox label stays the signal); never a colour cue, never a left rail. */
+.cw-prog-item { display: grid; grid-template-columns: auto 56px 1fr; gap: var(--w-space-3); align-items: start; }
+.cw-prog-item__pick { display: inline-flex; align-items: center; min-height: var(--w-tap-min); cursor: pointer; }
+.cw-prog-item__ph { width: 56px; }
+.cw-prog-item--off { opacity: 0.55; }
+.cw-prog-item--off .cw-prog-item__ph { opacity: 0.7; }
+
+/* --- Mobile <=599px: treść nie może rozpychać strony (poziomy scroll) ----
+   Kit (nietykalny wendor) trzyma .wf-btn w white-space:nowrap + sztywnym
+   height, a .wf-display ma stałe 56px – na 375px długie CTA i długie słowa
+   H1 generują poziomy scroll strony. Reguły tylko dla treści (<main>);
+   chrome (navbar/hamburger/dock/stopka) zostaje jak w kicie. Wzorzec
+   przeniesiony z Layout V2 (carbomat-v2.html ma to samo w inline #main). */
+@media (max-width: 599px) {
+  main .wf-btn { white-space: normal; height: auto; min-height: var(--w-control-h-md); padding-block: var(--w-space-2); }
+  main .wf-btn--sm { min-height: var(--w-control-h-sm); }
+  main .wf-btn--lg { min-height: var(--w-control-h-lg); }
+  main .wf-btn--link { min-height: 0; padding-block: 0; }  /* kit: height:auto; padding:0 */
+  main .wf-segmented > .wf-btn { white-space: nowrap; min-height: 0; padding-block: 0; }  /* zwarty przełącznik jak w kicie */
+  main .wf-display { font-size: var(--w-font-h1-size); line-height: var(--w-font-h1-lh); }
+  /* Stepper (wf-steps) bywa szerszy niż 375 – region przewijany wg DS §5a
+     (tabindex="0" w HTML tam, gdzie realnie scrolluje); kroki bez ściskania. */
+  main .wf-steps { overflow-x: auto; }
+  main .wf-steps > * { flex: none; }
+}
+
+/* --- Reduced motion ----------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .cw-nav-trigger .wf-icon { transition: none; }
+}

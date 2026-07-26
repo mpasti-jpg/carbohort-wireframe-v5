@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Program Próchnica+ — metoda dowodu na Twoim polu | Carbohort</title>
+<meta name="description" content="Diagnoza, aplikacja, pas kontrolny, pomiar. Oddzielamy to, co wiemy (mechanizm, badania), od tego, co badamy u Ciebie. Retencja „to zależy", bez okrągłych liczb.">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="wireframe.css">
+<link rel="stylesheet" href="cw.css">
+</head>
+<body>
+<a class="wf-sr-only" href="#main">Przejdź do treści</a>
+
+<!-- ===== Tabler icon sprite (paste once per kit rule) ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true" id="wf-icon-sprite">
+<symbol id="ti-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6 -6" /></symbol>
+<symbol id="ti-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6l-6 6" /></symbol>
+<symbol id="ti-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" /><path d="M13 18l6 -6" /><path d="M13 6l6 6" /></symbol>
+<symbol id="ti-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></symbol>
+<symbol id="ti-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></symbol>
+<symbol id="ti-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></symbol>
+<symbol id="ti-menu-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l16 0" /><path d="M4 12l16 0" /><path d="M4 18l16 0" /></symbol>
+<symbol id="ti-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></symbol>
+<symbol id="ti-shopping-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M15 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></symbol>
+<symbol id="ti-info-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></symbol>
+<symbol id="ti-message-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9h8" /><path d="M8 13h6" /><path d="M9 18h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-3l-3 3l-3 -3" /></symbol>
+<symbol id="ti-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></symbol>
+<symbol id="ti-external-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" /></symbol>
+<symbol id="ti-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z" /><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /><path d="M8 11v-4a4 4 0 1 1 8 0v4" /></symbol>
+<symbol id="ti-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z" /><path d="M5 21v-7" /></symbol>
+</svg>
+
+<!-- ===== NAVBAR ===== -->
+<header class="wf-navbar">
+  <div class="wf-navbar__inner wf-container">
+    <a class="cw-brand" href="home.html">Carbohort</a>
+    <nav class="cw-nav" aria-label="Główna">
+      <div class="cw-haspopup">
+        <button class="cw-nav-trigger" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-produkty">Nasze produkty <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+        <div class="cw-mega cw-mega--wide" id="mega-produkty" data-open="false" role="region" aria-label="Nasze produkty">
+          <div class="cw-mega__head">
+            <span class="wf-overline wf-t-tertiary">Produkty Carbohort</span>
+            <a class="wf-btn wf-btn--secondary wf-btn--sm" href="produkty.html">Poznaj całą gamę produktów</a>
+          </div>
+          <div class="cw-mega__layout">
+            <!-- Cały box = link (bez osobnych przycisków); miniatura produktu dojdzie -->
+            <a class="cw-prodbox" href="carbomat.html">
+              <span class="wf-overline wf-t-tertiary">Sypkie · doglebowe</span>
+              <span class="wf-h5 cw-prodbox__name">CARBOMAT ECO</span>
+              <span class="wf-small wf-t-secondary">Surowy lignit, który na lata przebudowuje strukturę i retencję gleby.</span>
+            </a>
+            <a class="cw-prodbox" href="carbomat-mata.html">
+              <span class="wf-overline wf-t-tertiary">Sypkie · uprawa bezglebowa</span>
+              <span class="wf-h5 cw-prodbox__name">CARBOMAT Mata Uprawowa</span>
+              <span class="wf-small wf-t-secondary">Naturalne podłoże nowej generacji do upraw bezglebowych – wieloletnia alternatywa dla wełny mineralnej i maty kokosowej.</span>
+            </a>
+            <a class="cw-prodbox" href="carbohumic.html">
+              <span class="wf-overline wf-t-tertiary">Płynne · doglebowe i nalistne</span>
+              <span class="wf-h5 cw-prodbox__name">CARBOHUMIC</span>
+              <span class="wf-small wf-t-secondary">„Próchnica w płynie" – kondycjonuje glebę i biostymuluje roślinę.</span>
+            </a>
+            <a class="cw-prodbox" href="carbomat-humic.html">
+              <span class="wf-overline wf-t-tertiary">Węgiel aktywowany · 3 w 1</span>
+              <span class="wf-h5 cw-prodbox__name">CARBOMAT HUMIC</span>
+              <span class="wf-small wf-t-secondary">Kondycjoner + potas + biostymulator; podnosi pH zakwaszonej gleby – na pole i do ogrodu.</span>
+            </a>
+          </div>
+          <div class="cw-mega__needs">
+            <span class="wf-overline wf-t-tertiary">Wg potrzeby</span>
+            <div class="cw-mega__list">
+              <a class="wf-link--quiet wf-small" href="produkty.html#retencja">Zatrzymać wodę / susza</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#prochnica">Odbudować próchnicę</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#jakosc">Jakość i trwałość owocu</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#start">Lepszy start i wzrost</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#ph">Uregulować pH gleby</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#bez-torfu">Podłoże bez torfu</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cw-haspopup">
+        <button class="cw-nav-trigger" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-uprawy">Rodzaje upraw <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+        <div class="cw-mega" id="mega-uprawy" data-open="false" role="region" aria-label="Rodzaje upraw">
+          <div class="cw-mega__grid">
+            <div class="cw-mega__col">
+              <span class="wf-overline wf-t-tertiary">Uprawy profesjonalne</span>
+              <div class="cw-mega__list">
+                <a class="wf-link--quiet wf-small" href="sadownicze.html">Sadownicze</a>
+                <a class="wf-link--quiet wf-small" href="jagodowe.html">Jagodowe</a>
+                <a class="wf-link--quiet wf-small" href="warzywnicze.html">Warzywnicze</a>
+                <a class="wf-link--quiet wf-small" href="zboza.html">Zboża, rzepak, kukurydza</a>
+                <a class="wf-link--quiet wf-small" href="zielen.html">Zieleń miejska</a>
+                <a class="wf-link--quiet wf-small" href="szkolki.html">Szkółki</a>
+              </div>
+            </div>
+            <div class="cw-mega__col">
+              <span class="wf-overline wf-t-tertiary">Ogród i działka</span>
+              <div class="cw-mega__list">
+                <a class="wf-link--quiet wf-small" href="trawnik.html">Trawnik</a>
+                <a class="wf-link--quiet wf-small" href="ogrod.html">Ogród / działka</a>
+                <a class="wf-link--quiet wf-small" href="krzewy.html">Krzewy i tuje</a>
+              </div>
+              <a class="wf-btn wf-btn--secondary wf-btn--sm" href="uprawy.html">Wszystkie uprawy</a>
+            </div>
+          </div>
+          <div class="cw-mega__foot">
+            <span class="wf-small wf-t-secondary">Nie wiesz, co wybrać? Konfigurator dobierze produkty i dawki.</span>
+            <a class="wf-btn wf-btn--secondary wf-btn--sm" href="konfigurator.html">Otwórz Konfigurator</a>
+          </div>
+        </div>
+      </div>
+      <div class="cw-haspopup">
+        <button class="cw-nav-trigger wf-w-semibold" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-programy" aria-current="page">Programy i badania <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+        <div class="cw-mega cw-mega--narrow" id="mega-programy" data-open="false" role="region" aria-label="Programy i badania">
+          <div class="cw-mega__list">
+            <a class="wf-link--quiet" href="prochnica-plus.html">Program Próchnica+</a>
+          </div>
+        </div>
+      </div>
+      <a class="wf-navbar__link" href="centrum-wiedzy.html">Centrum wiedzy</a>
+      <a class="wf-navbar__link" href="o-firmie.html">O nas</a>
+      <a class="wf-navbar__link" href="kontakt.html">Kontakt</a>
+    </nav>
+    <div class="wf-cluster wf-gap-2">
+      <a class="wf-btn wf-btn--primary wf-btn--sm" href="konfigurator.html">Konfigurator</a>
+      <a class="wf-btn wf-btn--ghost wf-btn--sm" href="sklep.html">Sklep</a>
+      <a class="wf-btn wf-btn--ghost wf-btn--sm wf-inline" href="platforma-b2b.html"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-user"></use></svg> Zaloguj</a>
+      <a class="wf-btn wf-btn--ghost wf-btn--icon wf-badge--count cw-cart" href="koszyk.html" aria-label="Koszyk, 0 produktów"><svg class="wf-icon" aria-hidden="true"><use href="#ti-shopping-cart"></use></svg><span class="wf-count" data-cart-count>0</span></a>
+      <button class="wf-btn wf-btn--ghost wf-btn--icon cw-navtoggle" data-navtoggle aria-controls="mobilenav" aria-expanded="false" aria-label="Otwórz menu"><svg class="wf-icon" aria-hidden="true"><use href="#ti-menu-2"></use></svg></button>
+    </div>
+  </div>
+  <nav class="cw-mobilenav wf-container" id="mobilenav" data-open="false" aria-label="Menu mobilne">
+    <a class="wf-navitem" href="produkty.html">Nasze produkty</a>
+    <a class="wf-navitem" href="uprawy.html">Rodzaje upraw</a>
+    <a class="wf-navitem wf-w-semibold" href="prochnica-plus.html" aria-current="page">Programy i badania</a>
+    <a class="wf-navitem" href="centrum-wiedzy.html">Centrum wiedzy</a>
+    <a class="wf-navitem" href="o-firmie.html">O nas</a>
+    <a class="wf-navitem" href="kontakt.html">Kontakt</a>
+    <a class="wf-navitem" href="sklep.html">Sklep</a>
+    <a class="wf-navitem" href="platforma-b2b.html">Zaloguj</a>
+  </nav>
+</header>
+<div class="cw-scrim" data-cw-scrim data-open="false" aria-hidden="true"></div>
+
+<main id="main">
+
+  <!-- ===== BREADCRUMB ===== -->
+  <div class="wf-container">
+    <nav class="wf-breadcrumb" aria-label="Breadcrumb">
+        <ol class="wf-cluster wf-items-center">
+          <li><a class="wf-link--quiet" href="home.html">Start</a></li>
+          <li><span class="wf-breadcrumb__sep" aria-hidden="true">/</span></li>
+          <li><a class="wf-link--quiet" href="prochnica-plus.html">Programy i badania</a></li>
+          <li><span class="wf-breadcrumb__sep" aria-hidden="true">/</span></li>
+          <li aria-current="page">Program Próchnica+</li>
+        </ol>
+      </nav>
+  </div>
+
+  <!-- ===== S1 — HERO ===== -->
+  <section class="wf-section">
+    <div class="wf-container wf-grid wf-grid--2 wf-items-center" style="--wf-grid-min: 22rem;">
+      <div class="wf-stack wf-stack--6">
+        <span class="wf-overline">Program Próchnica+ · metoda dowodu, nie kampania</span>
+        <h1 class="wf-display">Nie prosimy o wiarę. Zakładamy pas kontrolny w Twoim gospodarstwie i mierzymy, co próchnica robi z plonem i wodą.</h1>
+        <p class="wf-lead wf-prose">Wspólnie z rolnikami i sadownikami odbudowujemy polskie gleby. Mechanizm i retencja są potwierdzone badaniami — to, co mierzymy u Ciebie, to wielkość efektu na Twojej glebie, w czasie, bez okrągłych liczb. Oddzielamy to, co wiemy, od tego, co badamy.</p>
+        <div class="wf-cluster wf-gap-3">
+          <a class="wf-btn wf-btn--primary wf-btn--lg" href="kontakt.html">Umów pas kontrolny u siebie</a>
+          <a class="wf-btn wf-btn--secondary wf-btn--lg" href="#jak-dziala">Zobacz, jak działa program</a>
+          <a class="wf-btn wf-btn--ghost wf-btn--lg" href="centrum-wiedzy.html">Pobierz metodę (PDF)</a>
+        </div>
+        <div class="wf-cluster wf-gap-4">
+          <span class="wf-small wf-t-tertiary">Polski, rodzinny producent · 10+ lat</span>
+          <span class="wf-small wf-t-tertiary">Polski surowiec</span>
+          <span class="wf-small wf-t-tertiary">Eko-cert IUNG</span>
+          <span class="wf-small wf-t-tertiary">Mierzymy, nie obiecujemy</span>
+        </div>
+      </div>
+      <div class="wf-ph wf-ph--4x3" aria-hidden="true"><span class="wf-ph__label">Pole: pas traktowany obok pasa kontrolnego</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S2 — DLACZEGO PRÓCHNICA = PIENIĄDZ ===== -->
+  <section class="wf-section wf-section--subtle" aria-labelledby="s-dlaczego">
+    <div class="wf-container wf-stack wf-stack--8">
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">Dlaczego próchnica = pieniądz</span>
+        <h2 class="wf-h2" id="s-dlaczego">Twoja gleba traci ~1 tonę próchnicy z hektara rocznie. To nie ekologia — to Twój plon i Twoja woda.</h2>
+        <p class="wf-lead wf-t-secondary">Kotwiczymy wartość próchnicy, zanim padnie cokolwiek o cenie. Rama: koszt zaniechania, nie katastrofa. Liczby degradacji pochodzą z poradnika Carbohort i danych IUNG.</p>
+      </div>
+      <div class="wf-grid wf-grid--3" style="--wf-grid-min: 15rem;">
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <h3 class="wf-h5">Polskie gleby są ubogie</h3>
+          <p class="wf-small wf-t-secondary">PL śr. ~1,6% materii organicznej (IUNG); rejon Grójca do 1,2%. Tylko 1 na 6 ha ma próchnicę &gt;2%; 1 na 10 ha nie osiąga nawet 1%.</p>
+          <p class="wf-caption wf-t-secondary">wg poradnika Carbohort (badania 2019–2020)</p>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <h3 class="wf-h5">Intensywna uprawa zjada próchnicę</h3>
+          <p class="wf-small wf-t-secondary">Monokultura / intensywna uprawa: utrata 20–40% w 15–20 lat; rocznie z 1 ha ubywa ~1 t s.m. próchnicy.</p>
+          <p class="wf-caption wf-t-secondary">wg poradnika Carbohort</p>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <h3 class="wf-h5">Zniszczona struktura = stracona woda</h3>
+          <p class="wf-small wf-t-secondary">Przy zniszczonej strukturze rośliny wykorzystują 10–20% wody opadowej; przy prawidłowej próchnicy nawet 85%.</p>
+          <p class="wf-caption wf-t-secondary">wg poradnika Carbohort</p>
+        </div></article>
+      </div>
+      <div class="wf-alert">
+        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+        <div><span class="wf-alert__title">Przekład na biznes, bez wymyślonych liczb.</span> <span class="wf-small wf-t-secondary">Mniej dostępnej wody = większa wrażliwość na suszę = plon, który załamuje się w suchym roku. Spadek struktury = „pole już nie trzyma". Rosnące koszty nawożenia przy malejącej zdolności gleby do ich wykorzystania. Każdy sezon bez odbudowy to utracony potencjał; odbudowa daje trwalszy, stabilniejszy plon. „Wykorzystanie wody opadowej" podajemy jako własność próchnicy z poradnika — nie jako obietnicę produktu.</span></div>
+      </div>
+      <div><a class="wf-btn wf-btn--primary" href="#jak-dziala">Zobacz, jak odbudowujemy próchnicę</a></div>
+    </div>
+  </section>
+
+  <!-- ===== S3 — JAK DZIAŁA PROGRAM (5 kroków, HowTo) ===== -->
+  <section class="wf-section" id="jak-dziala" aria-labelledby="s-jak">
+    <div class="wf-container wf-stack wf-stack--8">
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">Jak działa program · serce strony</span>
+        <h2 class="wf-h2" id="s-jak">Pięć kroków. Jeden pas kontrolny na Twoim polu. Zero „uwierz nam".</h2>
+        <p class="wf-lead wf-t-secondary">Próchnica+ to proces i metoda, nie hasło. Jawny, sprawdzalny protokół „u mnie" rozbraja lęk „czy mnie nie wykiwają". Każdy krok to mały, mierzalny commitment.</p>
+      </div>
+      <div class="wf-grid" style="--wf-grid-min: 12rem;">
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <span class="wf-overline wf-t-tertiary">Krok 1</span>
+          <h3 class="wf-h5">Diagnoza</h3>
+          <p class="wf-small wf-t-secondary">Ocena gleby u Ciebie: typ gleby, % materii organicznej (punkt startowy), problem (susza / struktura / zakwaszenie / niedobór). Wynik = punkt odniesienia do porównania.</p>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <span class="wf-overline wf-t-tertiary">Krok 2</span>
+          <h3 class="wf-h5">Dobór i aplikacja</h3>
+          <p class="wf-small wf-t-secondary">Dobór produktu doglebowego pod problem i sprzęt: <a class="wf-link" href="carbomat.html">CARBOMAT</a> (sypki, baza) / <a class="wf-link" href="carbohumic.html">CARBOHUMIC</a> (płyn, beczkowóz lub fertygacja) / <a class="wf-link" href="carbomat-humic.html">CARBOMAT HUMIC</a> (sypki, strip-till, wielkoobszar). Dawkę ustawiasz Ty lub Twój doradca — my dajemy metodę.</p>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <span class="wf-overline wf-t-tertiary">Krok 3</span>
+          <h3 class="wf-h5">Pas kontrolny</h3>
+          <p class="wf-small wf-t-secondary">Kluczowy element: w tym samym polu zostaje pas/rząd bez produktu (kontrola) obok pasa z produktem. Te same warunki, ta sama pogoda — różnicę widać, nie zgaduje. Odpowiednik „free trial" w B2B.</p>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <span class="wf-overline wf-t-tertiary">Krok 4</span>
+          <h3 class="wf-h5">Pomiar</h3>
+          <p class="wf-small wf-t-secondary">Wspólny, jawny: pojemność wodna / wilgotność w pasach, stan roślin, a na koniec rozstrzyga kombajn i waga z przyczepy (pole) lub kaliber / wybarwienie / jędrność (sad). Metoda opisana z góry.</p>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <span class="wf-overline wf-t-tertiary">Krok 5</span>
+          <h3 class="wf-h5">Wnioski</h3>
+          <p class="wf-small wf-t-secondary">Wynik wraca do Ciebie i do bazy programu (zanonimizowany, za zgodą): co zadziałało, na jakiej glebie, w jakim sezonie. Tu dane przechodzą z „badamy" do „wiemy". Decyzja o skalowaniu jest Twoja, na podstawie Twojego pasa.</p>
+        </div></article>
+      </div>
+      <div class="wf-ph wf-ph--16x9" aria-hidden="true"><span class="wf-ph__label">Schemat pola: pas z produktem obok pasa kontrolnego + oś 5 kroków</span></div>
+      <div class="wf-alert">
+        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+        <div><span class="wf-alert__title">Wariant pod Twoją uprawę.</span> <span class="wf-small wf-t-secondary">Rolnik polowy — rozstrzyga waga z przyczepy. Sadownik — pomiar kalibru i wybarwienia, pas w Twoim sadzie. Doradca / agronom — dostajesz metodykę i surowe dane, nie slogan; rekomendację firmujesz własnym nazwiskiem.</span></div>
+      </div>
+      <div class="wf-cluster wf-gap-3">
+        <a class="wf-btn wf-btn--primary" href="kontakt.html">Umów pas kontrolny</a>
+        <a class="wf-btn wf-btn--secondary" href="centrum-wiedzy.html">Pobierz metodę krok po kroku (PDF)</a>
+        <a class="wf-btn wf-btn--ghost" href="#dowod">Zobacz, jak mierzymy retencję</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S4 — DOWÓD I METODA (WIEMY / BADAMY) ===== -->
+  <section class="wf-section wf-section--subtle" id="dowod" aria-labelledby="s-dowod">
+    <div class="wf-container wf-stack wf-stack--8">
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">Dowód i metoda · filar wiarygodności</span>
+        <h2 class="wf-h2" id="s-dowod">Oddzielamy to, co wiemy, od tego, co badamy — czarno na białym, żeby doradca mógł to firmować własnym nazwiskiem.</h2>
+        <p class="wf-lead wf-t-secondary">Sekcja-dossier dla doradcy (gatekeeper) i samodzielnego researchu PRO. Uczciwe zawężenie jest atutem. Mechanizm działa i jest potwierdzony badaniami — badamy nie czy działa, lecz o ile, na Twojej glebie.</p>
+      </div>
+      <div class="wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 20rem;">
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--3">
+          <h3 class="wf-h4 wf-inline"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-lock"></use></svg> Co już wiemy</h3>
+          <ul class="wf-list wf-stack wf-stack--3">
+            <li class="wf-small wf-t-secondary"><strong>Mechanizm:</strong> lignit/leonardyt → kwasy humusowe i fulwowe → próchnica + struktura (porowatość, agregaty — gleba przewiewna, nie zlewna) + retencja wody dostępnej + życie mikrobiologiczne. Skład zbliżony do trwałej próchnicy daje niemal natychmiastowe oddziaływanie (wg poradnika).</li>
+            <li class="wf-small wf-t-secondary"><strong>Peer-review:</strong> +1% próchnicy ≈ +3,7% wody dostępnej [Hudson 1994]; lignit potrafi trzymać wodę zbyt mocno, więc mierzymy AWC, nie samo WHC [Richards 1986; Razzaghi 2020].</li>
+            <li class="wf-small wf-t-secondary"><strong>Własna pojemność wodna („Skrzynka" — ile gleba trzyma, nie woda dostępna):</strong> kontrola 11,9% → CARBOMAT wymieszany 13,3% → CARBOHUMIC pod korzeniami 19,4% → CARBOHUMIC wymieszany 21,7% → 2× CARBOMAT / podwójna dawka &gt;48% (wartość maksymalna, nie typowa). Wg naszego doświadczenia.</li>
+            <li class="wf-small wf-t-secondary"><strong>Cert / skład:</strong> eko-cert IUNG; skład pierwiastkowy i niskie zanieczyszczenia (promieniotwórcze 43,3 Bq/kg CARBOMAT) — wg karty.</li>
+          </ul>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--3">
+          <h3 class="wf-h4 wf-inline"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-flag"></use></svg> Co badamy — to robi program</h3>
+          <ul class="wf-list wf-stack wf-stack--3">
+            <li class="wf-small wf-t-secondary"><strong>Efekt retencji jako woda dostępna (AWC)</strong> na konkretnej polskiej glebie i w konkretnej uprawie — z pasów kontrolnych.</li>
+            <li class="wf-small wf-t-secondary"><strong>„+ ile dni do punktu więdnięcia"</strong> — najmocniejsza, nieobecna w kategorii metryka (intuicyjna dla rolnika), do zmierzenia w programie.</li>
+            <li class="wf-small wf-t-secondary"><strong>Wpływ na plon i jakość</strong> w horyzoncie wieloletnim (2–5 lat — próchnica) vs efekt 1. sezonu (struktura, retencja, wschody).</li>
+            <li class="wf-small wf-t-secondary"><strong>Status:</strong> zbieramy dane on-farm; wyniki publikujemy z metodą, gdy będą — nie wcześniej. Nie zmyślamy liczby AWC dziś.</li>
+          </ul>
+        </div></article>
+      </div>
+      <div class="wf-alert">
+        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+        <div><span class="wf-alert__title">Retencja to zawsze „to zależy".</span> <span class="wf-small wf-t-secondary">Największy efekt: gleby lekkie, ubogie w próchnicę, w suszy. Mierzymy wodę dostępną dla rośliny (AWC), nie tylko zatrzymaną (WHC) — bo lignit potrafi trzymać wodę zbyt mocno [Richards 1986]. Nie podajemy kalkulatora litrów: uczciwa liczba zależy od Twojej gleby, a tę mierzymy u Ciebie.</span></div>
+      </div>
+      <div class="wf-cluster wf-gap-3">
+        <a class="wf-btn wf-btn--primary" href="centrum-wiedzy.html">Pobierz dossier metody (PDF)</a>
+        <a class="wf-btn wf-btn--secondary" href="centrum-wiedzy.html">Zobacz źródła i badania</a>
+        <a class="wf-btn wf-btn--ghost" href="kontakt.html">Umów pas kontrolny</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S5 — KTO MOŻE DOŁĄCZYĆ ===== -->
+  <section class="wf-section" aria-labelledby="s-kto">
+    <div class="wf-container wf-stack wf-stack--8">
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">Kto może dołączyć · dla kogo</span>
+        <h2 class="wf-h2" id="s-kto">Dla rolników, sadowników, plantatorów i zieleni, którzy chcą zobaczyć efekt na własnym polu — zanim uwierzą.</h2>
+        <p class="wf-lead wf-t-secondary">Kwalifikacja odbiorcy („my, rolnicy i sadownicy") plus jasne „co z tego masz": wartość przed prośbą o zakup.</p>
+      </div>
+      <div class="wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 20rem;">
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--3">
+          <h3 class="wf-h4">Dla kogo</h3>
+          <ul class="wf-list wf-stack wf-stack--2">
+            <li class="wf-small wf-t-secondary"><strong>Rolnik polowy</strong> — zboża/kukurydza/rzepak, gleby lekkie, susza, strip-till → CARBOMAT HUMIC / CARBOHUMIC.</li>
+            <li class="wf-small wf-t-secondary"><strong>Sadownik</strong> — degradacja próchnicy w monokulturze, retencja jako polisa → CARBOMAT / CARBOHUMIC.</li>
+            <li class="wf-small wf-t-secondary"><strong>Plantator</strong> — jagodowy / warzywny.</li>
+            <li class="wf-small wf-t-secondary"><strong>Zieleń / szkółka</strong> — przeżywalność nasadzeń, dokument do SIWZ → CARBOMAT.</li>
+            <li class="wf-small wf-t-secondary"><strong>Doradca / agronom</strong> — osobny tor partnerski.</li>
+          </ul>
+        </div></article>
+        <article class="wf-card" style="border-color: var(--w-border-strong);"><div class="wf-card__body wf-stack wf-stack--3">
+          <div class="wf-cluster wf-cluster--between wf-items-center"><h3 class="wf-h4">Co dostaje uczestnik</h3><span class="wf-badge wf-badge--solid">Oferta programu</span></div>
+          <ul class="wf-list wf-stack wf-stack--2">
+            <li class="wf-small wf-t-secondary">Diagnoza gleby + punkt startowy (% materii organicznej).</li>
+            <li class="wf-small wf-t-secondary">Dobór produktu i dawki pod uprawę / glebę / sprzęt + okno aplikacji.</li>
+            <li class="wf-small wf-t-secondary">Założenie pasa kontrolnego + wspólny pomiar; raport z wynikiem z Twojego pola.</li>
+            <li class="wf-small wf-t-secondary">Komplet dokumentów: karta techniczna, eko-cert IUNG, opis do SIWZ (zieleń B2B).</li>
+            <li class="wf-small wf-t-secondary">Wsparcie agronoma / dr Jurek; tabele dawek HTML+PDF.</li>
+            <li class="wf-small wf-t-secondary">Warunki handlowe: okno jesienne + luty/marzec, rabat / blokada ceny, platforma B2B. <span class="wf-inline"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-flag"></use></svg> Progi i ceny do uzupełnienia.</span></li>
+          </ul>
+        </div></article>
+      </div>
+      <div class="wf-alert">
+        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+        <div><span class="wf-alert__title">Dla doradcy / agronoma.</span> <span class="wf-small wf-t-secondary">Program partnerski: dossier „wiemy / badamy", gotowy strip-trial, materiały do podania dalej, Carbohort jako druga linia techniczna. Decyzję i dawkę ustawiasz Ty.</span></div>
+      </div>
+      <div class="wf-cluster wf-gap-3">
+        <a class="wf-btn wf-btn--primary" href="kontakt.html">Dołącz do programu</a>
+        <a class="wf-btn wf-btn--secondary" href="platforma-b2b.html">Zostań partnerem — doradca</a>
+        <a class="wf-btn wf-btn--ghost" href="platforma-b2b.html">Zapytaj o ofertę (B2B)</a>
+      </div>
+      <p class="wf-small wf-t-secondary">Formularz zgłoszenia to 3–5 pól: uprawa, areał / liczba drzew, województwo, kontakt. Wartość trafia do Ciebie przed prośbą o zakup.</p>
+    </div>
+  </section>
+
+  <!-- ===== S6 — TWOJA KORZYŚĆ BIZNESOWA ===== -->
+  <section class="wf-section wf-section--subtle" aria-labelledby="s-korzysc">
+    <div class="wf-container wf-stack wf-stack--8">
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">Twoja korzyść biznesowa</span>
+        <h2 class="wf-h2" id="s-korzysc">Krótko: mniej stresu suszy już w tym sezonie. Długo: gleba, która stabilizuje Twój plon na lata.</h2>
+        <p class="wf-lead wf-t-secondary">Spinamy mechanizm z pieniędzmi, jawnie rozdzielając horyzont. Framing korzyścią biznesową, nie cechą — pozytywny, nie straszak.</p>
+      </div>
+      <div class="wf-card wf-card--flush">
+        <div class="cw-scrollx" tabindex="0">
+        <table class="wf-table">
+          <thead><tr><th scope="col">Horyzont</th><th scope="col">Co zyskujesz</th><th scope="col">Dlaczego (mechanizm)</th><th scope="col">Status dowodu</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>1. sezon</strong></td>
+              <td>Lepsza struktura, retencja wody dostępnej, równiejsze wschody; mniejsza wrażliwość na suchy okres („polisa na suchy rok"); u CARBOMAT HUMIC dodatkowo K i podniesienie pH gleb zakwaszonych.</td>
+              <td>Próchnica/lignit poprawia porowatość i zatrzymuje wodę dostępną; węgiel aktywowany → odporność młodych roślin na stres (karta).</td>
+              <td>Mechanizm — wiemy; efekt „to zależy", mierzymy u Ciebie — badamy.</td>
+            </tr>
+            <tr>
+              <td><strong>2–5 lat</strong></td>
+              <td>Trwała odbudowa próchnicy → stabilniejszy, mniej „załamujący się" plon; lepsze wykorzystanie kupowanego azotu/potasu; niższy koszt cyklu (TCO — zieleń B2B); fundament gleby na 15–20+ lat.</td>
+              <td>Stałe wydzielanie kwasów humusowych 15–20 lat; budowa trwałej próchnicy (karta/poradnik).</td>
+              <td>Mechanizm + peer — wiemy; wielkość efektu na PL polu — badamy.</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      <div class="wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 20rem;">
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+          <h3 class="wf-h5">Ekonomia wprost</h3>
+          <p class="wf-small wf-t-secondary">Akceptowalny wydatek na nowość to 200–300 zł/ha przy budżecie środków 1500–4500 zł/ha — dotyczy kukurydzy (zabieg polowy sypki); nie przenosimy go mechanicznie na inne produkty i uprawy. W sadzie jednostka decyzyjna to ~40 gr/drzewo. Wg rozmów z rolnikami.</p>
+        </div></article>
+        <div class="wf-alert">
+          <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+          <div><span class="wf-alert__title">Anchoring: najpierw wartość, potem koszt.</span> <span class="wf-small wf-t-secondary">Najpierw wartość i utracony potencjał na hektar (sekcja wyżej), dopiero potem koszt zabiegu — koszt jak ułamek korzyści. Pokazujemy też oszczędności pośrednie, których nie widać wprost: mniej podlewania, lepsze wykorzystanie NPK.</span></div>
+        </div>
+      </div>
+      <div class="wf-alert">
+        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+        <div><span class="wf-alert__title">Reguła horyzontu.</span> <span class="wf-small wf-t-secondary">Retencja i struktura to efekt 1. sezonu. Trwała próchnica i jej wpływ na plon to 2–5 lat. Nie obiecujemy „+X% plonu w pierwszym roku" — obiecujemy pomiar.</span></div>
+      </div>
+      <div class="wf-cluster wf-gap-3">
+        <a class="wf-btn wf-btn--primary" href="platforma-b2b.html">Policz dla mojej powierzchni / Zapytaj o ofertę (B2B)</a>
+        <a class="wf-btn wf-btn--ghost" href="kontakt.html">Umów pas kontrolny</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S7 — UCZCIWOŚĆ ===== -->
+  <section class="wf-section" aria-labelledby="s-ucz">
+    <div class="wf-container wf-stack wf-stack--8">
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">Uczciwość · atut, nie disclaimer</span>
+        <h2 class="wf-h2" id="s-ucz">Mówimy też, czego jeszcze nie wiemy. Dlatego mierzymy u Ciebie.</h2>
+        <p class="wf-lead wf-t-secondary">Uczciwość jako przewaga konkurencyjna i sygnał zaufania — cała kategoria „przegrywa na uczciwości liczb". To redukcja ryzyka, nie zastrzeżenie drobnym drukiem.</p>
+      </div>
+      <div class="wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 18rem;">
+        <div class="wf-alert">
+          <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+          <div><span class="wf-alert__title">1. Retencja = „to zależy".</span> <span class="wf-small wf-t-secondary">Maksimum na glebach lekkich, ubogich, w suszy. AWC ≠ WHC [Richards 1986]. Bez kalkulatora litrów.</span></div>
+        </div>
+        <div class="wf-alert">
+          <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+          <div><span class="wf-alert__title">2. Horyzont rozdzielony.</span> <span class="wf-small wf-t-secondary">1 sezon (struktura/retencja) vs 2–5 lat (próchnica/plon). Bez mieszania jednego z drugim.</span></div>
+        </div>
+        <div class="wf-alert">
+          <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+          <div><span class="wf-alert__title">3. Wiemy / badamy.</span> <span class="wf-small wf-t-secondary">Stała deklaracja: co udowodnione mechanizmem i peer-review, a co dopiero mierzymy u Ciebie. Mechanizm udowodniony — badamy wielkość efektu.</span></div>
+        </div>
+        <div class="wf-alert">
+          <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+          <div><span class="wf-alert__title">4. Doglebowe retencjonują wodę; nalistne — nie.</span> <span class="wf-small wf-t-secondary">MAXI PLUS i CALBOR (nalistne) to jakość i biostymulacja, nigdy „polisa na suszę". Próchnica+ to program doglebowy.</span></div>
+        </div>
+      </div>
+      <div class="wf-alert">
+        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+        <div><span class="wf-alert__title">5. Regulacja.</span> <span class="wf-small wf-t-secondary">Etykieta doglebowa nie zawiera zaleceń nalistnych — pełny harmonogram znajdziesz w <a class="wf-link" href="zalecenia.html">zaleceniach</a> (QR z etykiety).</span></div>
+      </div>
+      <div class="cw-ask">
+        <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
+        <div class="cw-ask__txt wf-stack wf-stack--1">
+          <span class="wf-w-semibold">Masz nietypową glebę albo pytanie o metodę pasa kontrolnego?</span>
+          <span class="wf-small wf-t-secondary">dr Jurek odpowie na bazie wiedzy Carbohort — także w weekend.</span>
+        </div>
+        <button type="button" class="wf-btn wf-btn--secondary" data-jurek-open>Zapytaj dr Jurka</button>
+      </div>
+      <div class="wf-cluster wf-gap-3">
+        <a class="wf-btn wf-btn--secondary" href="centrum-wiedzy.html">Zobacz pełną metodę i źródła</a>
+        <a class="wf-btn wf-btn--ghost" href="zalecenia.html">Zalecenia (QR z etykiety)</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S8 — FAQ ===== -->
+  <section class="wf-section wf-section--subtle" aria-labelledby="s-faq">
+    <div class="wf-container wf-container--narrow wf-stack wf-stack--8">
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">FAQ · obiekcje w jednym miejscu</span>
+        <h2 class="wf-h2" id="s-faq">Najczęstsze pytania</h2>
+        <p class="wf-lead wf-t-secondary">Top-obiekcje w jednym przeszukiwalnym miejscu; nagłówki to realne pytania (cytowalność dla AI i wyszukiwarek).</p>
+      </div>
+      <div class="wf-stack wf-stack--2">
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="true" aria-controls="faq-1" id="faq-h1">Czym Próchnica+ różni się od zwykłej kampanii albo „cudownego humusu"? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-1" role="region" aria-labelledby="faq-h1">
+            <p class="wf-body wf-t-secondary">To program z metodą i pasem kontrolnym u Ciebie. Oddzielamy to, co wiemy, od tego, co badamy; nie sprzedajemy okrągłej liczby.</p>
+          </div>
+        </div>
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="faq-2" id="faq-h2">Skąd będę wiedział, że to nie pogoda? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-2" role="region" aria-labelledby="faq-h2" hidden>
+            <p class="wf-body wf-t-secondary">Pas lub rząd kontrolny w tym samym polu; różnicę rozstrzyga waga z przyczepy lub kaliber owocu — nie nasza ulotka.</p>
+          </div>
+        </div>
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="faq-3" id="faq-h3">Ile wody to zatrzyma u mnie? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-3" role="region" aria-labelledby="faq-h3" hidden>
+            <p class="wf-body wf-t-secondary">„To zależy" — mierzymy AWC na Twojej glebie; maksimum na glebach lekkich, ubogich, w suszy; bez kalkulatora litrów (AWC ≠ WHC).</p>
+          </div>
+        </div>
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="faq-4" id="faq-h4">Efekt w pierwszym roku? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-4" role="region" aria-labelledby="faq-h4" hidden>
+            <p class="wf-body wf-t-secondary">Struktura, retencja i wschody — 1. sezon; trwała próchnica i plon — 2–5 lat. Bez obietnicy „+X% w rok 1".</p>
+          </div>
+        </div>
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="faq-5" id="faq-h5">Jak to wejdzie w mój program nawożenia i ochrony? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-5" role="region" aria-labelledby="faq-h5" hidden>
+            <p class="wf-body wf-t-secondary">Uzupełniamy, nie zastępujemy; tabela kompatybilności; gdzie zdjąć część NPK/K wg zasobności gleby to Twój argument oszczędności.</p>
+          </div>
+        </div>
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="faq-6" id="faq-h6">Mała firma — obsłuży wolumen i ma dowody? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-6" role="region" aria-labelledby="faq-h6" hidden>
+            <p class="wf-body wf-t-secondary">Wiarygodność ważniejsza niż skala: 10+ lat, polski surowiec, eko-cert IUNG, deklaracja dostępności BigBag. Imienne autorytety naukowe — w przygotowaniu.</p>
+          </div>
+        </div>
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="faq-7" id="faq-h7">Co ja z tego mam jako doradca? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-7" role="region" aria-labelledby="faq-h7" hidden>
+            <p class="wf-body wf-t-secondary">Program partnerski: dossier, materiały, marża, druga linia techniczna; rekomendację firmujesz własnym nazwiskiem.</p>
+          </div>
+        </div>
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="faq-8" id="faq-h8">Ile to kosztuje i kiedy się zwróci? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-8" role="region" aria-labelledby="faq-h8" hidden>
+            <p class="wf-body wf-t-secondary">Anchor wartości na hektar; 200–300 zł/ha dotyczy kukurydzy (nie przenosić na inne uprawy) lub ~40 gr/drzewo w sadzie; zwrot przez stabilność plonu i oszczędność na nawożeniu (rama „to zależy").</p>
+          </div>
+        </div>
+        <div class="wf-accordion__item">
+          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="faq-9" id="faq-h9">Czy to bezpieczne i certyfikowane? <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="wf-accordion__panel" id="faq-9" role="region" aria-labelledby="faq-h9" hidden>
+            <p class="wf-body wf-t-secondary">Naturalny lignit, eko-cert IUNG, niskie zanieczyszczenia (43,3 Bq/kg) — wg karty.</p>
+          </div>
+        </div>
+      </div>
+      <div class="wf-cluster wf-gap-3">
+        <a class="wf-btn wf-btn--primary" href="kontakt.html">Umów pas kontrolny</a>
+        <button class="wf-btn wf-btn--ghost wf-inline" type="button" data-jurek-open><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-message-2"></use></svg> Masz inne pytanie? dr Jurek</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S9 — CTA KOŃCOWE / DRABINKA ===== -->
+  <section class="wf-section" aria-labelledby="s-cta">
+    <div class="wf-container wf-stack wf-stack--8">
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">Zacznij małym krokiem</span>
+        <h2 class="wf-h2" id="s-cta">Zacznij od jednego pasa kontrolnego. Resztę zdecydujesz po żniwach.</h2>
+        <p class="wf-lead wf-t-secondary">Zaczynasz od pasa kontrolnego, nie od dużego zamówienia. Mały krok, mierzalny wynik, decyzja po Twojej stronie.</p>
+      </div>
+      <div class="wf-grid wf-grid--3" style="--wf-grid-min: 16rem;">
+        <article class="wf-card" style="border-color: var(--w-border-strong);"><div class="wf-card__body wf-stack wf-stack--3">
+          <span class="wf-badge wf-badge--solid">Krok 1 · najlżejszy commitment</span>
+          <h3 class="wf-h4">Umów pas kontrolny u siebie</h3>
+          <p class="wf-small wf-t-secondary">Odpowiednik free trial — najsilniejszy akcelerator decyzji. Mały krok, mierzalny wynik, decyzja po Twojej stronie.</p>
+          <div><a class="wf-btn wf-btn--primary wf-btn--block" href="kontakt.html">Umów pas kontrolny</a></div>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--3">
+          <span class="wf-badge wf-badge--outline">Dołącz / dossier</span>
+          <h3 class="wf-h4">Dołącz do programu</h3>
+          <p class="wf-small wf-t-secondary">Formularz 3–5 pól (uprawa, areał, województwo, kontakt). Dla doradcy i grupy decyzyjnej — pobierz metodę / dossier (PDF).</p>
+          <div class="wf-cluster wf-gap-2">
+            <a class="wf-btn wf-btn--secondary wf-btn--sm" href="kontakt.html">Dołącz do programu</a>
+            <a class="wf-btn wf-btn--ghost wf-btn--sm" href="centrum-wiedzy.html">Pobierz dossier (PDF)</a>
+          </div>
+        </div></article>
+        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--3">
+          <span class="wf-badge wf-badge--outline">PRO / gospodarstwo · B2B</span>
+          <h3 class="wf-h4">Zapytaj o ofertę</h3>
+          <p class="wf-small wf-t-secondary">Wolumen, „Twoja cena" netto po loginie, warunki handlowe (okno jesienne / luty–marzec).</p>
+          <div class="wf-cluster wf-gap-2">
+            <a class="wf-btn wf-btn--secondary wf-btn--sm" href="platforma-b2b.html">Panel B2B</a>
+            <button class="wf-btn wf-btn--ghost wf-btn--sm" type="button" data-jurek-open>dr Jurek</button>
+          </div>
+        </div></article>
+      </div>
+      <div class="wf-alert">
+        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+        <div><span class="wf-alert__title">Drabinka zaangażowania.</span> <span class="wf-small wf-t-secondary">Od najlżejszego: pas kontrolny → dołącz → pobierz dossier → oferta B2B. Zaczynasz od pasa kontrolnego, nie od dużego zamówienia — redukcja ryzyka, nie nacisk.</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="wf-footer wf-section">
+  <div class="wf-container">
+    <div class="wf-footer__cols">
+      <div class="wf-stack wf-stack--3">
+        <span class="wf-h4 wf-w-bold">Carbohort</span>
+        <p class="wf-small wf-t-secondary">Polski, rodzinny producent poprawiaczy gleby z lignitu i leonardytu. Dbając o glebę, inwestujemy w przyszłe pokolenia.</p>
+      </div>
+      <nav class="wf-stack wf-stack--2" aria-label="Produkty"><p class="wf-overline">Produkty</p>
+        <a class="wf-link--quiet" href="produkty.html">Nasze produkty</a>
+        <a class="wf-link--quiet" href="carbomat.html">CARBOMAT ECO</a>
+        <a class="wf-link--quiet" href="carbomat-mata.html">CARBOMAT Mata Uprawowa</a>
+        <a class="wf-link--quiet" href="carbohumic.html">CARBOHUMIC</a>
+        <a class="wf-link--quiet" href="carbomat-humic.html">CARBOMAT HUMIC</a>
+        <a class="wf-link--quiet" href="sklep.html">Sklep</a>
+      </nav>
+      <nav class="wf-stack wf-stack--2" aria-label="Wiedza i programy"><p class="wf-overline">Wiedza i programy</p>
+        <a class="wf-link--quiet" href="centrum-wiedzy.html">Centrum wiedzy</a>
+        <a class="wf-link--quiet" href="prochnica-plus.html">Program Próchnica+</a>
+        <a class="wf-link--quiet" href="uprawy.html">Rodzaje upraw</a>
+        <a class="wf-link--quiet" href="konfigurator.html">Konfigurator</a>
+        <a class="wf-link--quiet" href="zalecenia.html">Zalecenia</a>
+      </nav>
+      <nav class="wf-stack wf-stack--2" aria-label="Firma i współpraca"><p class="wf-overline">Firma i współpraca</p>
+        <a class="wf-link--quiet" href="o-firmie.html">O nas</a>
+        <a class="wf-link--quiet" href="kontakt.html">Kontakt</a>
+        <a class="wf-link--quiet" href="partner.html">Zostań partnerem</a>
+        <a class="wf-link--quiet" href="platforma-b2b.html">Panel / Zaloguj</a>
+      </nav>
+    </div>
+    <div class="wf-footer__bottom wf-cluster wf-cluster--between">
+      <span class="wf-caption wf-t-secondary">© Carbohort – makieta. Treść i dane do akceptacji.</span>
+      <span class="wf-caption wf-t-secondary">PL · poprawa gleby z lignitu</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== dr Jurek — pływający dok ===== -->
+<div class="cw-jurek-backdrop" data-jurek-backdrop data-open="false" aria-hidden="true"></div>
+<div class="cw-jurek" data-jurek-dock data-open="false">
+  <div class="cw-jurek__panel" role="dialog" aria-label="Wirtualny dr Jurek">
+    <div class="cw-jurek__head">
+      <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
+      <div class="wf-stack wf-stack--1" style="flex:1;">
+        <span class="wf-w-semibold">Wirtualny dr Jurek</span>
+        <span class="wf-small wf-t-secondary">asystent doboru i wiedzy</span>
+      </div>
+      <button class="wf-btn wf-btn--ghost wf-btn--icon" data-jurek-close aria-label="Zamknij"><svg class="wf-icon" aria-hidden="true"><use href="#ti-x"></use></svg></button>
+    </div>
+    <div class="cw-jurek__msgs" data-jurek-msgs></div>
+    <p class="wf-caption wf-t-tertiary" style="padding:0 var(--w-space-4) var(--w-space-3);">Makieta · odpowiedzi demonstracyjne.</p>
+  </div>
+  <form class="cw-jurek__bar" data-jurek-form>
+    <svg class="wf-icon wf-icon--muted" aria-hidden="true" style="align-self:center;"><use href="#ti-message-2"></use></svg>
+    <input class="wf-input" type="text" data-jurek-input placeholder="Zapytaj o dobór, dawki, uprawę…" aria-label="Zapytaj dr Jurka">
+    <button class="wf-btn wf-btn--primary wf-btn--icon" type="submit" aria-label="Wyślij"><svg class="wf-icon" aria-hidden="true"><use href="#ti-send"></use></svg></button>
+  </form>
+</div>
+
+<script src="cw.js"></script>
+</body>
+</html>

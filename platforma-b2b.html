@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carbohort — Platforma B2B (panel)</title>
+<meta name="description" content="Panel B2B Carbohort dla profesjonalistów: „Twoja cena” netto, katalog z dodawaniem do zapytania, koszyk B2B z wysyłką, historia zamówień z osią statusów i zapisane receptury. Warstwa zamówień nad sklepem.">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="wireframe.css">
+<link rel="stylesheet" href="cw.css">
+</head>
+<body>
+<a class="wf-sr-only" href="#main">Przejdź do treści</a>
+
+<!-- ===== Tabler icon sprite (paste once per kit rule) ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true" id="wf-icon-sprite">
+<symbol id="ti-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6 -6" /></symbol>
+<symbol id="ti-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6l-6 6" /></symbol>
+<symbol id="ti-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" /><path d="M13 18l6 -6" /><path d="M13 6l6 6" /></symbol>
+<symbol id="ti-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></symbol>
+<symbol id="ti-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></symbol>
+<symbol id="ti-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></symbol>
+<symbol id="ti-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" /></symbol>
+<symbol id="ti-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></symbol>
+<symbol id="ti-menu-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l16 0" /><path d="M4 12l16 0" /><path d="M4 18l16 0" /></symbol>
+<symbol id="ti-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></symbol>
+<symbol id="ti-shopping-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M15 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></symbol>
+<symbol id="ti-info-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></symbol>
+<symbol id="ti-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" /><path d="M12 16h.01" /></symbol>
+<symbol id="ti-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" /><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /><path d="M8 11v-4a4 4 0 1 1 8 0v4" /></symbol>
+<symbol id="ti-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9" /><path d="M5 21v-7" /></symbol>
+<symbol id="ti-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" /><path d="M3 7l9 6l9 -6" /></symbol>
+<symbol id="ti-message-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9h8" /><path d="M8 13h6" /><path d="M9 18h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-3l-3 3l-3 -3" /></symbol>
+<symbol id="ti-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></symbol>
+<symbol id="ti-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></symbol>
+<symbol id="ti-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 7v5l3 3" /></symbol>
+<symbol id="ti-file-invoice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21v-16a2 2 0 0 1 2 -2h7l5 5v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M9 7l1 0" /><path d="M9 13l6 0" /><path d="M13 17l2 0" /></symbol>
+<symbol id="ti-external-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" /></symbol>
+</svg>
+
+<!-- ===== NAVBAR ===== -->
+<header class="wf-navbar">
+  <div class="wf-navbar__inner wf-container">
+    <a class="cw-brand" href="home.html">Carbohort</a>
+    <nav class="cw-nav" aria-label="Główna">
+      <div class="cw-haspopup">
+        <button class="cw-nav-trigger" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-produkty">Nasze produkty <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+        <div class="cw-mega cw-mega--wide" id="mega-produkty" data-open="false" role="region" aria-label="Nasze produkty">
+          <div class="cw-mega__head">
+            <span class="wf-overline wf-t-tertiary">Produkty Carbohort</span>
+            <a class="wf-btn wf-btn--secondary wf-btn--sm" href="produkty.html">Poznaj całą gamę produktów</a>
+          </div>
+          <div class="cw-mega__layout">
+            <!-- Cały box = link (bez osobnych przycisków); miniatura produktu dojdzie -->
+            <a class="cw-prodbox" href="carbomat.html">
+              <span class="wf-overline wf-t-tertiary">Sypkie · doglebowe</span>
+              <span class="wf-h5 cw-prodbox__name">CARBOMAT ECO</span>
+              <span class="wf-small wf-t-secondary">Surowy lignit, który na lata przebudowuje strukturę i retencję gleby.</span>
+            </a>
+            <a class="cw-prodbox" href="carbomat-mata.html">
+              <span class="wf-overline wf-t-tertiary">Sypkie · uprawa bezglebowa</span>
+              <span class="wf-h5 cw-prodbox__name">CARBOMAT Mata Uprawowa</span>
+              <span class="wf-small wf-t-secondary">Naturalne podłoże nowej generacji do upraw bezglebowych – wieloletnia alternatywa dla wełny mineralnej i maty kokosowej.</span>
+            </a>
+            <a class="cw-prodbox" href="carbohumic.html">
+              <span class="wf-overline wf-t-tertiary">Płynne · doglebowe i nalistne</span>
+              <span class="wf-h5 cw-prodbox__name">CARBOHUMIC</span>
+              <span class="wf-small wf-t-secondary">„Próchnica w płynie" – kondycjonuje glebę i biostymuluje roślinę.</span>
+            </a>
+            <a class="cw-prodbox" href="carbomat-humic.html">
+              <span class="wf-overline wf-t-tertiary">Węgiel aktywowany · 3 w 1</span>
+              <span class="wf-h5 cw-prodbox__name">CARBOMAT HUMIC</span>
+              <span class="wf-small wf-t-secondary">Kondycjoner + potas + biostymulator; podnosi pH zakwaszonej gleby – na pole i do ogrodu.</span>
+            </a>
+          </div>
+          <div class="cw-mega__needs">
+            <span class="wf-overline wf-t-tertiary">Wg potrzeby</span>
+            <div class="cw-mega__list">
+              <a class="wf-link--quiet wf-small" href="produkty.html#retencja">Zatrzymać wodę / susza</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#prochnica">Odbudować próchnicę</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#jakosc">Jakość i trwałość owocu</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#start">Lepszy start i wzrost</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#ph">Uregulować pH gleby</a>
+              <a class="wf-link--quiet wf-small" href="produkty.html#bez-torfu">Podłoże bez torfu</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cw-haspopup">
+        <button class="cw-nav-trigger" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-uprawy">Rodzaje upraw <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+        <div class="cw-mega" id="mega-uprawy" data-open="false" role="region" aria-label="Rodzaje upraw">
+          <div class="cw-mega__grid">
+            <div class="cw-mega__col">
+              <span class="wf-overline wf-t-tertiary">Uprawy profesjonalne</span>
+              <div class="cw-mega__list">
+                <a class="wf-link--quiet wf-small" href="sadownicze.html">Sadownicze</a>
+                <a class="wf-link--quiet wf-small" href="jagodowe.html">Jagodowe</a>
+                <a class="wf-link--quiet wf-small" href="warzywnicze.html">Warzywnicze</a>
+                <a class="wf-link--quiet wf-small" href="zboza.html">Zboża, rzepak, kukurydza</a>
+                <a class="wf-link--quiet wf-small" href="zielen.html">Zieleń miejska</a>
+                <a class="wf-link--quiet wf-small" href="szkolki.html">Szkółki</a>
+              </div>
+            </div>
+            <div class="cw-mega__col">
+              <span class="wf-overline wf-t-tertiary">Ogród i działka</span>
+              <div class="cw-mega__list">
+                <a class="wf-link--quiet wf-small" href="trawnik.html">Trawnik</a>
+                <a class="wf-link--quiet wf-small" href="ogrod.html">Ogród / działka</a>
+                <a class="wf-link--quiet wf-small" href="krzewy.html">Krzewy i tuje</a>
+              </div>
+              <a class="wf-btn wf-btn--secondary wf-btn--sm" href="uprawy.html">Wszystkie uprawy</a>
+            </div>
+          </div>
+          <div class="cw-mega__foot">
+            <span class="wf-small wf-t-secondary">Nie wiesz, co wybrać? Konfigurator dobierze produkty i dawki.</span>
+            <a class="wf-btn wf-btn--secondary wf-btn--sm" href="konfigurator.html">Otwórz Konfigurator</a>
+          </div>
+        </div>
+      </div>
+      <div class="cw-haspopup">
+        <button class="cw-nav-trigger" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-programy">Programy i badania <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+        <div class="cw-mega cw-mega--narrow" id="mega-programy" data-open="false" role="region" aria-label="Programy i badania">
+          <div class="cw-mega__list">
+            <a class="wf-link--quiet" href="prochnica-plus.html">Program Próchnica+</a>
+          </div>
+        </div>
+      </div>
+      <a class="wf-navbar__link" href="centrum-wiedzy.html">Centrum wiedzy</a>
+      <a class="wf-navbar__link" href="o-firmie.html">O nas</a>
+      <a class="wf-navbar__link" href="kontakt.html">Kontakt</a>
+    </nav>
+    <div class="wf-cluster wf-gap-2">
+      <a class="wf-btn wf-btn--primary wf-btn--sm" href="konfigurator.html">Konfigurator</a>
+      <a class="wf-btn wf-btn--ghost wf-btn--sm" href="sklep.html">Sklep</a>
+      <a class="wf-btn wf-btn--ghost wf-btn--sm wf-inline wf-w-semibold" href="platforma-b2b.html" aria-current="page"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-user"></use></svg> Zaloguj</a>
+      <a class="wf-btn wf-btn--ghost wf-btn--icon wf-badge--count cw-cart" href="koszyk.html" aria-label="Koszyk, 0 produktów"><svg class="wf-icon" aria-hidden="true"><use href="#ti-shopping-cart"></use></svg><span class="wf-count" data-cart-count>0</span></a>
+      <button class="wf-btn wf-btn--ghost wf-btn--icon cw-navtoggle" data-navtoggle aria-controls="mobilenav" aria-expanded="false" aria-label="Otwórz menu"><svg class="wf-icon" aria-hidden="true"><use href="#ti-menu-2"></use></svg></button>
+    </div>
+  </div>
+  <nav class="cw-mobilenav wf-container" id="mobilenav" data-open="false" aria-label="Menu mobilne">
+    <a class="wf-navitem" href="produkty.html">Nasze produkty</a>
+    <a class="wf-navitem" href="uprawy.html">Rodzaje upraw</a>
+    <a class="wf-navitem" href="prochnica-plus.html">Programy i badania</a>
+    <a class="wf-navitem" href="centrum-wiedzy.html">Centrum wiedzy</a>
+    <a class="wf-navitem" href="o-firmie.html">O nas</a>
+    <a class="wf-navitem" href="kontakt.html">Kontakt</a>
+    <a class="wf-navitem" href="sklep.html">Sklep</a>
+    <a class="wf-navitem" href="platforma-b2b.html">Zaloguj</a>
+  </nav>
+</header>
+<div class="cw-scrim" data-cw-scrim data-open="false" aria-hidden="true"></div>
+
+<main id="main">
+
+  <!-- ===== BREADCRUMB ===== -->
+  <div class="wf-container">
+    <nav class="wf-breadcrumb" aria-label="Ścieżka">
+        <ol>
+          <li><a class="wf-link--quiet" href="home.html">Start</a></li>
+          <li><span class="wf-breadcrumb__sep" aria-hidden="true"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-right"></use></svg></span></li>
+          <li><span aria-current="page" class="wf-w-semibold">Platforma B2B</span></li>
+        </ol>
+      </nav>
+  </div>
+
+  <!-- ===== STAN 1 — NIEZALOGOWANY (login + value-prop) ===== -->
+  <section class="wf-section" id="login" aria-labelledby="s-login">
+    <div class="wf-container wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 22rem;">
+
+      <!-- value-prop „zdejmuje z papieru" -->
+      <div class="wf-stack wf-stack--6">
+        <div class="wf-stack wf-stack--3" style="max-width:560px;">
+          <span class="wf-overline">Dla profesjonalistów / gospodarstwa</span>
+          <h1 id="s-login" class="wf-h1">Platforma B2B — koniec zamawiania z kartki i przez telefon</h1>
+          <p class="wf-lead wf-t-secondary">Stałe zamówienia, Twoje indywidualne ceny i oferty sezonowe w jednym miejscu. Zamawiasz, gdy Ci pasuje — bez czekania na doradcę.</p>
+        </div>
+
+        <div class="wf-grid wf-grid--3" style="--wf-grid-min: 12rem;">
+          <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+            <span class="wf-badge wf-badge--solid">Twoja cena</span>
+            <h2 class="wf-h5">Cena netto po loginie</h2>
+            <p class="wf-small wf-t-secondary">Twój indywidualny rabat już policzony — widzisz kwotę netto, nie „cena na zapytanie".</p>
+          </div></article>
+          <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+            <span class="wf-badge wf-badge--outline">Powtórz zamówienie</span>
+            <h2 class="wf-h5">Powtórz ostatnie</h2>
+            <p class="wf-small wf-t-secondary">Ostatnie zamówienie albo zapisana receptura z Konfiguratora — jednym kliknięciem do kompletacji.</p>
+          </div></article>
+          <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+            <span class="wf-badge wf-badge--outline">Sezon</span>
+            <h2 class="wf-h5">Oferty sezonowe</h2>
+            <p class="wf-small wf-t-secondary">Okno cenowe na zakup z wyprzedzeniem, z terminem — zamiast dzwonić „czy jest promocja".</p>
+          </div></article>
+        </div>
+
+        <p class="wf-small wf-t-secondary" style="max-width:560px;">Pełny panel — powtarzanie zamówień, oferty, faktury i dokumenty do dotacji — widać po zalogowaniu.</p>
+      </div>
+
+      <!-- formularz logowania (demo) -->
+      <div class="wf-stack wf-stack--4">
+        <div class="wf-card cw-tier--lead">
+          <div class="wf-card__body wf-stack wf-stack--4">
+            <h2 class="wf-h4">Zaloguj się do platformy</h2>
+            <form class="wf-stack wf-stack--4" onsubmit="return false">
+              <div class="wf-field">
+                <label class="wf-label" for="b2b-email">E-mail firmowy</label>
+                <input class="wf-input" type="email" id="b2b-email" placeholder="np. biuro@gospodarstwo.pl" autocomplete="username">
+              </div>
+              <div class="wf-field">
+                <label class="wf-label" for="b2b-pass">Hasło</label>
+                <input class="wf-input" type="password" id="b2b-pass" placeholder="Twoje hasło" autocomplete="current-password">
+                <p class="wf-hint"><a class="wf-link" href="#login">Nie pamiętasz hasła?</a></p>
+              </div>
+              <button type="button" class="wf-btn wf-btn--primary wf-btn--block wf-btn--lg" data-b2b-login>Zaloguj się (demo)</button>
+            </form>
+            <p class="wf-small wf-t-secondary">Nie masz konta? <a class="wf-link" href="rejestracja.html">Rejestracja (2 progi)</a> — lekkie konto lub zweryfikowany profesjonalista z „Twoją ceną".</p>
+          </div>
+        </div>
+
+        <div class="cw-ask">
+          <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
+          <div class="cw-ask__txt wf-stack wf-stack--1">
+            <span class="wf-w-semibold">Nowy profesjonalista i chcesz negocjować warunki?</span>
+            <span class="wf-small wf-t-secondary">Zanim założysz konto — krótka rozmowa z doradcą o cenie, dostawach i programie.</span>
+          </div>
+          <a class="wf-btn wf-btn--secondary wf-inline" href="kontakt.html"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-message-2"></use></svg> Doradca</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STAN 2 — PANEL (po zalogowaniu) ===== -->
+  <section class="wf-section wf-section--subtle" id="pulpit" aria-labelledby="s-pulpit" hidden>
+    <div class="wf-container wf-stack wf-stack--8">
+
+      <div class="wf-stack wf-stack--3" style="max-width:680px;">
+        <span class="wf-overline">Zalogowany · podgląd makiety</span>
+        <h2 id="s-pulpit" class="wf-h2">Panel — gospodarstwo „[Nazwa gospodarstwa]"</h2>
+        <p class="wf-small wf-t-secondary">Status: <span class="wf-w-semibold">Zweryfikowany profesjonalista</span> · opiekun: doradca [Radek] · ostatnie logowanie [data].</p>
+      </div>
+
+      <!-- BANER STATUSU KONTA (3 stany; przełącznik = podgląd makiety) -->
+      <div class="wf-alert" data-status-banner>
+        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true" data-sb-icon><use href="#ti-check"></use></svg></span>
+        <div class="wf-stack wf-stack--3" style="flex:1;">
+          <div class="wf-stack wf-stack--1">
+            <span class="wf-alert__title" data-sb-title>Zweryfikowany profesjonalista — „Twoja cena" aktywna</span>
+            <span class="wf-small wf-t-secondary" data-sb-desc>Twój indywidualny rabat jest ustalony. Widzisz ceny netto i oferty sezonowe; zamawiasz po swojej cenie.</span>
+          </div>
+          <div class="wf-cluster wf-gap-2 wf-items-center" role="group" aria-label="Podgląd stanu konta (demo)">
+            <span class="wf-small wf-t-tertiary">Podgląd stanu (demo):</span>
+            <div class="wf-segmented" data-sb-switch>
+              <button type="button" class="wf-btn" data-sb="pending" aria-pressed="false">Oczekuje</button>
+              <button type="button" class="wf-btn" data-sb="verified" aria-pressed="true">Zweryfikowany</button>
+              <button type="button" class="wf-btn" data-sb="rejected" aria-pressed="false">Odrzucony</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="wf-small wf-t-secondary" style="max-width:760px;">Trzy stany konta: <span class="wf-w-semibold">Oczekuje</span> — cena bazowa jawna, zamówienie „do potwierdzenia", „Twojej ceny" jeszcze nie ma. <span class="wf-w-semibold">Zweryfikowany</span> — doradca zaakceptował, „Twoja cena" netto aktywna. <span class="wf-w-semibold">Odrzucony</span> — zostaje lekkie konto z ceną bazową. Każdy może założyć konto i złożyć zamówienie.</p>
+
+      <div class="wf-split wf-split--sidebar">
+
+        <!-- LEWA — nawigacja konta -->
+        <aside aria-label="Nawigacja konta B2B">
+          <nav class="wf-stack wf-stack--1">
+            <p class="wf-overline wf-t-tertiary">Twoje konto</p>
+            <a class="wf-navitem wf-w-semibold" href="#pulpit" aria-current="true">Panel</a>
+            <a class="wf-navitem" href="#katalog">Zamów (katalog)</a>
+            <a class="wf-navitem" href="#koszyk-b2b">Koszyk zamówienia</a>
+            <a class="wf-navitem" href="#historia">Historia zamówień</a>
+            <a class="wf-navitem" href="#receptury">Zapisane receptury</a>
+            <p class="wf-overline wf-t-tertiary" style="margin-top:var(--w-space-3);">Cennik i kontakt</p>
+            <a class="wf-navitem" href="#yourprice">Twoja cena</a>
+            <a class="wf-navitem" href="#season">Oferty sezonowe</a>
+            <a class="wf-navitem" href="#faktury">Faktury</a>
+            <a class="wf-navitem" href="#dotacje">Dokumenty do dotacji</a>
+            <a class="wf-navitem" href="#doradca">Doradca</a>
+            <div class="wf-divider" style="margin-block:var(--w-space-2);"></div>
+            <a class="wf-navitem" href="#login" data-b2b-logout>Wyloguj (demo)</a>
+          </nav>
+        </aside>
+
+        <!-- PRAWA — zawartość panelu -->
+        <div class="wf-stack wf-stack--10">
+
+          <!-- DOPEŁNIJ DANE GOSPODARSTWA (stan „oczekuje") -->
+          <div class="wf-card cw-tier--lead" data-pending-block hidden>
+            <div class="wf-card__body wf-stack wf-stack--5">
+              <div class="wf-stack wf-stack--2">
+                <h3 class="wf-h4">Dopełnij dane gospodarstwa</h3>
+                <p class="wf-small wf-t-secondary">Ogniwo między rejestracją a pierwszym zamówieniem. Po uzupełnieniu doradca weryfikuje konto i nadaje „Twoją cenę". NIP jest opcjonalny — gospodarstwa bez działalności (rolnik ryczałtowy / VAT RR) też kwalifikują się jako profesjonalista, jeśli zarabiają na uprawie.</p>
+              </div>
+              <div class="wf-grid wf-grid--2" style="--wf-grid-min: 15rem;">
+                <div class="wf-field"><label class="wf-label" for="dp-nazwa">Nazwa gospodarstwa / firmy</label><input class="wf-input" id="dp-nazwa" type="text" placeholder="np. Gospodarstwo Sadownicze Kowalski"></div>
+                <div class="wf-field"><label class="wf-label" for="dp-typ">Forma rozliczenia</label>
+                  <select class="wf-select" id="dp-typ">
+                    <option>Działalność gospodarcza (CEIDG/KRS)</option>
+                    <option>Rolnik ryczałtowy / VAT RR (bez CEIDG)</option>
+                    <option>Gospodarstwo — VAT czynny</option>
+                    <option>Inne / osoba zarabiająca na uprawie</option>
+                  </select>
+                </div>
+                <div class="wf-field"><label class="wf-label" for="dp-nip">NIP <span class="wf-t-tertiary">(opcjonalnie)</span></label><input class="wf-input" id="dp-nip" type="text" placeholder="NIP — jeśli masz"></div>
+                <div class="wf-field"><label class="wf-label" for="dp-seg">Główna uprawa</label>
+                  <select class="wf-select" id="dp-seg"><option>Sadownicze</option><option>Jagodowe</option><option>Warzywnicze</option><option>Zboża / rzepak / kukurydza</option><option>Szkółka</option><option>Zieleń miejska</option></select>
+                </div>
+                <div class="wf-field"><label class="wf-label" for="dp-areal">Skala / areał</label><input class="wf-input" id="dp-areal" type="text" placeholder="np. 12 ha / 5000 drzew"></div>
+                <div class="wf-field"><label class="wf-label" for="dp-adres">Adres dostawy</label><input class="wf-input" id="dp-adres" type="text" placeholder="Ulica, kod, miejscowość"></div>
+              </div>
+              <div class="wf-cluster wf-gap-3 wf-items-center">
+                <button type="button" class="wf-btn wf-btn--primary">Zapisz dane gospodarstwa</button>
+                <span class="wf-inline wf-small wf-t-secondary"><svg class="wf-icon wf-icon--sm wf-icon--muted" aria-hidden="true"><use href="#ti-flag"></use></svg> Po zapisaniu: oczekuje na weryfikację doradcy</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Twoja cena (kwota netto, nie %) -->
+          <div class="wf-stack wf-stack--3" id="yourprice" data-verified-block>
+            <div class="wf-stack wf-stack--2">
+              <span class="wf-overline">Twoja cena</span>
+              <h3 class="wf-h3">Cena netto po zalogowaniu — kwota, nie procent</h3>
+            </div>
+            <article class="wf-card">
+              <div class="wf-card__body wf-stack wf-stack--3">
+                <div class="wf-stack wf-stack--1">
+                  <span class="wf-badge wf-badge--solid">Twoja cena</span>
+                  <h4 class="wf-h5">CARBOMAT · paleta [opak.]</h4>
+                </div>
+                <p class="wf-small wf-t-tertiary"><s>cena bazowa [cena bazowa] zł netto</s></p>
+                <p class="wf-h2 wf-w-bold">[kwota] zł <span class="wf-body wf-t-secondary">netto</span></p>
+                <p class="wf-small wf-t-secondary">Twoja indywidualna cena — rabat ustalany per klient (nie procent w cenniku). Obowiązuje po zalogowaniu. Kwota i cena bazowa to wartości do uzupełnienia.</p>
+              </div>
+            </article>
+            <div class="wf-alert">
+              <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+              <div><span class="wf-alert__title">„Twoja cena" to konkretna kwota netto, nie procent.</span> <span class="wf-small wf-t-secondary">Profesjonalista widzi liczbę za swoje opakowanie, bo rabat jest indywidualny i poufny — dlatego cena jest dostępna dopiero po zalogowaniu (i dlatego nie pokazujemy jej w sklepie).</span></div>
+            </div>
+          </div>
+
+          <!-- Oferta sezonowa -->
+          <div class="wf-stack wf-stack--3" id="season" data-verified-block>
+            <article class="wf-card">
+              <div class="wf-card__body wf-stack wf-stack--3">
+                <div class="wf-cluster wf-gap-2 wf-items-center">
+                  <span class="wf-badge wf-badge--outline wf-inline"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-calendar"></use></svg> do [data]</span>
+                  <span class="wf-overline wf-t-tertiary">Okno sezonowe</span>
+                </div>
+                <h3 class="wf-h4">Zatowaruj się przed wiosną</h3>
+                <p class="wf-small wf-t-secondary">Zamów doglebowe z wyprzedzeniem w cenie okna sezonowego. Dostawa w oknie [termin]. Ilości jak w poprzednim sezonie podpowiadamy poniżej.</p>
+                <div class="wf-cluster wf-gap-3">
+                  <a class="wf-btn wf-btn--primary" href="#reorder">Skorzystaj z oferty</a>
+                  <a class="wf-btn wf-btn--ghost" href="#doradca">Zapytaj doradcę</a>
+                </div>
+              </div>
+            </article>
+            <p class="wf-small wf-t-secondary">Oferta sezonowa z terminem jest powodem, dla którego warto logować się samodzielnie zamiast dzwonić — okno cenowe widoczne tylko w panelu.</p>
+          </div>
+
+          <!-- Trigger agrotechniczny z historii -->
+          <article class="wf-card" data-verified-block>
+            <div class="wf-card__body wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 14rem;">
+              <div class="wf-ph wf-ph--icon" aria-hidden="true"><span class="wf-ph__label">◻</span></div>
+              <div class="wf-stack wf-stack--3">
+                <h3 class="wf-h5">Czas na kolejną aplikację — na podstawie Twojej historii</h3>
+                <p class="wf-small wf-t-secondary">Wg ostatniego zamówienia [data] i typowego cyklu dla Twojej uprawy [uprawa] zbliża się termin kolejnego zabiegu doglebowego.</p>
+                <div class="wf-cluster wf-gap-2">
+                  <a class="wf-btn wf-btn--secondary wf-btn--sm" href="#reorder">Zamów na ten zabieg</a>
+                  <a class="wf-btn wf-btn--ghost wf-btn--sm" href="zalecenia.html">Zobacz zalecenia / agrotechnikę</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Szybki reorder „Złóż zamówienie" -->
+          <div class="wf-stack wf-stack--3" id="reorder">
+            <article class="wf-card">
+              <div class="wf-card__body wf-stack wf-stack--4">
+                <div class="wf-stack wf-stack--2">
+                  <h3 class="wf-h4">Złóż zamówienie — trzy drogi</h3>
+                  <p class="wf-small wf-t-secondary">Najszybsza ścieżka: powtórz ostatnie, wciągnij gotowy program z Konfiguratora albo dodaj produkty z katalogu poniżej. Kompletacja w „Koszyku zamówienia".</p>
+                </div>
+                <div class="wf-cluster wf-gap-2">
+                  <a class="wf-btn wf-btn--primary" href="#koszyk-b2b">Powtórz ostatnie zamówienie</a>
+                  <a class="wf-btn wf-btn--secondary" href="konfigurator.html">Złóż z Konfiguratora</a>
+                  <a class="wf-btn wf-btn--secondary" href="#katalog">Przeglądaj katalog</a>
+                  <a class="wf-btn wf-btn--ghost wf-inline" href="kontakt.html"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-message-2"></use></svg> Zamów u doradcy</a>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- ZAMÓW / KATALOG — widok „sklepowy" w panelu -->
+          <div class="wf-stack wf-stack--4" id="katalog">
+            <div class="wf-stack wf-stack--2" style="max-width:680px;">
+              <span class="wf-overline">Katalog</span>
+              <h3 class="wf-h3">Zamów z katalogu — Twoje ceny netto</h3>
+              <p class="wf-small wf-t-secondary">Lada zamówieniowa: krótkie opisy i „Twoja cena". Pełne opisy produktów znajdziesz w <a class="wf-link" href="sklep.html">sklepie</a>. Tu palety i paletopojemniki zamawiasz normalnie po swojej cenie.</p>
+            </div>
+            <div class="wf-segmented" role="group" aria-label="Filtr katalogu" data-cat-presets>
+              <button type="button" class="wf-btn" data-cat-preset="all" aria-pressed="true">Wszystkie</button>
+              <button type="button" class="wf-btn" data-cat-preset="carbomat" aria-pressed="false">CARBOMAT</button>
+              <button type="button" class="wf-btn" data-cat-preset="carbohumic" aria-pressed="false">CARBOHUMIC</button>
+              <button type="button" class="wf-btn" data-cat-preset="nalistne" aria-pressed="false">Nalistne</button>
+            </div>
+            <div class="cw-scrollx" tabindex="0">
+              <table class="wf-table" data-cat-table>
+                <thead>
+                  <tr>
+                    <th scope="col">Produkt</th>
+                    <th scope="col">Opakowanie</th>
+                    <th scope="col" style="text-align:right;">Twoja cena netto</th>
+                    <th scope="col">Ilość</th>
+                    <th scope="col"><span class="wf-sr-only">Akcja</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-cat-grupa="carbomat">
+                    <td><span class="wf-w-semibold">CARBOMAT</span><br><span class="wf-small wf-t-secondary">doglebowy sypki — retencja i struktura</span></td>
+                    <td>paleta [opak.]</td>
+                    <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span><br><span class="wf-small wf-t-tertiary">kat. [cena bazowa] zł</span></td>
+                    <td>
+                      <span class="wf-input-group" data-qty>
+                        <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-dec aria-label="Zmniejsz ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-minus"></use></svg></button>
+                        <input class="wf-input" type="text" inputmode="numeric" value="0" data-qty-val aria-label="Ilość — CARBOMAT paleta" style="width:3rem;text-align:center;">
+                        <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-inc aria-label="Zwiększ ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-plus"></use></svg></button>
+                      </span>
+                    </td>
+                    <td><button type="button" class="wf-btn wf-btn--secondary wf-btn--sm" data-add-b2b>Dodaj do zapytania</button></td>
+                  </tr>
+                  <tr data-cat-grupa="carbomat">
+                    <td><span class="wf-w-semibold">CARBOMAT</span><br><span class="wf-small wf-t-secondary">doglebowy sypki — worek 20 L</span></td>
+                    <td>worek 20 L</td>
+                    <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span><br><span class="wf-small wf-t-tertiary">kat. [cena bazowa] zł</span></td>
+                    <td>
+                      <span class="wf-input-group" data-qty>
+                        <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-dec aria-label="Zmniejsz ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-minus"></use></svg></button>
+                        <input class="wf-input" type="text" inputmode="numeric" value="0" data-qty-val aria-label="Ilość — CARBOMAT worek 20 L" style="width:3rem;text-align:center;">
+                        <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-inc aria-label="Zwiększ ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-plus"></use></svg></button>
+                      </span>
+                    </td>
+                    <td><button type="button" class="wf-btn wf-btn--secondary wf-btn--sm" data-add-b2b>Dodaj do zapytania</button></td>
+                  </tr>
+                  <tr data-cat-grupa="carbohumic">
+                    <td><span class="wf-w-semibold">CARBOHUMIC</span><br><span class="wf-small wf-t-secondary">płynny — kondycjonowanie gleby</span></td>
+                    <td>paletopojemnik 1000 L</td>
+                    <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span><br><span class="wf-small wf-t-tertiary">kat. [cena bazowa] zł</span></td>
+                    <td>
+                      <span class="wf-input-group" data-qty>
+                        <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-dec aria-label="Zmniejsz ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-minus"></use></svg></button>
+                        <input class="wf-input" type="text" inputmode="numeric" value="0" data-qty-val aria-label="Ilość — CARBOHUMIC 1000 L" style="width:3rem;text-align:center;">
+                        <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-inc aria-label="Zwiększ ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-plus"></use></svg></button>
+                      </span>
+                    </td>
+                    <td><button type="button" class="wf-btn wf-btn--secondary wf-btn--sm" data-add-b2b>Dodaj do zapytania</button></td>
+                  </tr>
+                  <tr data-cat-grupa="nalistne">
+                    <td><span class="wf-w-semibold">MAXI PLUS</span><br><span class="wf-small wf-t-secondary">nalistny — uzupełnienie programu</span></td>
+                    <td>kanister [opak.]</td>
+                    <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span><br><span class="wf-small wf-t-tertiary">kat. [cena bazowa] zł</span></td>
+                    <td>
+                      <span class="wf-input-group" data-qty>
+                        <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-dec aria-label="Zmniejsz ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-minus"></use></svg></button>
+                        <input class="wf-input" type="text" inputmode="numeric" value="0" data-qty-val aria-label="Ilość — MAXI PLUS" style="width:3rem;text-align:center;">
+                        <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-inc aria-label="Zwiększ ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-plus"></use></svg></button>
+                      </span>
+                    </td>
+                    <td><button type="button" class="wf-btn wf-btn--secondary wf-btn--sm" data-add-b2b>Dodaj do zapytania</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="wf-alert">
+              <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
+              <div><span class="wf-alert__title">W panelu dodajesz „do zapytania", nie do koszyka jak w sklepie.</span> <span class="wf-small wf-t-secondary">Uproszczone opisy (nie pełne strony produktu), „Twoja cena" netto przy każdej pozycji, a „Dodaj do zapytania" przenosi pozycję do koszyka B2B niżej. To lada zamówieniowa dla znanego klienta — odróżnia panel od sklepu.</span></div>
+            </div>
+          </div>
+
+          <!-- Lifecycle: 3 karty -->
+          <div class="wf-stack wf-stack--4">
+            <div class="wf-stack wf-stack--2" style="max-width:680px;">
+              <span class="wf-overline">Współpraca</span>
+              <h3 class="wf-h3">Twój cykl współpracy</h3>
+            </div>
+            <div class="wf-grid wf-grid--3" style="--wf-grid-min: 15rem;">
+              <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+                <span class="wf-badge wf-badge--outline">Uzupełnienie</span>
+                <h4 class="wf-h5">Uzupełnienie zapasu</h4>
+                <p class="wf-small wf-t-secondary">Produkt z ostatniego zamówienia wkrótce się kończy wg cyklu — zamów ponownie.</p>
+                <a class="wf-link--quiet wf-inline wf-small" href="#reorder">Dozamów <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
+              </div></article>
+              <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+                <span class="wf-badge wf-badge--outline">Powrót</span>
+                <h4 class="wf-h5">Dawno Cię nie było</h4>
+                <p class="wf-small wf-t-secondary">Ostatnie zamówienie [data] — wracamy z ofertą i podsumowaniem efektów.</p>
+                <a class="wf-link--quiet wf-inline wf-small" href="#season">Zobacz ofertę <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
+              </div></article>
+              <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+                <span class="wf-badge wf-badge--outline">Rozszerzenie</span>
+                <h4 class="wf-h5">Dołóż uzupełnienie</h4>
+                <p class="wf-small wf-t-secondary">Do bazy doglebowej pasuje nalistne (MAXI PLUS / CALBOR) — wzmocnij program.</p>
+                <a class="wf-link--quiet wf-inline wf-small" href="konfigurator.html">Rozbuduj w Konfiguratorze <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
+              </div></article>
+            </div>
+          </div>
+
+          <!-- TCO — koszt cyklu życia -->
+          <div class="wf-stack wf-stack--4">
+            <div class="wf-stack wf-stack--2" style="max-width:680px;">
+              <span class="wf-overline">Argument przetargowy</span>
+              <h3 class="wf-h3">Koszt cyklu życia (TCO) — dla zieleni miejskiej i instytucji</h3>
+              <p class="wf-small wf-t-secondary">Nie cena jednostkowa, ale koszt utrzymania nasadzeń w cyklu: mniej nawodnień, wyższa przeżywalność, mniej dosadzeń. Liczby do uzupełnienia.</p>
+            </div>
+            <table class="wf-table">
+              <thead>
+                <tr><th scope="col">Pozycja</th><th scope="col" style="text-align:right;">Bez poprawiacza</th><th scope="col" style="text-align:right;">Z programem Carbohort</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Nawodnienia / sezon</td><td style="text-align:right;">[liczba]</td><td style="text-align:right;">[liczba] <span class="wf-t-tertiary">(mniej)</span></td></tr>
+                <tr><td>Przeżywalność nasadzeń</td><td style="text-align:right;">[%]</td><td style="text-align:right;">[%]</td></tr>
+                <tr><td>Dosadzenia / wymiany (3 lata)</td><td style="text-align:right;">[koszt]</td><td style="text-align:right;">[koszt]</td></tr>
+                <tr><td class="wf-w-semibold">Koszt cyklu życia (3 lata)</td><td style="text-align:right;" class="wf-w-semibold">[koszt]</td><td style="text-align:right;" class="wf-w-semibold">[koszt]</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- KOSZYK B2B -->
+          <div class="wf-stack wf-stack--4" id="koszyk-b2b">
+            <div class="wf-stack wf-stack--2" style="max-width:680px;">
+              <span class="wf-overline">Koszyk B2B</span>
+              <h3 class="wf-h3">Kompletacja zamówienia</h3>
+              <p class="wf-small wf-t-secondary">Pozycje z powtórzenia zamówienia, z Konfiguratora albo dodane z katalogu. Koszt wysyłki widoczny od razu (przelicznik: liczba palet × stawka).</p>
+            </div>
+            <table class="wf-table">
+              <thead>
+                <tr><th scope="col">Produkt</th><th scope="col">Opakowanie</th><th scope="col">Ilość</th><th scope="col" style="text-align:right;">Twoja cena netto</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="wf-w-semibold">CARBOMAT</span><br><span class="wf-small wf-t-secondary">doglebowy · z powtórzenia</span></td>
+                  <td>paleta [opak.]</td>
+                  <td>
+                    <span class="wf-input-group" data-qty>
+                      <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-dec aria-label="Zmniejsz ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-minus"></use></svg></button>
+                      <input class="wf-input" type="text" inputmode="numeric" value="2" data-qty-val aria-label="Ilość — CARBOMAT paleta (koszyk)" style="width:3rem;text-align:center;">
+                      <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-inc aria-label="Zwiększ ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-plus"></use></svg></button>
+                    </span>
+                  </td>
+                  <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span></td>
+                </tr>
+                <tr>
+                  <td><span class="wf-w-semibold">CARBOHUMIC</span><br><span class="wf-small wf-t-secondary">płynny · z powtórzenia</span></td>
+                  <td>kanister / paleta</td>
+                  <td>
+                    <span class="wf-input-group" data-qty>
+                      <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-dec aria-label="Zmniejsz ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-minus"></use></svg></button>
+                      <input class="wf-input" type="text" inputmode="numeric" value="1" data-qty-val aria-label="Ilość — CARBOHUMIC (koszyk)" style="width:3rem;text-align:center;">
+                      <button type="button" class="wf-btn wf-btn--ghost wf-btn--icon wf-btn--sm" data-qty-inc aria-label="Zwiększ ilość"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-plus"></use></svg></button>
+                    </span>
+                  </td>
+                  <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 18rem;">
+              <article class="wf-card wf-card--flush">
+                <table class="wf-table">
+                  <tbody>
+                    <tr><td>Wartość netto</td><td style="text-align:right;">[kwota] zł</td></tr>
+                    <tr><td>Wysyłka — [x] palet × [300] zł</td><td style="text-align:right;">[kwota] zł</td></tr>
+                    <tr><td class="wf-w-semibold">Razem netto</td><td style="text-align:right;" class="wf-w-semibold">[kwota] zł</td></tr>
+                  </tbody>
+                </table>
+              </article>
+              <article class="wf-card">
+                <div class="wf-card__body wf-stack wf-stack--3">
+                  <h4 class="wf-h5">Sposób domknięcia</h4>
+                  <p class="wf-small wf-t-secondary">W panelu nie płacisz kartą jak w sklepie — zamówienie idzie do akceptacji i proformy z doradcą.</p>
+                  <div class="wf-stack wf-stack--2">
+                    <button type="button" class="wf-btn wf-btn--primary wf-btn--block" data-b2b-confirm>Złóż zamówienie (proforma)</button>
+                    <a class="wf-btn wf-btn--ghost wf-btn--block wf-inline" href="kontakt.html"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-message-2"></use></svg> Zapytaj o cenę / doradca</a>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <p class="wf-small wf-t-secondary" style="max-width:760px;">Koszt wysyłki liczony z przelicznika (paletopojemniki, big-bagi i kanistry i tak jadą na palecie); parametry ustawiane w panelu administratora. „Zapytaj o cenę" to wariant, gdy cena indywidualna jeszcze nie jest ustalona.</p>
+          </div>
+
+          <!-- POTWIERDZENIE B2B -->
+          <article class="wf-card cw-tier--lead" id="potwierdzenie-b2b" data-confirm-block hidden>
+            <div class="wf-card__body wf-stack wf-stack--4 wf-center">
+              <span class="wf-badge wf-badge--outline">Zamówienie przyjęte · demo</span>
+              <span class="wf-ph wf-ph--icon" aria-hidden="true"><span class="wf-ph__label"><svg class="wf-icon" aria-hidden="true"><use href="#ti-check"></use></svg></span></span>
+              <h3 class="wf-h4">Zamówienie złożone — proforma w drodze</h3>
+              <p class="wf-small wf-t-secondary" style="max-width:520px;">Nr [numer] · doradca [Radek] potwierdzi szczegóły i wyśle proformę. Czas kontaktu wg ustaleń serwisowych.</p>
+              <div class="wf-card" style="max-width:520px;width:100%;text-align:left;">
+                <div class="wf-card__body wf-stack wf-stack--2">
+                  <span class="wf-w-semibold">Co dalej:</span>
+                  <ul class="wf-stack wf-stack--2" style="margin:0;padding-left:var(--w-space-5);">
+                    <li class="wf-small wf-t-secondary">Proforma na e-mail [e-mail] — płatność przed wysyłką lub wg ustaleń.</li>
+                    <li class="wf-small wf-t-secondary">Faktura i dokumenty dostępne w zakładkach <a class="wf-link" href="#faktury">Faktury</a> oraz <a class="wf-link" href="#dotacje">Dokumenty do dotacji</a>.</li>
+                    <li class="wf-small wf-t-secondary">Pytania — doradca <a class="wf-link" href="kontakt.html">[Radek]</a>.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="wf-cluster wf-gap-3">
+                <a class="wf-btn wf-btn--secondary" href="#pulpit">Wróć do panelu</a>
+                <a class="wf-btn wf-btn--ghost" href="konfigurator.html">Złóż kolejne z Konfiguratora</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- HISTORIA ZAMÓWIEŃ -->
+          <div class="wf-stack wf-stack--4" id="historia">
+            <div class="wf-stack wf-stack--2" style="max-width:680px;">
+              <span class="wf-overline">Historia</span>
+              <h3 class="wf-h3">Historia zamówień</h3>
+              <p class="wf-small wf-t-secondary">Sześć statusów spójnych z panelem administratora: Szkic · Wysłane · Potwierdzone · W realizacji · Zrealizowane · Anulowane. „Ponów" kopiuje pozycje do nowego szkicu po aktualnej cenie.</p>
+            </div>
+            <div class="cw-scrollx" tabindex="0">
+              <table class="wf-table">
+                <thead><tr><th scope="col">Nr</th><th scope="col">Data</th><th scope="col">Pozycje</th><th scope="col" style="text-align:right;">Wartość netto</th><th scope="col">Status</th><th scope="col">Akcje</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><span class="wf-w-semibold">#1042</span></td><td>[data]</td>
+                    <td>CARBOMAT ×[x] · CARBOHUMIC ×[x]</td>
+                    <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span></td>
+                    <td><span class="wf-badge wf-badge--solid">Wysłane</span> <span class="wf-inline wf-small wf-t-secondary"><svg class="wf-icon wf-icon--sm wf-icon--muted" aria-hidden="true"><use href="#ti-flag"></use></svg> do potwierdzenia</span></td>
+                    <td><a class="wf-link--quiet" href="#zam-szczegol">Podgląd</a> · <a class="wf-link--quiet" href="#koszyk-b2b">Ponów</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="wf-w-semibold">#1038</span></td><td>[data]</td>
+                    <td>CARBOHUMIC ×[x]</td>
+                    <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span></td>
+                    <td><span class="wf-badge wf-badge--outline">Zrealizowane</span></td>
+                    <td><a class="wf-link--quiet" href="#zam-szczegol">Podgląd</a> · <a class="wf-link--quiet" href="#faktury">Faktura</a> · <a class="wf-link--quiet" href="#koszyk-b2b">Ponów</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="wf-w-semibold">#1031</span></td><td>[data]</td>
+                    <td>CARBOMAT ×[x] · MAXI PLUS ×[x]</td>
+                    <td style="text-align:right;"><span class="wf-w-semibold">[kwota] zł</span></td>
+                    <td><span class="wf-badge wf-badge--outline">Zrealizowane</span></td>
+                    <td><a class="wf-link--quiet" href="#zam-szczegol">Podgląd</a> · <a class="wf-link--quiet" href="#faktury">Faktura</a> · <a class="wf-link--quiet" href="#koszyk-b2b">Ponów</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="wf-w-semibold">#1024</span></td><td>[data]</td>
+                    <td>CARBOMAT HUMIC ×[x]</td>
+                    <td style="text-align:right;"><span class="wf-t-tertiary">[kwota] zł</span></td>
+                    <td><span class="wf-badge wf-badge--outline">Anulowane</span></td>
+                    <td><a class="wf-link--quiet" href="#zam-szczegol">Podgląd</a> · <a class="wf-link--quiet" href="#koszyk-b2b">Ponów</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SZCZEGÓŁ ZAMÓWIENIA -->
+          <article class="wf-card" id="zam-szczegol">
+            <div class="wf-card__body wf-stack wf-stack--5">
+              <div class="wf-cluster wf-cluster--between wf-items-center">
+                <h3 class="wf-h4">Zamówienie #1042</h3>
+                <span class="wf-badge wf-badge--solid wf-inline"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-flag"></use></svg> Wysłane · do potwierdzenia ceny</span>
+              </div>
+              <div class="wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 18rem;">
+                <div class="wf-stack wf-stack--4">
+                  <table class="wf-table">
+                    <thead><tr><th scope="col">Produkt</th><th scope="col">Opak.</th><th scope="col">Ilość</th><th scope="col" style="text-align:right;">Twoja cena netto</th></tr></thead>
+                    <tbody>
+                      <tr><td>CARBOMAT</td><td>paleta</td><td>[x]</td><td style="text-align:right;">[kwota] zł</td></tr>
+                      <tr><td>CARBOHUMIC</td><td>kanister</td><td>[x]</td><td style="text-align:right;">[kwota] zł</td></tr>
+                    </tbody>
+                  </table>
+                  <table class="wf-table">
+                    <tbody>
+                      <tr><td>Wartość netto</td><td style="text-align:right;">[kwota] zł</td></tr>
+                      <tr><td>Wysyłka — [x] palet × [300] zł</td><td style="text-align:right;">[kwota] zł</td></tr>
+                      <tr><td class="wf-w-semibold">Razem netto</td><td style="text-align:right;" class="wf-w-semibold">[kwota] zł</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="wf-cluster wf-gap-2">
+                    <a class="wf-btn wf-btn--secondary wf-btn--sm" href="#koszyk-b2b">Ponów to zamówienie</a>
+                    <button type="button" class="wf-btn wf-btn--ghost wf-btn--sm">Zapisz jako recepturę</button>
+                    <a class="wf-btn wf-btn--ghost wf-btn--sm" href="#faktury">Pobierz dokumenty</a>
+                  </div>
+                </div>
+                <div class="wf-stack wf-stack--3">
+                  <span class="wf-overline wf-t-tertiary">Oś statusów — co teraz</span>
+                  <ol class="wf-stack wf-stack--4" style="list-style:none;margin:0;padding:0;">
+                    <li class="wf-step wf-step--done">
+                      <span class="wf-step__node" aria-hidden="true"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-check"></use></svg></span>
+                      <span class="wf-stack wf-stack--1"><span class="wf-w-semibold">Szkic utworzony</span><span class="wf-small wf-t-secondary">[data] · źródło: panel (powtórzenie) <span class="wf-sr-only">— ukończone</span></span></span>
+                    </li>
+                    <li class="wf-step wf-step--current" aria-current="step">
+                      <span class="wf-step__node" aria-hidden="true">2</span>
+                      <span class="wf-stack wf-stack--1"><span class="wf-w-semibold">Wysłane do Carbohort</span><span class="wf-small wf-t-secondary">[data] · czeka na potwierdzenie ceny i akceptację konta <span class="wf-sr-only">— bieżący krok</span></span></span>
+                    </li>
+                    <li class="wf-step wf-step--upcoming" aria-disabled="true">
+                      <span class="wf-step__node" aria-hidden="true">3</span>
+                      <span class="wf-stack wf-stack--1"><span class="wf-w-semibold">Potwierdzone (proforma)</span><span class="wf-small wf-t-tertiary">doradca [Radek] ustali „Twoją cenę" i wyśle proformę</span></span>
+                    </li>
+                    <li class="wf-step wf-step--upcoming" aria-disabled="true">
+                      <span class="wf-step__node" aria-hidden="true">4</span>
+                      <span class="wf-stack wf-stack--1"><span class="wf-w-semibold">W realizacji</span><span class="wf-small wf-t-tertiary">—</span></span>
+                    </li>
+                    <li class="wf-step wf-step--upcoming" aria-disabled="true">
+                      <span class="wf-step__node" aria-hidden="true">5</span>
+                      <span class="wf-stack wf-stack--1"><span class="wf-w-semibold">Zrealizowane</span><span class="wf-small wf-t-tertiary">—</span></span>
+                    </li>
+                  </ol>
+                  <p class="wf-caption wf-t-tertiary">Edytowalne w stanie „Szkic"; po „Wysłane" zmiany przez doradcę. Status „Anulowane" zamyka oś bez realizacji.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- RECEPTURY -->
+          <div class="wf-stack wf-stack--4" id="receptury">
+            <div class="wf-stack wf-stack--2" style="max-width:680px;">
+              <span class="wf-overline">Receptury</span>
+              <h3 class="wf-h3">Zapisane receptury</h3>
+              <p class="wf-small wf-t-secondary">Zapisane programy — z Konfiguratora lub z dowolnego zamówienia. Zasilają powtarzanie zamówień i trigger agrotechniczny.</p>
+            </div>
+            <div class="wf-grid wf-grid--3" style="--wf-grid-min: 15rem;">
+              <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+                <span class="wf-badge wf-badge--outline">program</span>
+                <h4 class="wf-h5">Sad — wiosna</h4>
+                <p class="wf-small wf-t-secondary">CARBOMAT (baza) + MAXI PLUS (nalistne). Z Konfiguratora, [data].</p>
+                <a class="wf-link--quiet wf-inline wf-small" href="#koszyk-b2b">Złóż z receptury <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
+              </div></article>
+              <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2">
+                <span class="wf-badge wf-badge--outline">program</span>
+                <h4 class="wf-h5">Jagodowe — start sezonu</h4>
+                <p class="wf-small wf-t-secondary">CARBOHUMIC + CARBOMAT. Zapisana receptura, [data].</p>
+                <a class="wf-link--quiet wf-inline wf-small" href="#koszyk-b2b">Złóż z receptury <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
+              </div></article>
+              <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--2 wf-center" style="justify-content:center;">
+                <p class="wf-small wf-t-secondary">Zapisz dowolne zamówienie jako recepturę, by ponawiać je jednym kliknięciem.</p>
+              </div></article>
+            </div>
+          </div>
+
+          <!-- Faktury + dotacje -->
+          <div class="wf-grid wf-grid--2" style="--wf-grid-min: 18rem;">
+            <article class="wf-card" id="faktury"><div class="wf-card__body wf-stack wf-stack--2">
+              <h3 class="wf-h5 wf-inline"><svg class="wf-icon wf-icon--sm wf-icon--muted" aria-hidden="true"><use href="#ti-file-invoice"></use></svg> Faktury i historia</h3>
+              <p class="wf-small wf-t-secondary">Pobierz faktury i zobacz historię zamówień (do powtórzenia). Lista do uzupełnienia danymi.</p>
+              <a class="wf-link--quiet wf-inline wf-small" href="#historia">Historia zamówień <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
+            </div></article>
+            <article class="wf-card" id="dotacje"><div class="wf-card__body wf-stack wf-stack--2">
+              <h3 class="wf-h5 wf-inline"><svg class="wf-icon wf-icon--sm wf-icon--muted" aria-hidden="true"><use href="#ti-file-invoice"></use></svg> Dokumenty do dotacji</h3>
+              <p class="wf-small wf-t-secondary">Komplet dokumentów pod wnioski dotacyjne (np. retencja / próchnica). Materiały do uzupełnienia.</p>
+              <a class="wf-link--quiet wf-inline wf-small" href="centrum-wiedzy.html">Materiały / PDF <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
+            </div></article>
+          </div>
+
+          <!-- Doradca -->
+          <div class="cw-ask" id="doradca">
+            <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
+            <div class="cw-ask__txt wf-stack wf-stack--1">
+              <span class="wf-w-semibold">Twój doradca: [Radek]</span>
+              <span class="wf-small wf-t-secondary">Negocjacja cen, dostawy, dobór programu na sezon.</span>
+            </div>
+            <a class="wf-btn wf-btn--secondary wf-inline" href="kontakt.html"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-message-2"></use></svg> Skontaktuj się z doradcą</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="wf-footer wf-section">
+  <div class="wf-container">
+    <div class="wf-footer__cols">
+      <div class="wf-stack wf-stack--3">
+        <span class="wf-h4 wf-w-bold">Carbohort</span>
+        <p class="wf-small wf-t-secondary">Polski, rodzinny producent poprawiaczy gleby z lignitu i leonardytu. Dbając o glebę, inwestujemy w przyszłe pokolenia.</p>
+      </div>
+      <nav class="wf-stack wf-stack--2" aria-label="Produkty"><p class="wf-overline">Produkty</p>
+        <a class="wf-link--quiet" href="produkty.html">Nasze produkty</a>
+        <a class="wf-link--quiet" href="carbomat.html">CARBOMAT ECO</a>
+        <a class="wf-link--quiet" href="carbomat-mata.html">CARBOMAT Mata Uprawowa</a>
+        <a class="wf-link--quiet" href="carbohumic.html">CARBOHUMIC</a>
+        <a class="wf-link--quiet" href="carbomat-humic.html">CARBOMAT HUMIC</a>
+        <a class="wf-link--quiet" href="sklep.html">Sklep</a>
+      </nav>
+      <nav class="wf-stack wf-stack--2" aria-label="Wiedza i programy"><p class="wf-overline">Wiedza i programy</p>
+        <a class="wf-link--quiet" href="centrum-wiedzy.html">Centrum wiedzy</a>
+        <a class="wf-link--quiet" href="prochnica-plus.html">Program Próchnica+</a>
+        <a class="wf-link--quiet" href="uprawy.html">Rodzaje upraw</a>
+        <a class="wf-link--quiet" href="konfigurator.html">Konfigurator</a>
+        <a class="wf-link--quiet" href="zalecenia.html">Zalecenia</a>
+      </nav>
+      <nav class="wf-stack wf-stack--2" aria-label="Firma i współpraca"><p class="wf-overline">Firma i współpraca</p>
+        <a class="wf-link--quiet" href="o-firmie.html">O nas</a>
+        <a class="wf-link--quiet" href="kontakt.html">Kontakt</a>
+        <a class="wf-link--quiet" href="partner.html">Zostań partnerem</a>
+        <a class="wf-link--quiet" href="platforma-b2b.html">Panel / Zaloguj</a>
+      </nav>
+    </div>
+    <div class="wf-footer__bottom wf-cluster wf-cluster--between">
+      <span class="wf-caption wf-t-secondary">© Carbohort – makieta. Treść i dane do akceptacji.</span>
+      <span class="wf-caption wf-t-secondary">PL · poprawa gleby z lignitu</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== dr Jurek — pływający dok ===== -->
+<div class="cw-jurek-backdrop" data-jurek-backdrop data-open="false" aria-hidden="true"></div>
+<div class="cw-jurek" data-jurek-dock data-open="false">
+  <div class="cw-jurek__panel" role="dialog" aria-label="Wirtualny dr Jurek">
+    <div class="cw-jurek__head">
+      <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
+      <div class="wf-stack wf-stack--1" style="flex:1;">
+        <span class="wf-w-semibold">Wirtualny dr Jurek</span>
+        <span class="wf-small wf-t-secondary">asystent doboru i wiedzy</span>
+      </div>
+      <button class="wf-btn wf-btn--ghost wf-btn--icon" data-jurek-close aria-label="Zamknij"><svg class="wf-icon" aria-hidden="true"><use href="#ti-x"></use></svg></button>
+    </div>
+    <div class="cw-jurek__msgs" data-jurek-msgs></div>
+    <p class="wf-caption wf-t-tertiary" style="padding:0 var(--w-space-4) var(--w-space-3);">Makieta · odpowiedzi demonstracyjne.</p>
+  </div>
+  <form class="cw-jurek__bar" data-jurek-form>
+    <svg class="wf-icon wf-icon--muted" aria-hidden="true" style="align-self:center;"><use href="#ti-message-2"></use></svg>
+    <input class="wf-input" type="text" data-jurek-input placeholder="Zapytaj o dobór, dawki, uprawę…" aria-label="Zapytaj dr Jurka">
+    <button class="wf-btn wf-btn--primary wf-btn--icon" type="submit" aria-label="Wyślij"><svg class="wf-icon" aria-hidden="true"><use href="#ti-send"></use></svg></button>
+  </form>
+</div>
+
+<script src="cw.js"></script>
+
+<!-- ===== Logika panelu B2B (page-local) ===== -->
+<script>
+(function () {
+  /* Login / wylogowanie (demo): przełącza widoki #login <-> #pulpit */
+  var loginSection = document.getElementById("login");
+  var pulpit = document.getElementById("pulpit");
+  function reveal(el) { if (el) el.hidden = false; }
+  function hide(el) { if (el) el.hidden = true; }
+  function focusHeading(id) {
+    var h = document.getElementById(id);
+    if (h) { h.setAttribute("tabindex", "-1"); h.focus(); }
+  }
+  document.querySelectorAll("[data-b2b-login]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      hide(loginSection); reveal(pulpit); focusHeading("s-pulpit");
+      window.scrollTo({ top: 0 });
+    });
+  });
+  document.querySelectorAll("[data-b2b-logout]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      reveal(loginSection); hide(pulpit); focusHeading("s-login");
+      window.scrollTo({ top: 0 });
+    });
+  });
+
+  /* Baner statusu konta — 3 stany (podgląd makiety) */
+  var STATES = {
+    pending:  { icon: "ti-clock",       title: "Konto oczekuje na weryfikację",
+      desc: "Możesz składać zamówienia po cenie bazowej (status „do potwierdzenia”). „Twoja cena” netto pojawi się, gdy doradca zaakceptuje konto." },
+    verified: { icon: "ti-check",       title: "Zweryfikowany profesjonalista — „Twoja cena” aktywna",
+      desc: "Twój indywidualny rabat jest ustalony. Widzisz ceny netto i oferty sezonowe; zamawiasz po swojej cenie." },
+    rejected: { icon: "ti-info-circle", title: "Konto bez statusu profesjonalisty — cena bazowa",
+      desc: "Zgłoszenie nie zostało potwierdzone. Konto działa jak lekkie konto: cena bazowa, historia, powtarzanie zamówień." }
+  };
+  var banner = document.querySelector("[data-status-banner]");
+  if (banner) {
+    var iconUse = banner.querySelector("[data-sb-icon] use");
+    var titleEl = banner.querySelector("[data-sb-title]");
+    var descEl = banner.querySelector("[data-sb-desc]");
+    var pendingBlock = document.querySelector("[data-pending-block]");
+    var verifiedBlocks = document.querySelectorAll("[data-verified-block]");
+    function setState(key) {
+      var s = STATES[key]; if (!s) return;
+      if (iconUse) iconUse.setAttribute("href", "#" + s.icon);
+      titleEl.textContent = s.title;
+      descEl.textContent = s.desc;
+      banner.querySelectorAll("[data-sb]").forEach(function (b) {
+        b.setAttribute("aria-pressed", b.getAttribute("data-sb") === key ? "true" : "false");
+      });
+      var verified = (key === "verified");
+      verifiedBlocks.forEach(function (el) { el.hidden = !verified; });
+      if (pendingBlock) pendingBlock.hidden = verified;
+    }
+    banner.querySelectorAll("[data-sb]").forEach(function (b) {
+      b.addEventListener("click", function () { setState(b.getAttribute("data-sb")); });
+    });
+    setState("verified");
+  }
+
+  /* Katalog: filtr presetów */
+  var catTable = document.querySelector("[data-cat-table]");
+  if (catTable) {
+    var presetBtns = document.querySelectorAll("[data-cat-preset]");
+    var rows = Array.prototype.slice.call(catTable.querySelectorAll("[data-cat-grupa]"));
+    presetBtns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var p = b.getAttribute("data-cat-preset");
+        presetBtns.forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+        rows.forEach(function (r) {
+          r.hidden = !(p === "all" || r.getAttribute("data-cat-grupa") === p);
+        });
+      });
+    });
+  }
+
+  /* Steppery ilości (wszystkie [data-qty]) */
+  document.querySelectorAll("[data-qty]").forEach(function (group) {
+    var val = group.querySelector("[data-qty-val]");
+    function set(n) { val.value = String(Math.max(0, n)); }
+    group.querySelector("[data-qty-dec]").addEventListener("click", function () {
+      set((parseInt(val.value, 10) || 0) - 1);
+    });
+    group.querySelector("[data-qty-inc]").addEventListener("click", function () {
+      set((parseInt(val.value, 10) || 0) + 1);
+    });
+  });
+
+  /* „Dodaj do zapytania" — lo-fi feedback */
+  document.querySelectorAll("[data-add-b2b]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var t = btn.textContent;
+      btn.textContent = "Dodano do zapytania";
+      btn.disabled = true;
+      setTimeout(function () { btn.textContent = t; btn.disabled = false; }, 1400);
+    });
+  });
+
+  /* „Złóż zamówienie (proforma)" odsłania potwierdzenie B2B */
+  document.querySelectorAll("[data-b2b-confirm]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var confirmBlock = document.getElementById("potwierdzenie-b2b");
+      if (confirmBlock) {
+        confirmBlock.hidden = false;
+        confirmBlock.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
