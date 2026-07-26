@@ -130,7 +130,23 @@
 /* --- CZYM JEST (akordeon 5 tematów + wizual) -------------------------------- */
 .c5-facts{display:grid;grid-template-columns:minmax(0,486fr) minmax(0,486fr);gap:clamp(2rem,6vw,10rem);align-items:start;margin-top:clamp(2rem,4.5vw,4rem);}
 .c5-facts__visual{position:sticky;top:calc(var(--cx-chrome) + var(--w-space-5));}
-.c5-facts__visual .wf-ph{aspect-ratio:486/392;width:100%;border-radius:0;}
+/* Ilustracje danych – jedna karta na temat, wspólny wzorzec: znacznik, grafika,
+   podpis ze źródłem. Widoczna tylko karta aktywnego tematu. */
+.c5-viz{margin:0;display:none;flex-direction:column;gap:var(--w-space-5);border:1px solid var(--w-border-default);background:var(--w-surface-page);padding:clamp(1.25rem,2.4vw,2rem);min-height:392px;}
+.c5-viz[data-on="true"]{display:flex;animation:c5-vizin .22s var(--w-ease);}
+@keyframes c5-vizin{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.c5-viz__tag{font-size:0.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--w-text-tertiary);}
+.c5-viz__body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:var(--w-space-4);}
+.c5-viz__body svg:not(.wf-icon){width:100%;height:auto;color:var(--w-text-primary);}
+.c5-viz__cap{font-size:0.75rem;line-height:1.45;color:var(--w-text-tertiary);}
+.c5-viz__num{font-size:clamp(2rem,4vw,2.75rem);font-weight:var(--w-weight-bold);line-height:1;letter-spacing:-0.02em;}
+.c5-viz__ring{display:flex;align-items:center;gap:clamp(1rem,3vw,2rem);}
+.c5-viz__ring svg:not(.wf-icon){width:min(160px,44%);flex:none;}
+.c5-viz__list{display:flex;flex-direction:column;gap:var(--w-space-3);margin:0;padding:0;list-style:none;font-size:var(--w-font-sm-size);}
+.c5-viz__list li{display:flex;gap:var(--w-space-3);align-items:flex-start;}
+.c5-viz__list .wf-icon{flex:none;margin-top:2px;color:var(--w-icon-default);}
+.c5-viz .wf-table{font-size:var(--w-font-sm-size);}
+.c5-viz .c5-bar{grid-template-columns:minmax(6.25rem,31%) 1fr minmax(4.5rem,auto);font-size:0.8125rem;gap:var(--w-space-2);}
 .c5-fact{border-bottom:1px solid var(--w-border-default);}
 .c5-fact:first-child{border-top:1px solid var(--w-border-default);}
 .c5-fact__btn{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--w-space-4);width:100%;padding:18px 0;background:none;border:0;font:inherit;font-size:1.25rem;font-weight:var(--w-weight-medium);letter-spacing:-0.01em;text-align:left;cursor:pointer;color:var(--w-text-primary);}
@@ -315,6 +331,7 @@
   .c5-btn,.c5-way,.c5-fact__btn .wf-icon,.c5-faq__q .wf-icon{transition:none;}
   /* bez animacji rozwijania – stany przełączają się natychmiast */
   .c5-fact__panel,.c5-scene__cardbody,.c5-season__panel,.c5-faq__a{transition:none;}
+  .c5-viz[data-on="true"]{animation:none;}
   .cw-jurek{transition:none;}
 }
 
@@ -747,7 +764,7 @@
 
           <div class="c5-fact" data-open="true">
             <button type="button" class="c5-fact__btn" data-fact="1" aria-expanded="true" aria-controls="fact-1">Węgiel, który nie musi być paliwem<svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-            <div class="c5-fact__panel" id="fact-1" data-fact-label="MAKRO: pojedynczy gruzełek lignitu z widocznymi włóknami prastarych drzew">
+            <div class="c5-fact__panel" id="fact-1">
             <div class="c5-fact__panelin">
               <p>Lignit to najmłodsza forma węgla brunatnego – materia organiczna z prastarych drzew, zatrzymana na etapie stabilnego i trwałego humusu. Surowiec ten nie musi kojarzyć się wyłącznie z energetyką. Coraz bardziej odkrywamy jego ogromny potencjał jako naturalnego składnika wspierającego zdrowe i żyzne gleby. Co więcej, zamiast być spalanym i emitować CO₂ do atmosfery, lignit zastosowany w glebie wspiera proces sekwestracji CO₂, czyli długotrwałego wiązania dwutlenku węgla.</p>
             </div>
@@ -756,7 +773,7 @@
 
           <div class="c5-fact">
             <button type="button" class="c5-fact__btn" data-fact="2" aria-expanded="false" aria-controls="fact-2">Najbardziej zasobna substancja organiczna w&nbsp;kwasy humusowe i&nbsp;fulwowe<svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-            <div class="c5-fact__panel" id="fact-2" data-fact-label="SCHEMAT: gruzełek i otoczka kwasów humusowych i fulwowych wiążąca wodę i składniki">
+            <div class="c5-fact__panel" id="fact-2">
             <div class="c5-fact__panelin">
               <p>W przeciwieństwie do młodej materii organicznej, takiej jak komposty, biohumus, lignina czy produkty roślinne, lignit zawiera dojrzałe formy humusu o złożonej, trwałej strukturze. Dzięki temu wykazuje znacznie większą zdolność do poprawy właściwości gleby – zwiększa jej pojemność sorpcyjną, wspiera zatrzymywanie wody i składników pokarmowych oraz tworzy korzystne środowisko dla rozwoju korzeni i mikroorganizmów glebowych. To właśnie wysoki stopień humifikacji sprawia, że lignit działa długofalowo, pomagając odbudować żyzność i strukturę gleby. Zawartość kwasów humusowych w lignitach różni się w zależności od pokładu, ale może sięgać nawet 70% suchej masy.</p>
             </div>
@@ -765,10 +782,89 @@
 
           <div class="c5-fact">
             <button type="button" class="c5-fact__btn" data-fact="3" aria-expanded="false" aria-controls="fact-3">Lignit to najbardziej dojrzała i&nbsp;stabilna forma materii organicznej<svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-            <div class="c5-fact__panel" id="fact-3" data-fact-label="ILUSTRACJA: szereg dojrzałości materii organicznej – od świeżej biomasy, przez kompost i torf, do lignitu">
+            <div class="c5-fact__panel" id="fact-3">
             <div class="c5-fact__panelin">
               <p>O wartości materii organicznej nie decyduje wyłącznie jej ilość, ale przede wszystkim stopień jej przekształcenia i stabilności. Świeża biomasa, kompost czy torf zawierają głównie młodszą materię organiczną, która stosunkowo szybko ulega dalszemu rozkładowi. Lignit natomiast jest efektem milionów lat naturalnej humifikacji i kondensacji związków organicznych i zawiera wysoko przekształconą, stabilną materię humusową o znacznie większej trwałości i zdolności do długotrwałego oddziaływania w glebie. Świeże nośniki materii organicznej jak kompost, obornik, biohumus są dopiero na początku tej drogi.</p>
               <p>Całkowita zawartość substancji organicznej (% suchej masy) pokazuje „ile materii organicznej jest w materiale". Stopień humifikacji i stabilności tej materii pokazuje „jak długo i jak skutecznie działa w glebie".</p>
+                          </div>
+          </div>
+          </div>
+
+          <div class="c5-fact">
+            <button type="button" class="c5-fact__btn" data-fact="4" aria-expanded="false" aria-controls="fact-4">Nasz lignit jest wolny od zanieczyszczeń i&nbsp;nadmiaru metali ciężkich<svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5-fact__panel" id="fact-4">
+            <div class="c5-fact__panelin">
+              <p>Carbomat ECO dostarcza glebie cennej materii organicznej bez ryzyka nadmiernego wprowadzania metali ciężkich. Bardzo niska zawartość pierwiastków takich jak kadm, rtęć, arsen czy ołów potwierdza wysoką jakość surowca. Zawarte w nim kwasy humusowe dodatkowo wspierają naturalną stabilizację środowiska glebowego.</p>
+                          </div>
+          </div>
+          </div>
+
+          <div class="c5-fact">
+            <button type="button" class="c5-fact__btn" data-fact="5" aria-expanded="false" aria-controls="fact-5">Każda gruzełka Carbomatu ECO to ogromny mikrokosmos<svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5-fact__panel" id="fact-5">
+            <div class="c5-fact__panelin">
+              <p>Carbomat ECO charakteryzuje się naturalnie rozwiniętą strukturą porowatą – około 60% objętości stanowią pory. Dzięki temu działa jak naturalny regulator środowiska glebowego, który:</p>
+              <ul>
+                <li>magazynuje wodę w strukturze mikroporów, ograniczając przesychanie gleby,</li>
+                <li>poprawia napowietrzenie podłoża, tworząc korzystne warunki dla korzeni i mikroorganizmów,</li>
+                <li>zwiększa powierzchnię aktywną sorpcyjnie, na której mogą być zatrzymywane składniki pokarmowe – ujemny ładunek grup funkcyjnych w kwasach humusowych pozwala wiązać kationy potasu, wapnia, magnezu, azotu (amonowy) i wielu innych mikroelementów.</li>
+              </ul>
+            </div>
+          </div>
+          </div>
+
+        </div>
+        <div class="c5-facts__visual">
+
+          <!-- 01 · Pochodzenie. Docelowo: makro gruzełka z włóknami prastarych drzew
+               ALBO ta grafika w wersji dopracowanej przez grafika. -->
+          <figure class="c5-viz" data-fact-viz="1" data-on="true">
+            <span class="c5-viz__tag">01 · Pochodzenie</span>
+            <div class="c5-viz__body">
+              <svg viewBox="0 0 420 250" role="img" aria-label="Dwie drogi tego samego surowca: spalony oddaje dwutlenek węgla do atmosfery, zastosowany w glebie wiąże węgiel na lata">
+                <defs><marker id="c5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+                <circle cx="54" cy="125" r="34" fill="none" stroke="currentColor"/>
+                <text x="54" y="122" text-anchor="middle" font-size="12" fill="currentColor">lignit</text>
+                <text x="54" y="138" text-anchor="middle" font-size="9" fill="currentColor" opacity=".55">węgiel</text>
+                <path d="M92 108 C140 78 160 56 196 56" fill="none" stroke="currentColor" stroke-dasharray="5 5" marker-end="url(#c5-arrow)"/>
+                <rect x="206" y="26" width="206" height="60" fill="none" stroke="currentColor" opacity=".45"/>
+                <text x="222" y="50" font-size="12" fill="currentColor" opacity=".55">spalanie</text>
+                <text x="222" y="70" font-size="11" fill="currentColor" opacity=".45">CO₂ trafia do atmosfery</text>
+                <path d="M92 142 C140 172 160 194 196 194" fill="none" stroke="currentColor" marker-end="url(#c5-arrow)"/>
+                <rect x="206" y="164" width="206" height="60" fill="none" stroke="currentColor"/>
+                <text x="222" y="188" font-size="12" fill="currentColor">gleba</text>
+                <text x="222" y="208" font-size="11" fill="currentColor" opacity=".6">węgiel zostaje związany</text>
+              </svg>
+            </div>
+            <figcaption class="c5-viz__cap">Lignit zatrzymany na etapie stabilnego humusu. Zastosowany w glebie zamiast spalony – wspiera sekwestrację CO₂.</figcaption>
+          </figure>
+
+          <!-- 02 · Zasobność. Docelowo: schemat gruzełka z otoczką kwasów humusowych. -->
+          <figure class="c5-viz" data-fact-viz="2">
+            <span class="c5-viz__tag">02 · Zasobność</span>
+            <div class="c5-viz__body">
+              <div class="c5-viz__ring">
+                <svg viewBox="0 0 200 200" role="img" aria-label="Udział kwasów humusowych w suchej masie lignitu – do około 70 procent">
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="var(--w-gray-200)" stroke-width="18"/>
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="18" stroke-dasharray="352 503" transform="rotate(-90 100 100)"/>
+                </svg>
+                <div class="wf-stack wf-stack--2">
+                  <span class="c5-viz__num">do 70%</span>
+                  <span class="wf-small wf-t-secondary">kwasów humusowych i fulwowych w suchej masie</span>
+                </div>
+              </div>
+              <ul class="c5-viz__list">
+                <li><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-magnet"></use></svg> dojrzałe formy humusu o trwałej strukturze</li>
+                <li><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-droplet"></use></svg> większa pojemność sorpcyjna gleby</li>
+              </ul>
+            </div>
+            <figcaption class="c5-viz__cap">Zawartość kwasów humusowych różni się zależnie od pokładu.</figcaption>
+          </figure>
+
+          <!-- 03 · Stabilność – wykres przeniesiony z treści akordeonu -->
+          <figure class="c5-viz" data-fact-viz="3">
+            <span class="c5-viz__tag">03 · Stabilność</span>
+            <div class="c5-viz__body">
               <div class="c5-barchart" role="img" aria-label="Porównanie stopnia humifikacji i stabilności materii organicznej: lignit bardzo wysoki, torf wysoki do średniego, biohumus średni, kompost dojrzały średni, obornik niski do średniego, świeża biomasa bardzo niski">
                 <div class="c5-bar"><span class="wf-w-semibold">Lignit</span><div class="c5-bar__track"><div class="c5-bar__fill" style="--bw:100%;"></div></div><span class="c5-muted">bardzo wysoki</span></div>
                 <div class="c5-bar"><span>Torf</span><div class="c5-bar__track"><div class="c5-bar__fill" style="--bw:62%;"></div></div><span class="c5-muted">wysoki / średni</span></div>
@@ -777,16 +873,14 @@
                 <div class="c5-bar"><span>Obornik</span><div class="c5-bar__track"><div class="c5-bar__fill" style="--bw:24%;"></div></div><span class="c5-muted">niski / średni</span></div>
                 <div class="c5-bar"><span>Świeża biomasa</span><div class="c5-bar__track"><div class="c5-bar__fill" style="--bw:8%;"></div></div><span class="c5-muted">bardzo niski</span></div>
               </div>
-              <p class="wf-caption wf-t-tertiary">Stopień humifikacji i stabilności materii organicznej – porównanie jakościowe wg materiałów producenta.</p>
             </div>
-          </div>
-          </div>
+            <figcaption class="c5-viz__cap">Stopień humifikacji i stabilności materii organicznej – porównanie jakościowe wg materiałów producenta.</figcaption>
+          </figure>
 
-          <div class="c5-fact">
-            <button type="button" class="c5-fact__btn" data-fact="4" aria-expanded="false" aria-controls="fact-4">Nasz lignit jest wolny od zanieczyszczeń i&nbsp;nadmiaru metali ciężkich<svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-            <div class="c5-fact__panel" id="fact-4" data-fact-label="FOTO: czysty granulat lignitu na jasnym tle laboratoryjnym">
-            <div class="c5-fact__panelin">
-              <p>Carbomat ECO dostarcza glebie cennej materii organicznej bez ryzyka nadmiernego wprowadzania metali ciężkich. Bardzo niska zawartość pierwiastków takich jak kadm, rtęć, arsen czy ołów potwierdza wysoką jakość surowca. Zawarte w nim kwasy humusowe dodatkowo wspierają naturalną stabilizację środowiska glebowego.</p>
+          <!-- 04 · Czystość – tabela przeniesiona z treści akordeonu -->
+          <figure class="c5-viz" data-fact-viz="4">
+            <span class="c5-viz__tag">04 · Czystość</span>
+            <div class="c5-viz__body">
               <div class="cw-scrollx" tabindex="0">
                 <table class="wf-table">
                   <thead><tr><th scope="col">Pierwiastek</th><th scope="col" style="text-align:right;">Zawartość</th></tr></thead>
@@ -801,28 +895,38 @@
                   </tbody>
                 </table>
               </div>
-              <p class="wf-caption wf-t-tertiary">Badanie akredytowanego laboratorium PCBC S.A. (2022).</p>
             </div>
-          </div>
-          </div>
+            <figcaption class="c5-viz__cap">Badanie akredytowanego laboratorium PCBC S.A. (2022).</figcaption>
+          </figure>
 
-          <div class="c5-fact">
-            <button type="button" class="c5-fact__btn" data-fact="5" aria-expanded="false" aria-controls="fact-5">Każda gruzełka Carbomatu ECO to ogromny mikrokosmos<svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-            <div class="c5-fact__panel" id="fact-5" data-fact-label="MAKRO 3D: przekrój gruzełka – sieć mikroporów wypełnionych wodą i powietrzem">
-            <div class="c5-fact__panelin">
-              <p>Carbomat ECO charakteryzuje się naturalnie rozwiniętą strukturą porowatą – około 60% objętości stanowią pory. Dzięki temu działa jak naturalny regulator środowiska glebowego, który:</p>
-              <ul>
-                <li>magazynuje wodę w strukturze mikroporów, ograniczając przesychanie gleby,</li>
-                <li>poprawia napowietrzenie podłoża, tworząc korzystne warunki dla korzeni i mikroorganizmów,</li>
-                <li>zwiększa powierzchnię aktywną sorpcyjnie, na której mogą być zatrzymywane składniki pokarmowe – ujemny ładunek grup funkcyjnych w kwasach humusowych pozwala wiązać kationy potasu, wapnia, magnezu, azotu (amonowy) i wielu innych mikroelementów.</li>
+          <!-- 05 · Struktura. Docelowo: makro 3D przekroju gruzełka. -->
+          <figure class="c5-viz" data-fact-viz="5">
+            <span class="c5-viz__tag">05 · Struktura</span>
+            <div class="c5-viz__body">
+              <div class="c5-viz__ring">
+                <svg viewBox="0 0 200 200" role="img" aria-label="Przekrój gruzełka lignitu – około 60 procent objętości stanowią pory">
+                  <circle cx="100" cy="100" r="86" fill="none" stroke="currentColor"/>
+                  <g fill="var(--w-gray-300)">
+                    <circle cx="72" cy="62" r="11"/><circle cx="112" cy="52" r="7"/><circle cx="142" cy="78" r="13"/>
+                    <circle cx="60" cy="100" r="8"/><circle cx="96" cy="92" r="15"/><circle cx="134" cy="120" r="9"/>
+                    <circle cx="70" cy="138" r="12"/><circle cx="104" cy="150" r="8"/><circle cx="146" cy="150" r="6"/>
+                    <circle cx="42" cy="128" r="5"/><circle cx="120" cy="86" r="5"/><circle cx="86" cy="120" r="6"/>
+                  </g>
+                </svg>
+                <div class="wf-stack wf-stack--2">
+                  <span class="c5-viz__num">~60%</span>
+                  <span class="wf-small wf-t-secondary">objętości gruzełki stanowią naturalne pory</span>
+                </div>
+              </div>
+              <ul class="c5-viz__list">
+                <li><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-droplet"></use></svg> magazynuje wodę w mikroporach</li>
+                <li><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-stack-2"></use></svg> napowietrza podłoże</li>
+                <li><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-magnet"></use></svg> wiąże składniki pokarmowe</li>
               </ul>
             </div>
-          </div>
-          </div>
+            <figcaption class="c5-viz__cap">Przekrój poglądowy – proporcja porów wg opracowania producenta.</figcaption>
+          </figure>
 
-        </div>
-        <div class="c5-facts__visual">
-          <div class="wf-ph"><span class="wf-ph__label" data-facts-label>MAKRO: pojedynczy gruzełek lignitu z widocznymi włóknami prastarych drzew</span></div>
         </div>
       </div>
     </div>
@@ -1351,7 +1455,7 @@
 
   /* --- Czym jest: akordeon 5 tematów + podmiana etykiety wizualu ----------- */
   var factBtns = $$("[data-fact]");
-  var factsLabel = $("[data-facts-label]");
+  var factViz = $$("[data-fact-viz]");
   factBtns.forEach(function (btn) {
     btn.addEventListener("click", function () {
       var open = btn.getAttribute("aria-expanded") === "true";
@@ -1363,8 +1467,10 @@
         b.setAttribute("aria-expanded", on ? "true" : "false");
         if (fact) fact.setAttribute("data-open", on ? "true" : "false");
         panelSet(panel, on);
-        if (on && panel && factsLabel) {
-          factsLabel.textContent = panel.getAttribute("data-fact-label") || factsLabel.textContent;
+        if (on) {
+          factViz.forEach(function (v) {
+            v.setAttribute("data-on", v.getAttribute("data-fact-viz") === b.getAttribute("data-fact") ? "true" : "false");
+          });
         }
       });
     });
