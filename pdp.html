@@ -3,34 +3,216 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carbohort — CARBOMAT Eco, karta produktu</title>
-<meta name="description" content="CARBOMAT Eco — sypki poprawiacz gleby z lignitu: retencja wody i odbudowa struktury. Warianty opakowań i cena (drobnica do koszyka, paleta jako zapytanie B2B), parametry, dawkowanie i produkty łączone.">
+<title>CARBOMAT ECO – kup worek 20 l lub big bag | Sklep Carbohort</title>
+<meta name="description" content="CARBOMAT ECO w sklepie CarboHort: worek 20 l od 43 zł, big bagi 1000 i 1500 l. Dwie odmiany pH – kwaśna pod borówkę i uniwersalna. Surowy polski lignit, certyfikat ekologiczny IUNG, analiza akredytowanego laboratorium.">
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="wireframe.css">
 <link rel="stylesheet" href="cw.css">
+<link rel="stylesheet" href="c5.css">
+<style>
+/* =====================================================================
+   DETAL PRODUKTU W SKLEPIE (PDP) – CARBOMAT ECO. Przebudowa na warstwę V5
+   (2026-08-02). Wspólne klocki layoutu siedzą w c5.css; tutaj wyłącznie to,
+   czego wzorzec stron produktowych nie ma: galeria, panel zakupowy z wyborem
+   odmiany i opakowania, siatka korzyści i pas ekonomiki dla profesjonalisty.
+
+   ROLA TEJ STRONY (ustalenie Mateusza 02.08): to NIE jest druga strona
+   produktowa. Osoba tutaj ma już intencję zakupową – często przychodzi
+   z `carbomat.html`, gdzie poznała działanie i agrotechnikę. Zadaniem PDP
+   jest utwierdzić ją w decyzji, dać wybrać odmianę i pojemność i domknąć
+   zakup. Opis = skrócona, sprzedażowa wersja strony produktowej, pisana
+   profesjonalnie, bez powtarzania jej w całości. Dobór zestawu i dawki
+   należą do konfiguratora, wątpliwości – do wirtualnego dr Jurka.
+
+   ⚠️ W makiecie istnieje jedna wzorcowa karta produktu (D44 odsyła
+   `pdp.html?sku=` do Fazy 2), więc linkują tu także pozostałe produkty ze
+   sklepu. Treść na tej stronie dotyczy WYŁĄCZNIE CARBOMAT ECO.
+
+   Prefiks c5pd-*, BEM, wyłącznie tokeny --w-*, border-radius:0.
+   ===================================================================== */
+
+/* Pułapka wykryta w tym projekcie dwukrotnie: element z display:flex nadpisuje
+   domyślne [hidden]{display:none} przeglądarki. Reguła scoped. */
+.c5pd-buy [hidden] { display: none !important; }
+
+/* Trzy linki prowadzą do #kup (subnawigacja, CTA końcowe, panel). Bez tej reguły
+   panel zakupowy ląduje pod przyklejoną subnawigacją – `scroll-margin-top`
+   z c5.css celuje wyłącznie w [data-chapter], a #kup nim nie jest. */
+#kup { scroll-margin-top: calc(var(--cx-subnav-h) + 16px); }
+
+.wf-navbar { position: static; }
+
+/* --- GÓRA STRONY: galeria + panel zakupowy -------------------------------- */
+.c5pd-top { display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem,4vw,3.5rem); align-items: start; padding-block: clamp(1.5rem,3vw,2.5rem) clamp(2.5rem,5vw,4rem); }
+@media (min-width: 900px) { .c5pd-top { grid-template-columns: minmax(0,6fr) minmax(0,5fr); } }
+
+.c5pd-gallery { display: flex; flex-direction: column; gap: 10px; }
+.c5pd-gallery__main { aspect-ratio: 4/3; width: 100%; border-radius: 0; }
+.c5pd-gallery__thumbs { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+.c5pd-gallery__thumbs .wf-ph { aspect-ratio: 1; width: 100%; border-radius: 0; }
+.c5pd-gallery__note { font-size: 0.75rem; color: var(--w-text-tertiary); }
+
+.c5pd-panel { display: flex; flex-direction: column; gap: clamp(1.25rem,2.4vw,1.75rem); }
+.c5pd-panel .c5-kicker { margin-bottom: 0; }
+.c5pd-lead { font-size: 1.125rem; color: var(--w-text-secondary); }
+
+.c5pd-helps { display: flex; flex-wrap: wrap; gap: 6px; }
+.c5pd-help { font-size: 0.75rem; letter-spacing: .02em; padding: 6px 12px; border: 1px solid rgb(0 0 0 / .25); color: var(--w-text-secondary); }
+
+/* Panel zakupowy: wybór odmiany → wybór pojemności → cena → koszyk */
+.c5pd-buy { border: 1px solid var(--w-gray-900); padding: clamp(1.25rem,2.4vw,1.75rem); display: flex; flex-direction: column; gap: var(--w-space-5); }
+.c5pd-label { display: block; font-size: 0.8125rem; font-weight: var(--w-weight-semibold); letter-spacing: .02em; text-transform: uppercase; margin-bottom: 10px; }
+.c5pd-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,9rem),1fr)); gap: 8px; }
+.c5pd-opt { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; padding: 12px 15px; text-align: left; font: inherit; font-size: 0.9375rem; background: var(--w-surface-page); color: var(--w-text-primary); border: 1px solid rgb(0 0 0 / .25); border-radius: 0; cursor: pointer; transition: background var(--w-duration-base) var(--w-ease), color var(--w-duration-base) var(--w-ease), border-color var(--w-duration-base) var(--w-ease); }
+.c5pd-opt:hover { border-color: var(--w-gray-900); }
+.c5pd-opt[aria-pressed="true"] { background: var(--w-gray-900); color: var(--w-text-inverse); border-color: var(--w-gray-900); }
+.c5pd-opt__sub { font-size: 0.75rem; opacity: .65; }
+
+.c5pd-pricebox { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--w-space-3); border-top: 1px solid var(--w-border-default); padding-top: var(--w-space-5); }
+.c5pd-price { font-size: clamp(1.75rem,3.2vw,2.25rem); font-weight: var(--w-weight-semibold); letter-spacing: -0.01em; }
+.c5pd-price__note { font-size: 0.8125rem; color: var(--w-text-tertiary); }
+.c5pd-cta { display: flex; flex-direction: column; gap: 8px; }
+.c5pd-cta .c5-btn { width: 100%; }
+.c5pd-fb { font-size: 0.8125rem; color: var(--w-text-secondary); min-height: 1.2em; }
+
+/* Trzy akcje przy produkcie (ustalenie 21.07): karta, analiza, zakup */
+.c5pd-docs { display: flex; flex-wrap: wrap; gap: 8px; }
+.c5pd-meta { display: flex; flex-direction: column; gap: 10px; font-size: 0.875rem; color: var(--w-text-secondary); }
+.c5pd-meta__row { display: flex; gap: 10px; align-items: flex-start; }
+.c5pd-meta__row .wf-icon { flex: none; margin-top: 3px; opacity: .5; width: 16px; height: 16px; }
+
+/* --- OPIS SPRZEDAŻOWY ----------------------------------------------------- */
+.c5pd-benefits { display: grid; grid-template-columns: minmax(0,1fr); gap: 1px; background: var(--w-border-default); border: 1px solid var(--w-border-default); margin-top: clamp(2rem,4vw,3rem); }
+@media (min-width: 720px) { .c5pd-benefits { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.c5pd-benefit { background: var(--w-surface-page); padding: clamp(1.5rem,2.6vw,2rem); display: flex; flex-direction: column; gap: var(--w-space-3); }
+.c5pd-benefit h3 { font-size: 1.25rem; font-weight: var(--w-weight-medium); letter-spacing: -0.01em; }
+.c5pd-benefit p { color: var(--w-text-secondary); }
+.c5pd-benefit__num { font-size: 0.75rem; letter-spacing: .08em; color: var(--w-text-tertiary); }
+.c5pd-benefit--wide { grid-column: 1 / -1; }
+.c5pd-clean { display: flex; flex-wrap: wrap; gap: var(--w-space-2) var(--w-space-5); margin-top: var(--w-space-2); font-size: 0.875rem; }
+.c5pd-clean span { white-space: nowrap; }
+.c5pd-clean b { font-weight: var(--w-weight-semibold); }
+
+/* Pas ekonomiki dla profesjonalisty – bez etykietowania klienta, po prostu
+   inny rejestr dowodu w tej samej karcie produktu. */
+.c5pd-pro { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--w-space-5); margin-top: clamp(2rem,4vw,3rem); }
+@media (min-width: 800px) { .c5pd-pro { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.c5pd-protile { border-top: 2px solid var(--w-gray-900); padding-top: var(--w-space-4); display: flex; flex-direction: column; gap: 8px; }
+.c5pd-protile__val { font-size: 1.5rem; font-weight: var(--w-weight-semibold); letter-spacing: -0.01em; }
+.c5pd-protile p { font-size: 0.9375rem; color: var(--w-text-secondary); }
+/* Atrybucja przy liczbach, których nie ma w karcie produktu, tylko w poradniku –
+   pozycja otwarta w backlogu do wskazania dokumentu źródłowego przez CarboHort. */
+.c5pd-attr { display: block; margin-top: 6px; font-size: 0.75rem; color: var(--w-text-tertiary); }
+.c5pd-src { font-size: 0.75rem; color: var(--w-text-tertiary); margin-top: var(--w-space-4); }
+
+/* --- STOSOWANIE W SKRÓCIE ------------------------------------------------- */
+.c5pd-recipes { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--w-space-5); margin-top: clamp(2rem,4vw,3rem); }
+@media (min-width: 800px) { .c5pd-recipes { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.c5pd-recipe { border: 1px solid var(--w-border-default); padding: clamp(1.25rem,2.2vw,1.75rem); display: flex; flex-direction: column; gap: var(--w-space-3); }
+.c5pd-recipe h3 { font-size: 1.0625rem; font-weight: var(--w-weight-semibold); }
+.c5pd-recipe p { font-size: 0.9375rem; color: var(--w-text-secondary); }
+.c5pd-recipe__val { font-size: 1.125rem; font-weight: var(--w-weight-medium); }
+
+/* Blok „to nie ten produkt" – kieruje na Ściółkę zamiast pozwolić kupić źle */
+.c5pd-switch { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--w-space-4); align-items: center; border: 1px solid var(--w-gray-900); padding: clamp(1.25rem,2.4vw,1.75rem); margin-top: clamp(2rem,4vw,3rem); }
+@media (min-width: 720px) { .c5pd-switch { grid-template-columns: 120px minmax(0,1fr) auto; } }
+.c5pd-switch .wf-ph { width: 100%; aspect-ratio: 1; border-radius: 0; }
+.c5pd-switch__body { display: flex; flex-direction: column; gap: 6px; }
+
+/* --- ŁĄCZENIE (cross-sell) ------------------------------------------------- */
+.c5pd-cross { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--w-space-5); margin-top: clamp(2rem,4vw,3rem); }
+@media (min-width: 800px) { .c5pd-cross { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.c5pd-crosscard { border: 1px solid var(--w-border-default); display: flex; flex-direction: column; }
+.c5pd-crosscard .wf-ph { aspect-ratio: 4/3; width: 100%; border-radius: 0; }
+.c5pd-crosscard__body { padding: clamp(1rem,1.8vw,1.35rem); display: flex; flex-direction: column; gap: var(--w-space-3); flex: 1; }
+.c5pd-crosscard__when { font-size: 0.6875rem; letter-spacing: .04em; text-transform: uppercase; color: var(--w-text-tertiary); }
+.c5pd-crosscard__name { font-size: 1.0625rem; font-weight: var(--w-weight-medium); }
+.c5pd-crosscard__name a { color: inherit; text-decoration: none; }
+.c5pd-crosscard__name a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.c5pd-crosscard p { font-size: 0.875rem; color: var(--w-text-secondary); }
+.c5pd-crosscard__foot { margin-top: auto; padding-top: var(--w-space-3); }
+
+/* --- Responsywność -------------------------------------------------------- */
+@media (max-width: 719px) {
+  .c5pd-gallery__thumbs { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+</style>
 </head>
 <body>
-<a class="wf-sr-only" href="#main">Przejdź do treści</a>
-
 <!-- ===== Tabler icon sprite (paste once per kit rule) ===== -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true" id="wf-icon-sprite">
 <symbol id="ti-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6 -6" /></symbol>
 <symbol id="ti-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6 -6l6 6" /></symbol>
 <symbol id="ti-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6l6 6" /></symbol>
 <symbol id="ti-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6l-6 6" /></symbol>
-<symbol id="ti-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" /><path d="M13 18l6 -6" /><path d="M13 6l6 6" /></symbol>
-<symbol id="ti-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></symbol>
+<symbol id="ti-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" />
+  <path d="M13 18l6 -6" />
+  <path d="M13 6l6 6" /></symbol>
+<symbol id="ti-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" />
+  <path d="M5 12l6 6" />
+  <path d="M5 12l6 -6" /></symbol>
+<symbol id="ti-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" /></symbol>
 <symbol id="ti-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></symbol>
-<symbol id="ti-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></symbol>
-<symbol id="ti-menu-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l16 0" /><path d="M4 12l16 0" /><path d="M4 18l16 0" /></symbol>
-<symbol id="ti-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></symbol>
-<symbol id="ti-shopping-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M15 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></symbol>
-<symbol id="ti-info-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></symbol>
-<symbol id="ti-message-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9h8" /><path d="M8 13h6" /><path d="M9 18h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-3l-3 3l-3 -3" /></symbol>
-<symbol id="ti-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></symbol>
-<symbol id="ti-external-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" /></symbol>
-<symbol id="ti-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" /><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /><path d="M8 11v-4a4 4 0 1 1 8 0v4" /></symbol>
+<symbol id="ti-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" /></symbol>
+<symbol id="ti-menu-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l16 0" />
+  <path d="M4 12l16 0" />
+  <path d="M4 18l16 0" /></symbol>
+<symbol id="ti-arrows-sort" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l4 -4l4 4m-4 -4v14" />
+  <path d="M21 15l-4 4l-4 -4m4 4v-14" /></symbol>
+<symbol id="ti-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></symbol>
+<symbol id="ti-shopping-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M15 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  <path d="M17 17h-11v-14h-2" />
+  <path d="M6 5l14 1l-1 7h-13" /></symbol>
+<symbol id="ti-info-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+  <path d="M12 9h.01" />
+  <path d="M11 12h1v4h1" /></symbol>
+<symbol id="ti-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />
+  <path d="M3 7l9 6l9 -6" /></symbol>
+<symbol id="ti-message-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9h8" />
+  <path d="M8 13h6" />
+  <path d="M9 18h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-3l-3 3l-3 -3" /></symbol>
+<symbol id="ti-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14l11 -11" />
+  <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></symbol>
+<symbol id="ti-external-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
+  <path d="M11 13l9 -9" />
+  <path d="M15 4h5v5" /></symbol>
+<symbol id="ti-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" />
+  <path d="M16 3v4" />
+  <path d="M8 3v4" />
+  <path d="M4 11h16" />
+  <path d="M11 15h1" />
+  <path d="M12 15v3" /></symbol>
+<symbol id="ti-dots" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M18 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></symbol>
+<symbol id="ti-stack-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l-8 4l8 4l8 -4l-8 -4" /><path d="M4 12l8 4l8 -4" /><path d="M4 16l8 4l8 -4" /></symbol>
+<symbol id="ti-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3l6 0" /><path d="M10 9l4 0" /><path d="M10 3v6l-4.5 8a1.5 1.5 0 0 0 1.3 2.5h10.4a1.5 1.5 0 0 0 1.3 -2.5l-4.5 -8v-6" /></symbol>
+<symbol id="ti-magnet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-8a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v8a3 3 0 0 0 6 0v-8a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v8a7 7 0 0 1 -14 0" /><path d="M4 8l5 0" /><path d="M15 8l4 0" /></symbol>
+<symbol id="ti-droplet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7.502 19.423c2.602 2.105 6.395 2.105 8.996 0c2.602 -2.105 3.262 -5.708 1.566 -8.546l-4.89 -7.26c-.42 -.625 -1.287 -.803 -1.936 -.397a1.376 1.376 0 0 0 -.41 .397l-4.893 7.26c-1.695 2.838 -1.035 6.441 1.567 8.546z" /></symbol>
+<symbol id="ti-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21c.5 -4.5 2.5 -8 7 -10" /><path d="M9 18c6.218 0 10.5 -3.288 11 -12v-2h-4.014c-9 0 -11.986 4 -12 9c0 1 0 3 2 5h3z" /></symbol>
+<symbol id="ti-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></symbol>
+<symbol id="ti-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227" /></symbol>
+<symbol id="ti-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></symbol>
+<symbol id="ti-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" />
+  <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
+  <path d="M12 16h.01" /></symbol>
+<symbol id="ti-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+  <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></symbol>
+<symbol id="ti-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" /></symbol>
+<symbol id="ti-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l16 0" />
+  <path d="M10 11l0 6" />
+  <path d="M14 11l0 6" />
+  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></symbol>
 </svg>
+
+<a class="wf-skiplink" href="#main">Przejdź do treści</a>
 
 <!-- ===== NAVBAR ===== -->
 <header class="wf-navbar">
@@ -38,7 +220,7 @@
     <a class="cw-brand" href="home.html">Carbohort</a>
     <nav class="cw-nav" aria-label="Główna">
       <div class="cw-haspopup">
-        <button class="cw-nav-trigger" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-produkty">Nasze produkty <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+        <button class="cw-nav-trigger wf-w-semibold" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-produkty">Nasze produkty <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
         <div class="cw-mega cw-mega--wide" id="mega-produkty" data-open="false" role="region" aria-label="Nasze produkty">
           <div class="cw-mega__head">
             <span class="wf-overline wf-t-tertiary">Produkty Carbohort</span>
@@ -125,7 +307,7 @@
     </nav>
     <div class="wf-cluster wf-gap-2">
       <a class="wf-btn wf-btn--primary wf-btn--sm" href="konfigurator.html">Konfigurator</a>
-      <a class="wf-btn wf-btn--ghost wf-btn--sm wf-w-semibold" href="sklep.html" aria-current="page">Sklep</a>
+      <a class="wf-btn wf-btn--ghost wf-btn--sm" href="sklep.html" aria-current="page">Sklep</a>
       <a class="wf-btn wf-btn--ghost wf-btn--sm wf-inline" href="platforma-b2b.html"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-user"></use></svg> Zaloguj</a>
       <a class="wf-btn wf-btn--ghost wf-btn--icon wf-badge--count cw-cart" href="koszyk.html" aria-label="Koszyk, 0 produktów"><svg class="wf-icon" aria-hidden="true"><use href="#ti-shopping-cart"></use></svg><span class="wf-count" data-cart-count>0</span></a>
       <button class="wf-btn wf-btn--ghost wf-btn--icon cw-navtoggle" data-navtoggle aria-controls="mobilenav" aria-expanded="false" aria-label="Otwórz menu"><svg class="wf-icon" aria-hidden="true"><use href="#ti-menu-2"></use></svg></button>
@@ -138,299 +320,456 @@
     <a class="wf-navitem" href="centrum-wiedzy.html">Centrum wiedzy</a>
     <a class="wf-navitem" href="o-firmie.html">O nas</a>
     <a class="wf-navitem" href="kontakt.html">Kontakt</a>
-    <a class="wf-navitem" href="sklep.html">Sklep</a>
+    <a class="wf-navitem wf-w-semibold" href="sklep.html" aria-current="page">Sklep</a>
     <a class="wf-navitem" href="platforma-b2b.html">Zaloguj</a>
   </nav>
 </header>
+<!-- Przyciemnienie pod otwartym mega-menu. cw.js wiesza na nim zamykanie klikiem
+     obok – bez tego elementu menu zostaje otwarte. Stoi tak na 30 innych stronach V5. -->
 <div class="cw-scrim" data-cw-scrim data-open="false" aria-hidden="true"></div>
+
+
+<!-- ===== SUBNAWIGACJA PRODUKTU =====
+     Ten sam mechanizm co na stronach produktowych (c5.js): wjeżdża od góry,
+     gdy główne menu wyjedzie z ekranu. Po prawej stronie zamiast „kup teraz"
+     stoi skrót do panelu zakupowego – zgodnie z ustaleniem z 21.07, że
+     przycisk zakupu ma być wysoko i zawsze w zasięgu. -->
+<div class="cx-subnav">
+  <div class="cx-subnav__in c5-wrap">
+    <nav class="cx-subnav__links" aria-label="Sekcje produktu">
+      <a class="cx-subnav__link" href="#opis" data-spy="opis">Opis</a>
+      <a class="cx-subnav__link" href="#parametry" data-spy="parametry">Parametry</a>
+      <a class="cx-subnav__link" href="#stosowanie" data-spy="stosowanie">Jak stosować</a>
+      <a class="cx-subnav__link" href="#laczenie" data-spy="laczenie">Łączenie</a>
+      <a class="cx-subnav__link" href="#faq" data-spy="faq">FAQ</a>
+    </nav>
+    <a class="cx-subnav__buy" href="#kup">dodaj do koszyka</a>
+  </div>
+</div>
 
 <main id="main">
 
-  <!-- ===== NAGŁÓWEK + BREADCRUMB ===== -->
-  <div class="wf-container">
-    <nav class="wf-breadcrumb" aria-label="Ścieżka">
+  <!-- ===== GÓRA STRONY ===== -->
+  <section id="hero">
+    <div class="c5-wrap">
+      <nav class="wf-breadcrumb" aria-label="Ścieżka" style="padding-top:var(--w-space-5);">
         <ol>
-          <li><a class="wf-link--quiet" href="home.html">Start</a></li>
+          <li><a class="wf-link--quiet" href="home.html">Strona główna</a></li>
           <li><span class="wf-breadcrumb__sep" aria-hidden="true"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-right"></use></svg></span></li>
           <li><a class="wf-link--quiet" href="sklep.html">Sklep</a></li>
           <li><span class="wf-breadcrumb__sep" aria-hidden="true"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-right"></use></svg></span></li>
-          <li><span aria-current="page" class="wf-w-semibold">CARBOMAT Eco</span></li>
+          <li><span aria-current="page" class="wf-w-semibold">CARBOMAT ECO</span></li>
         </ol>
       </nav>
-  </div>
 
-  <!-- ===== PDP TOP: galeria + panel zakupowy ===== -->
-  <section class="wf-section wf-section--sm">
-    <div class="wf-container wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 22rem;">
+      <div class="c5pd-top">
 
-      <!-- LEWA: galeria -->
-      <div class="wf-stack wf-stack--3">
-        <div class="wf-ph wf-ph--4x3" role="img" aria-label="Zdjęcie główne — opakowanie CARBOMAT i struktura węgielka"><span class="wf-ph__label">Zdjęcie główne produktu</span></div>
-        <div class="wf-grid wf-grid--4" style="--wf-grid-min: 4rem;" role="group" aria-label="Miniatury produktu">
-          <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">Opakowanie</span></div>
-          <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">Frakcja</span></div>
-          <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">Gleba</span></div>
-          <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">Aplikacja</span></div>
-        </div>
-        <p class="wf-caption wf-t-tertiary">Galeria poglądowa. Miniatury sterują dużym kadrem.</p>
-      </div>
-
-      <!-- PRAWA: panel zakupowy -->
-      <div class="wf-stack wf-stack--5">
-        <div class="wf-stack wf-stack--3">
-          <span class="wf-overline">Rodzina sypkich · doglebowy · rdzeń</span>
-          <h1 class="wf-h1">CARBOMAT Eco</h1>
-          <p class="wf-lead wf-t-secondary wf-prose">Węgiel z lignitu, który trzyma wodę i odbudowuje strukturę gleby — fundament działający kolejne sezony.</p>
-        </div>
-
-        <!-- Co rozwiązuje (problemy w jednej linii, bez emoji) -->
-        <div class="wf-stack wf-stack--2">
-          <span class="wf-overline wf-t-tertiary">Pomaga przy</span>
-          <div class="wf-cluster wf-gap-2" aria-label="Problemy, które rozwiązuje produkt">
-            <span class="wf-badge wf-badge--outline">Jakość gleby</span>
-            <span class="wf-badge wf-badge--outline">Retencja / susza</span>
-            <span class="wf-badge wf-badge--outline">Szybszy wzrost</span>
-            <span class="wf-badge wf-badge--outline">Lepsze plony</span>
-            <span class="wf-badge wf-badge--outline">Ogród i działka</span>
-            <span class="wf-badge wf-badge--outline">Uprawa profesjonalna</span>
+        <!-- GALERIA. Klient (29.06, D56): część treści przechodzi obrazkami
+             w galerii, wzorem Amazona – stąd cztery kadry tematyczne. -->
+        <div class="c5pd-gallery">
+          <div class="wf-ph c5pd-gallery__main" role="img" aria-label="Zdjęcie główne – opakowanie CARBOMAT ECO"></div>
+          <div class="c5pd-gallery__thumbs" role="group" aria-label="Miniatury produktu">
+            <span class="wf-ph" aria-hidden="true"></span>
+            <span class="wf-ph" aria-hidden="true"></span>
+            <span class="wf-ph" aria-hidden="true"></span>
+            <span class="wf-ph" aria-hidden="true"></span>
           </div>
+          <p class="c5pd-gallery__note">Kadry do dosłania: opakowanie · gruzełka w zbliżeniu · produkt wymieszany z glebą · sposób aplikacji. ⚠️ Nowe opakowania nie mają jeszcze sesji zdjęciowej.</p>
         </div>
 
-        <!-- PANEL: wariant opakowania → cena/kanał -->
-        <div class="wf-card">
-          <div class="wf-card__body wf-stack wf-stack--4">
+        <!-- PANEL ZAKUPOWY -->
+        <div class="c5pd-panel">
+          <span class="c5-kicker">Sypki · doglebowy · rdzeń systemu</span>
+          <h1 class="c5-h1">CARBOMAT ECO</h1>
+          <p class="c5pd-lead">Surowy polski lignit, który trzyma wodę i odbudowuje strukturę gleby. Nie sezonowy nawóz, tylko jednorazowa inwestycja w jakość gleby, próchnicę i retencję – działa kolejne sezony.</p>
 
-            <div class="wf-stack wf-stack--2">
-              <span class="wf-overline wf-t-tertiary">Opakowanie</span>
-              <div class="wf-segmented" role="group" aria-label="Wybór opakowania" data-variants>
-                <button type="button" class="wf-btn" data-variant data-name="CARBOMAT Eco · 20 L" data-price="89" data-price-label="89 zł" data-pack="cena brutto, opakowanie 20 L" aria-pressed="true">20 L</button>
-                <button type="button" class="wf-btn" data-variant data-name="CARBOMAT Eco · 200 L" data-price="690" data-price-label="690 zł" data-pack="cena brutto, opakowanie 200 L" aria-pressed="false">200 L</button>
-                <button type="button" class="wf-btn" data-variant data-inquire="true" data-name="CARBOMAT — paleta / 1000 L" data-pack="paleta / 1000 L — kanał B2B" aria-pressed="false">Paleta / 1000 L</button>
+          <div>
+            <span class="c5pd-label">Pomaga przy</span>
+            <div class="c5pd-helps">
+              <span class="c5pd-help">susza i retencja</span>
+              <span class="c5pd-help">gleba zbita, słaba struktura</span>
+              <span class="c5pd-help">niska zawartość próchnicy</span>
+              <span class="c5pd-help">zakładanie nasadzeń</span>
+              <span class="c5pd-help">podłoże bez torfu</span>
+            </div>
+          </div>
+
+          <!-- WYBÓR ODMIANY I POJEMNOŚCI.
+               Ceny brutto od Darka (AC #30867, 21.07). Uwaga: Darek dwukrotnie
+               prosił, żeby ceny big bagów były przypisane do ODMIAN pH, a nie
+               podawane jako widełki „600–650" – dlatego cena reaguje tu na obie
+               osie wyboru naraz. -->
+          <div class="c5pd-buy" id="kup">
+            <div>
+              <span class="c5pd-label">Odmiana</span>
+              <div class="c5pd-opts" role="group" aria-label="Wybór odmiany pH" data-variants>
+                <button type="button" class="c5pd-opt" data-variant="uniwersalny" aria-pressed="true">
+                  <span>pH 6,0–6,5</span><span class="c5pd-opt__sub">uniwersalna, większość roślin</span>
+                </button>
+                <button type="button" class="c5pd-opt" data-variant="kwasny" aria-pressed="false">
+                  <span>pH 4,5–5,0</span><span class="c5pd-opt__sub">borówka i kwasolubne</span>
+                </button>
               </div>
             </div>
 
-            <!-- Cena / kanał — drobnica -->
-            <div class="wf-stack wf-stack--1" data-price-drobnica>
-              <span class="wf-h3 wf-w-bold" data-price-out>89 zł</span>
-              <span class="wf-small wf-t-secondary" data-pack-out>cena brutto, opakowanie 20 L · cena do potwierdzenia</span>
+            <div>
+              <span class="c5pd-label">Opakowanie</span>
+              <div class="c5pd-opts" role="group" aria-label="Wybór opakowania" data-packs>
+                <button type="button" class="c5pd-opt" data-pack="w20" data-price-uniwersalny="43" data-price-kwasny="43" aria-pressed="true">
+                  <span>worek 20 l</span><span class="c5pd-opt__sub">ogród, działka, doniczki</span>
+                </button>
+                <button type="button" class="c5pd-opt" data-pack="bb1000" data-price-uniwersalny="650" data-price-kwasny="600" aria-pressed="false">
+                  <span>big bag 1000 l</span><span class="c5pd-opt__sub">1 paleta</span>
+                </button>
+                <button type="button" class="c5pd-opt" data-pack="bb1500" data-price-uniwersalny="850" data-price-kwasny="800" aria-pressed="false">
+                  <span>big bag 1500 l</span><span class="c5pd-opt__sub">1 paleta</span>
+                </button>
+              </div>
             </div>
 
-            <!-- Cena / kanał — paleta (B2B) -->
-            <div class="wf-stack wf-stack--1" data-price-paleta hidden>
-              <span class="wf-body wf-inline"><svg class="wf-icon wf-icon--sm wf-icon--muted" aria-hidden="true"><use href="#ti-lock"></use></svg> <span class="wf-w-semibold">Cena widoczna w zamówieniu</span></span>
-              <span class="wf-small wf-t-secondary">Duże opakowanie → „Twoja cena" po zalogowaniu w panelu B2B.</span>
+            <div class="c5pd-pricebox">
+              <div>
+                <div class="c5pd-price" data-price-out>43 zł</div>
+                <p class="c5pd-price__note" data-price-note>cena brutto · worek 20 l · odmiana pH 6,0–6,5</p>
+              </div>
             </div>
 
-            <!-- Wstawka PRO -->
-            <div class="wf-alert">
-              <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
-              <div><span class="wf-alert__title">PRO — „Twoja cena" po zalogowaniu.</span> <span class="wf-small wf-t-secondary">W kanale B2B rabaty są indywidualne per klient, więc ceny dużych opakowań nie pokazujemy publicznie — widać je dopiero w panelu.</span></div>
+            <div class="c5pd-cta">
+              <button type="button" class="c5-btn c5-btn--dark" data-add>dodaj do koszyka</button>
+              <p class="c5pd-fb" data-add-fb role="status" aria-live="polite"></p>
             </div>
 
-            <!-- CTA -->
-            <div class="wf-stack wf-stack--2">
-              <button type="button" class="wf-btn wf-btn--primary wf-btn--lg wf-btn--block" data-add-cta data-name="CARBOMAT Eco · 20 L" data-price="89">Dodaj do koszyka</button>
-              <a class="wf-btn wf-btn--primary wf-btn--lg wf-btn--block" href="platforma-b2b.html" data-inquire-cta hidden>Zapytaj o ofertę / panel B2B</a>
-              <button type="button" class="wf-btn wf-btn--ghost wf-inline" data-jurek-open><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-message-2"></use></svg> Zapytaj dr Jurka</button>
+            <div class="c5pd-meta">
+              <p class="c5pd-meta__row" data-pack-note hidden>
+                <svg class="wf-icon" aria-hidden="true"><use href="#ti-info-circle"></use></svg>
+                <span>Jeden big bag to jedna paleta. Potrzebujesz więcej albo regularnych dostaw? Przygotujemy ofertę i Twoją cenę – <a class="wf-link" href="kontakt.html">zapytaj o ofertę</a>.</span>
+              </p>
+              <p class="c5pd-meta__row">
+                <svg class="wf-icon" aria-hidden="true"><use href="#ti-arrows-sort"></use></svg>
+                <span><span class="wf-w-semibold">Dostępne frakcje:</span> 0,1–2 mm · 2–4 mm · 4–8 mm. Frakcję dobieramy według bieżącej dostępności – jeśli potrzebujesz konkretnej, napisz to w uwagach do zamówienia. ⚠️ Frakcja 0,1–2 mm docelowo tylko w odmianie o niższym pH.</span>
+              </p>
+              <p class="c5pd-meta__row">
+                <svg class="wf-icon" aria-hidden="true"><use href="#ti-check"></use></svg>
+                <span>Certyfikat ekologiczny IUNG · termin przydatności +5 lat · przechowywać w chłodnym i suchym miejscu.</span>
+              </p>
             </div>
-            <p class="wf-caption wf-t-tertiary" data-add-feedback role="status" aria-live="polite" hidden>Dodano do koszyka.</p>
+
+            <!-- Trzy akcje przy produkcie (ustalenie z 21.07): karta produktu,
+                 analiza laboratoryjna jako OSOBNY plik, zakup. Część klientów
+                 chce wyłącznie analizy. -->
+            <div class="c5pd-docs">
+              <a class="c5-btn c5-btn--light c5-btn--sm" href="centrum-wiedzy.html#magazyn"><svg class="wf-icon" aria-hidden="true"><use href="#ti-external-link"></use></svg> Karta produktu (PDF)</a>
+              <a class="c5-btn c5-btn--light c5-btn--sm" href="centrum-wiedzy.html#magazyn"><svg class="wf-icon" aria-hidden="true"><use href="#ti-flask"></use></svg> Analiza laboratoryjna (PDF)</a>
+            </div>
+            <p class="c5pd-price__note">⚠️ Realne pliki PDF do podpięcia przez CarboHort; analizy odświeżane co roku.</p>
           </div>
-        </div>
 
-        <!-- Zalecenia nalistne (zastępuje QR z etykiety) -->
-        <div class="cw-ask">
-          <span class="wf-ph wf-ph--icon" aria-hidden="true"><span class="wf-ph__label">Kod</span></span>
-          <div class="cw-ask__txt wf-stack wf-stack--1">
-            <span class="wf-w-semibold wf-small">Zalecenia nalistne</span>
-            <span class="wf-small wf-t-secondary">Czego nie wolno umieścić na etykiecie doglebowej — znajdziesz w osobnych zaleceniach.</span>
-          </div>
-          <a class="wf-btn wf-btn--secondary wf-btn--sm" href="zalecenia.html">Zalecenia</a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== RETENCJA „to zależy" ===== -->
-  <section class="wf-section wf-section--subtle" aria-labelledby="s-ret">
-    <div class="wf-container wf-stack wf-stack--6">
-      <div class="wf-stack wf-stack--3" style="max-width:680px;">
-        <span class="wf-overline">Retencja</span>
-        <h2 class="wf-h2" id="s-ret">Ile wody zatrzyma — „to zależy"</h2>
-        <p class="wf-lead wf-t-secondary">Nie obiecujemy litrów u Ciebie — pokazujemy, ile dało się zmierzyć u nas. Efekt zależy od dawki, sposobu aplikacji i typu gleby.</p>
-      </div>
-      <div class="wf-grid wf-grid--2 wf-items-start" style="--wf-grid-min: 20rem;">
-        <div class="wf-card wf-card--flush">
-          <div class="wf-card__body"><h3 class="wf-h5">Pojemność wodna gleby — doświadczenie „Skrzynka"</h3><p class="wf-caption wf-t-secondary">Woda zatrzymana po nasyceniu.</p></div>
-          <table class="wf-table">
-            <thead><tr><th scope="col">Wariant</th><th scope="col" style="text-align:right;">Pojemność wodna</th></tr></thead>
-            <tbody>
-              <tr><td>Kontrola — sama gleba</td><td style="text-align:right;">11,9%</td></tr>
-              <tr><td>CARBOMAT wymieszany z glebą</td><td style="text-align:right;">13,3%</td></tr>
-              <tr><td>2× CARBOMAT <span class="wf-t-tertiary">(maksimum, w polu niepraktyczne)</span></td><td style="text-align:right;">&gt; 48%</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="wf-stack wf-stack--4">
-          <div class="wf-alert">
-            <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
-            <div><span class="wf-alert__title">Retencja = „to zależy".</span> <span class="wf-small wf-t-secondary">Największy efekt na glebach lekkich i ubogich, w suszy. Świadomie bez kalkulatora litrów u klienta — za dużo zmiennych.</span></div>
-          </div>
-          <div class="wf-card"><div class="wf-card__body wf-stack wf-stack--3">
-            <h3 class="wf-h5">Jak mierzyliśmy</h3>
-            <p class="wf-small wf-t-secondary">Profile gleb ze „Skrzynki", metoda i broszura — w Centrum wiedzy.</p>
-            <a class="wf-link--quiet wf-inline wf-small" href="centrum-wiedzy.html">Metoda i broszura (PDF) <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
-          </div></div>
+          <p class="c5pd-price__note">Chcesz poznać cały mechanizm działania, agrotechnikę i badania? <a class="wf-link" href="carbomat.html">Pełna strona produktu CARBOMAT ECO</a>.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== PARAMETRY ===== -->
-  <section class="wf-section" aria-labelledby="s-param">
-    <div class="wf-container wf-stack wf-stack--6">
-      <div class="wf-stack wf-stack--3" style="max-width:680px;">
-        <span class="wf-overline">Parametry</span>
-        <h2 class="wf-h2" id="s-param">Parametry w skrócie</h2>
-        <p class="wf-lead wf-t-secondary">Wartości do potwierdzenia kartą techniczną.</p>
+  <!-- ===== OPIS SPRZEDAŻOWY =====
+       Skrócona, sprzedażowa wersja strony produktowej. Świadomy wybór pięciu
+       informacji, które realnie domykają decyzję zakupową:
+       1) trwałość – jedyny argument uzasadniający cenę wobec marketu,
+       2) mechanizm w jednym zdaniu – porowatość, ta sama dla hobby i PRO,
+       3) dojrzała próchnica – odróżnia od kompostu, obornika i torfu,
+       4) czystość z dokumentem – rozbraja jedyną realną obiekcję kategorii,
+       5) brak ryzyka przedawkowania + jedyny warunek, czyli odczyn.
+       Reszta (pełna narracja, wykresy, badania) zostaje na `carbomat.html`. -->
+  <section class="c5-sec" id="opis" data-chapter="opis">
+    <div class="c5-wrap">
+      <span class="c5-kicker">Opis produktu</span>
+      <div class="c5-head">
+        <h2 class="c5-h2">Co ten produkt realnie zmienia w Twojej glebie</h2>
+        <p class="c5-lead">Pięć rzeczy, które warto wiedzieć przed zakupem. Strukturę i lepsze gospodarowanie wodą zobaczysz już w pierwszym sezonie, budowę próchnicy w horyzoncie 2–5 lat, a wkład lignitu zostaje w glebie kilkanaście do ponad 20 lat.</p>
       </div>
-      <div class="wf-grid wf-grid--4" style="--wf-grid-min: 12rem;">
-        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--1"><span class="wf-overline wf-t-tertiary">pH</span><span class="wf-h4 wf-w-bold">4–6</span></div></article>
-        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--1"><span class="wf-overline wf-t-tertiary">Frakcje</span><span class="wf-h5">0,1–2 / 2–8 / 8–20 mm</span></div></article>
-        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--1"><span class="wf-overline wf-t-tertiary">Dawka doglebowa</span><span class="wf-h4 wf-w-bold">~200 kg/ha</span></div></article>
-        <article class="wf-card"><div class="wf-card__body wf-stack wf-stack--1"><span class="wf-overline wf-t-tertiary">Min. opakowanie</span><span class="wf-h4 wf-w-bold">20 L</span></div></article>
-      </div>
-    </div>
-  </section>
 
-  <!-- ===== SZCZEGÓŁY (akordeon) ===== -->
-  <section class="wf-section wf-section--subtle" aria-labelledby="s-acc">
-    <div class="wf-container wf-container--narrow wf-stack wf-stack--6">
-      <div class="wf-stack wf-stack--3">
-        <span class="wf-overline">Szczegóły</span>
-        <h2 class="wf-h2" id="s-acc">Pełna specyfikacja produktu</h2>
-      </div>
-      <div class="wf-stack wf-stack--2">
+      <div class="c5pd-benefits">
+        <article class="c5pd-benefit">
+          <span class="c5pd-benefit__num">01</span>
+          <h3>Kupujesz raz, pracuje latami</h3>
+          <p>Lignit rozkłada się powoli i przez kilkanaście do ponad dwudziestu lat oddaje glebie kwasy humusowe. To nie jest nawóz na sezon, tylko jednorazowa przebudowa gleby – dlatego koszt liczy się na lata użytkowania stanowiska, a nie na worek.</p>
+        </article>
 
-        <div class="wf-accordion__item">
-          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="true" aria-controls="acc-opis" id="acc-opis-h">Opis <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-          <div class="wf-accordion__panel" id="acc-opis" role="region" aria-labelledby="acc-opis-h">
-            <p class="wf-body wf-t-secondary wf-prose">CARBOMAT Eco to sypki poprawiacz gleby na bazie węgla z lignitu. Działa jak gąbka: zatrzymuje wodę, poprawia strukturę i napowietrzenie gleby, sprzyja życiu mikrobiologicznemu i magazynowaniu składników. To rdzeń doglebowy — fundament, który pracuje kolejne sezony, a nie jednorazowe dokarmianie.</p>
-          </div>
-        </div>
+        <article class="c5pd-benefit">
+          <span class="c5pd-benefit__num">02</span>
+          <h3>Gruzełka, która działa jak gąbka</h3>
+          <p>Około 60% objętości każdej gruzełki stanowią naturalne pory. Magazynują wodę w mikroporach, napowietrzają podłoże i zwiększają powierzchnię sorpcyjną, na której gleba zatrzymuje potas, wapń, magnez i azot amonowy, zamiast wypłukiwać je w głąb profilu.</p>
+        </article>
 
-        <div class="wf-accordion__item">
-          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="acc-dawki" id="acc-dawki-h">Dawkowanie <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-          <div class="wf-accordion__panel" id="acc-dawki" role="region" aria-labelledby="acc-dawki-h" hidden>
-            <div class="wf-stack wf-stack--3">
-              <table class="wf-table">
-                <thead><tr><th scope="col">Zastosowanie</th><th scope="col" style="text-align:right;">Dawka</th><th scope="col">Sposób aplikacji</th></tr></thead>
-                <tbody>
-                  <tr><td>Uprawy polowe (doglebowo)</td><td style="text-align:right;">~200 kg/ha</td><td>wymieszanie z glebą</td></tr>
-                  <tr><td>Sad / nasadzenia (pasowo)</td><td style="text-align:right;">—</td><td>pas pod korzeniami</td></tr>
-                  <tr><td>Ogród / działka</td><td style="text-align:right;">— / m²</td><td>wymieszanie z wierzchnią warstwą</td></tr>
-                  <tr><td>Trawnik</td><td style="text-align:right;">— / m²</td><td>aeracja + rozsiew</td></tr>
-                </tbody>
-              </table>
-              <p class="wf-small wf-t-secondary">Pełna agrotechnika (faza → dawka → liczba zabiegów) oraz zalecenia nalistne → <a class="wf-link" href="zalecenia.html">zalecenia</a>.</p>
-            </div>
-          </div>
-        </div>
+        <article class="c5pd-benefit">
+          <span class="c5pd-benefit__num">03</span>
+          <h3>Gotowa próchnica, nie surowiec na próchnicę</h3>
+          <p>Kompost, obornik i biohumus dopiero muszą się przetworzyć, a większość ich masy zniknie po drodze. Lignit jest efektem milionów lat naturalnej humifikacji – dostajesz materię organiczną od razu w formie stabilnej i trwałej.</p>
+        </article>
 
-        <div class="wf-accordion__item">
-          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="acc-sklad" id="acc-sklad-h">Skład i parametry <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-          <div class="wf-accordion__panel" id="acc-sklad" role="region" aria-labelledby="acc-sklad-h" hidden>
-            <ul class="wf-list">
-              <li>Baza: węgiel z lignitu (kopalina własna) — do potwierdzenia</li>
-              <li>pH: 4–6</li>
-              <li>Frakcje: 0,1–2 mm / 2–8 mm / 8–20 mm</li>
-              <li>Postać: sypka · opakowania od 20 L</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="wf-accordion__item">
-          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="acc-pdf" id="acc-pdf-h">Pobierz kartę (PDF) <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-          <div class="wf-accordion__panel" id="acc-pdf" role="region" aria-labelledby="acc-pdf-h" hidden>
-            <div class="wf-stack wf-stack--2">
-              <p class="wf-body wf-t-secondary">Karta techniczna / charakterystyka produktu → <a class="wf-link wf-inline" href="#">pobierz PDF <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-external-link"></use></svg></a></p>
-              <p class="wf-small wf-t-secondary">Poradniki „pigułki" (ile / jak często / jak aplikować) → <a class="wf-link" href="centrum-wiedzy.html">Centrum wiedzy</a>.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="wf-accordion__item">
-          <button class="wf-accordion__trigger wf-w-medium" aria-expanded="false" aria-controls="acc-eco" id="acc-eco-h">Eco-cert <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
-          <div class="wf-accordion__panel" id="acc-eco" role="region" aria-labelledby="acc-eco-h" hidden>
-            <p class="wf-body wf-t-secondary wf-inline"><span class="wf-badge wf-badge--outline">eco</span> Status certyfikatu ekologicznego — nazwa jednostki i numer do potwierdzenia.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== CROSS-SELL „Łączymy z…" ===== -->
-  <section class="wf-section" aria-labelledby="s-cross">
-    <div class="wf-container wf-stack wf-stack--8">
-      <div class="wf-stack wf-stack--3" style="max-width:680px;">
-        <span class="wf-overline">Produkty łączone</span>
-        <h2 class="wf-h2" id="s-cross">Łączymy z…</h2>
-        <p class="wf-lead wf-t-secondary">Baza glebowa plus uzupełnienia — co warto zestawić w programie. To, czego nie wolno sugerować na etykiecie doglebowej, pokazujemy tutaj.</p>
-      </div>
-      <div class="wf-grid wf-grid--3" style="--wf-grid-min: 16rem;">
-
-        <article class="wf-card wf-card--flush">
-          <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CARBOHUMIC</span></div>
-          <div class="wf-card__body wf-stack wf-stack--3">
-            <span class="wf-badge wf-badge--outline">doglebowy · płynny</span>
-            <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CARBOHUMIC</a></h3>
-            <p class="wf-small wf-t-secondary">Kondycjonowanie i „oczyszczanie" gleby — wzmacnia efekt retencji.</p>
-            <p class="wf-body"><span class="wf-w-semibold">od 149 zł</span></p>
-            <div><a class="wf-btn wf-btn--secondary wf-btn--sm wf-inline" href="pdp.html">Szczegóły <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a></div>
+        <article class="c5pd-benefit">
+          <span class="c5pd-benefit__num">04</span>
+          <h3>Czysty i przebadany, z dokumentem</h3>
+          <p>Akredytowane laboratorium PCBC S.A. potwierdziło zawartości metali ciężkich wielokrotnie poniżej granic. Produkt ma certyfikat ekologiczny IUNG, a pełną analizę pobierzesz jako osobny plik.</p>
+          <div class="c5pd-clean">
+            <span>Rtęć <b>&lt;0,05</b> mg/kg</span>
+            <span>Arsen <b>&lt;0,01</b> mg/kg</span>
+            <span>Ołów <b>&lt;1,0</b> mg/kg</span>
+            <span>Kadm <b>&lt;1,0</b> mg/kg</span>
+            <span>Chrom <b>&lt;0,5</b> mg/kg</span>
+            <span>Nikiel <b>&lt;0,5</b> mg/kg</span>
           </div>
         </article>
 
-        <article class="wf-card wf-card--flush">
-          <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">MAXI PLUS</span></div>
-          <div class="wf-card__body wf-stack wf-stack--3">
-            <span class="wf-badge wf-badge--outline">nalistny · wejściowy</span>
-            <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">MAXI PLUS</a></h3>
-            <p class="wf-small wf-t-secondary">Tani, wejściowy nalistny — lepszy start i wzrost rośliny.</p>
-            <p class="wf-body"><span class="wf-w-semibold">od 49 zł</span></p>
-            <div><a class="wf-btn wf-btn--secondary wf-btn--sm wf-inline" href="pdp.html">Szczegóły <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a></div>
-          </div>
+        <article class="c5pd-benefit c5pd-benefit--wide">
+          <span class="c5pd-benefit__num">05</span>
+          <h3>Nie da się nim przenawozić – zwróć uwagę tylko na odczyn</h3>
+          <p>To produkt nienawozowy: praktycznie nie da się go przedawkować ani spalić nim roślin. Jedyne, co realnie trzeba rozstrzygnąć przed zakupem, to odmiana. Pod borówkę, żurawinę, wrzosowate, różaneczniki i azalie wybierasz odmianę 4,5–5,0 pH; dla większości pozostałych roślin właściwa jest odmiana uniwersalna 6,0–6,5 pH, która na kwasolubnych mogłaby podnieść odczyn ponad ich tolerancję.</p>
         </article>
-
-        <article class="wf-card wf-card--flush">
-          <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CALBOR</span></div>
-          <div class="wf-card__body wf-stack wf-stack--3">
-            <span class="wf-badge wf-badge--outline">nalistny · Ca+B</span>
-            <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CALBOR</a></h3>
-            <p class="wf-small wf-t-secondary">Wapń + bor — jakość i trwałość owocu.</p>
-            <p class="wf-body"><span class="wf-w-semibold">od 69 zł</span></p>
-            <div><a class="wf-btn wf-btn--secondary wf-btn--sm wf-inline" href="pdp.html">Szczegóły <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a></div>
-          </div>
-        </article>
-
       </div>
-      <div class="wf-alert">
-        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
-        <div><span class="wf-alert__title">Łączenia można sugerować w karcie produktu.</span> <span class="wf-small wf-t-secondary">Zestawienia (baza CARBOMAT + CARBOHUMIC lub nalistne MAXI PLUS, CALBOR) pokazujemy tutaj, ale nie na etykiecie doglebowej — stąd osobne zalecenia nalistne.</span></div>
+
+      <!-- PAS EKONOMIKI DLA PROFESJONALISTY.
+           Bez etykietowania klienta i bez bramki (D13, D46) – po prostu drugi
+           rejestr dowodu w tej samej karcie. Profesjonalista, który trafia
+           na sklep pierwszy raz, musi tu zobaczyć, że produkt jest do
+           profesjonalnego użytku. -->
+      <div class="c5pd-pro">
+        <div class="c5pd-protile">
+          <span class="c5pd-protile__val">1 t ≈ 5 t</span>
+          <p>Tona CARBOMAT ECO to około 800 kg suchej masy przetworzonej materii organicznej – równoważnik około 5000 kg suchej masy młodej materii organicznej. <span class="c5pd-attr">wg poradnika sadowniczego producenta ⚠️</span></p>
+        </div>
+        <div class="c5pd-protile">
+          <span class="c5pd-protile__val">N ~0,11%</span>
+          <p>Wnosisz materię organiczną, nie azot. Przy limicie z dyrektywy azotanowej produkt praktycznie nie obciąża bilansu gospodarstwa.</p>
+        </div>
+        <div class="c5pd-protile">
+          <span class="c5pd-protile__val">Komplet dokumentów</span>
+          <p>Karta produktu, analiza akredytowanego laboratorium i certyfikat ekologiczny – do specyfikacji, przetargu i kontroli w produkcji ekologicznej.</p>
+        </div>
+      </div>
+      <p class="c5pd-src">Poradnik sadowniczy CarboHort podaje, że dzięki adsorpcji amoniaku i azotanów w praktyce często można zmniejszyć dawki nawozów azotowych o 10–30% bez spadku plonów. ⚠️ Wartość z poradnika producenta, nie z karty produktu; efekt narasta w horyzoncie 2–5 lat.</p>
+    </div>
+  </section>
+
+  <!-- ===== PARAMETRY =====
+       Ten sam układ tabeli i te same parametry co na stronie produktowej
+       (ustalenie 21.07 i 27.07: identyczny układ przy każdym produkcie, żeby
+       klient mógł porównywać gamę i konkurencję). -->
+  <section class="c5-sec c5-params" id="parametry" data-chapter="parametry">
+    <div class="c5-wrap">
+      <h2 class="c5-params__title">Parametry produktu · w suchej masie</h2>
+      <dl class="c5-params__rows">
+        <div class="c5-params__row"><dt>Odczyn (pH)</dt><dd>4,5–5,0 · 6,0–6,5 <span class="c5-dim">(dwie odmiany)</span></dd></div>
+        <div class="c5-params__row"><dt>Sucha masa</dt><dd>~87%</dd></div>
+        <!-- ⚠️ POPRAWKA WOBEC `carbomat.html`: tam stoi „Substancje humusowe – do ~70%"
+             pod podpisem PCBC + karta, a żadne z tych źródeł tej liczby nie zawiera.
+             Dokument klienta podaje 70% dla kwasów humusowych W LIGNITACH w ogóle,
+             nie dla partii produktu. Tu brzmienie poprawione; defekt na stronie
+             produktowej zarejestrowany w backlogu (strona jest u grafika). -->
+        <div class="c5-params__row"><dt>Kwasy humusowe i fulwowe</dt><dd>w lignitach nawet do ~70% <span class="c5-dim">(zależnie od pokładu)</span></dd></div>
+        <div class="c5-params__row"><dt>Materia organiczna</dt><dd>~92%</dd></div>
+        <div class="c5-params__row"><dt>Węgiel organiczny</dt><dd>~51%</dd></div>
+        <div class="c5-params__row"><dt>Azot (N)</dt><dd>~0,11%</dd></div>
+        <div class="c5-params__row"><dt>Potas (K₂O)</dt><dd>~0,6%</dd></div>
+        <div class="c5-params__row"><dt>Fosfor (P₂O₅)</dt><dd>~0,5%</dd></div>
+      </dl>
+      <div class="c5-params__actions">
+        <a class="c5-btn c5-btn--sm c5-btn--ondark" href="centrum-wiedzy.html#magazyn"><svg class="wf-icon" aria-hidden="true"><use href="#ti-flask"></use></svg> Aktualna analiza</a>
+        <a class="c5-btn c5-btn--sm c5-btn--ondark" href="centrum-wiedzy.html#magazyn"><svg class="wf-icon" aria-hidden="true"><use href="#ti-external-link"></use></svg> Karta produktu</a>
+        <a class="c5-btn c5-btn--sm c5-btn--ondark" href="produkty.html"><svg class="wf-icon" aria-hidden="true"><use href="#ti-arrows-sort"></use></svg> Porównaj z całą gamą</a>
+      </div>
+      <p class="c5-params__src">Materia organiczna i węgiel w suchej masie; badanie akredytowanego laboratorium PCBC S.A. (2022) i karta produktu.</p>
+    </div>
+  </section>
+
+  <!-- ===== JAK STOSOWAĆ W SKRÓCIE =====
+       Tylko tyle, ile potrzeba, żeby ocenić, ile kupić. Pełna agrotechnika
+       zostaje na stronie produktowej, a dokładne przeliczenie na opakowania
+       robi konfigurator – tego świadomie tu nie dublujemy. -->
+  <section class="c5-sec" id="stosowanie" data-chapter="stosowanie">
+    <div class="c5-wrap">
+      <span class="c5-kicker">Jak stosować</span>
+      <div class="c5-head">
+        <h2 class="c5-h2">Najprostsze recepty – żebyś wiedział, ile kupić</h2>
+        <p class="c5-lead">Ogólne zasady bez niuansów. Dokładną dawkę dla swojej uprawy i liczbę opakowań policzy konfigurator.</p>
+      </div>
+
+      <div class="c5pd-recipes">
+        <article class="c5pd-recipe">
+          <h3>Powierzchniowo, do przemieszania</h3>
+          <span class="c5pd-recipe__val">10–15% objętości gleby</span>
+          <p>Wymieszaj z warstwą orną lub całym przygotowanym podłożem. Na gleby lekkie i piaszczyste dobieraj frakcję drobniejszą, na cięższe gliniaste grubszą.</p>
+        </article>
+        <article class="c5pd-recipe">
+          <h3>Punktowo, przy sadzeniu</h3>
+          <span class="c5pd-recipe__val">100–200 ml · 1–3 l · 3–8 l</span>
+          <p>Pod małe jednoroczne (pomidor, papryka, ogórek) 100–200 ml, pod krzewy i byliny 1–3 l, pod drzewa sadownicze 3–8 l jako starter. Z jednego worka 20 l przygotujesz podkład pod około 200 sadzonek.</p>
+        </article>
+        <article class="c5pd-recipe">
+          <h3>Uprawy doniczkowe</h3>
+          <span class="c5pd-recipe__val">10–20% mieszanki</span>
+          <p>Wymieszaj równomiernie z gotowym podłożem albo zastosuj jako wartościowy drenaż na spodzie doniczki, warstwą około 5 cm.</p>
+        </article>
+        <article class="c5pd-recipe">
+          <h3>Kiedy to zrobić</h3>
+          <span class="c5pd-recipe__val">raz, gdy gleba jest odkryta</span>
+          <p>Przy sadzeniu lub zakładaniu uprawy. Potem stanowiska już nie rozkopujesz, żeby nie niszczyć budowanej próchnicy – w sezonie pracują produkty płynne.</p>
+        </article>
+      </div>
+
+      <div class="c5-btnrow" style="margin-top:clamp(2rem,4vw,3rem);">
+        <a class="c5-btn c5-btn--dark" href="konfigurator.html">policz dawkę i liczbę opakowań</a>
+        <a class="c5-btn c5-btn--light" href="zalecenia.html">zalecenia dla mojej uprawy</a>
+      </div>
+
+      <!-- Nie pozwalamy kupić niewłaściwego produktu: ściółka to osobna pozycja.
+           ⚠️ Docelowo link prowadzi do własnej karty CARBOMAT ECO Ściółka
+           (PDP per SKU = Faza 2, D44); w makiecie kieruje na listę sklepu. -->
+      <div class="c5pd-switch">
+        <span class="wf-ph" aria-hidden="true"></span>
+        <div class="c5pd-switch__body">
+          <span class="wf-w-semibold">Chcesz rozsypać po wierzchu, bez mieszania?</span>
+          <span class="wf-t-secondary wf-small">To osobny produkt: CARBOMAT ECO Ściółka ma grubszą frakcję i układa się warstwą 3–5 cm. W przeciwieństwie do kory nie powoduje głodu azotowego.</span>
+        </div>
+        <a class="c5-btn c5-btn--light c5-btn--sm" href="sklep.html?polka=sciolka">zobacz Ściółkę</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== PASEK dr Jurka ===== -->
-  <section class="wf-section wf-section--subtle">
-    <div class="wf-container">
-      <div class="cw-ask">
-        <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
-        <div class="cw-ask__txt wf-stack wf-stack--1">
-          <span class="wf-w-semibold">Masz nietypową uprawę albo pytanie o dawkę?</span>
-          <span class="wf-small wf-t-secondary">Zapytaj asystenta — odpowie na konkretne pytanie o CARBOMAT i dobór, także w weekend.</span>
+  <!-- ===== ŁĄCZENIE =====
+       Świadomie NIE budujemy tu drugiego konfiguratora. Pokazujemy trzy produkty
+       w rytmie sezonu (układ 1:1 ze strony produktowej, treść zaakceptowana),
+       a zebranie całego koszyka oddajemy konfiguratorowi.
+       Podstawa dla pary ECO + CARBOHUMIC: zalecenie z karty producenta
+       („Zalecane stosowanie CARBOMATU ECO w połączeniu z produktem CARBOHUMIC"). -->
+  <section class="c5-sec c5-band" id="laczenie" data-chapter="laczenie">
+    <div class="c5-wrap">
+      <span class="c5-kicker">Łączenie produktów</span>
+      <div class="c5-head">
+        <h2 class="c5-h2">CARBOMAT ECO to pierwszy krok, nie cały program</h2>
+        <p class="c5-lead">Bazę zakładasz raz i już jej nie rozkopujesz. W sezonie pracują produkty płynne, które podajesz bez naruszania gleby.</p>
+      </div>
+
+      <div class="c5pd-cross">
+        <article class="c5pd-crosscard">
+          <span class="wf-ph" aria-hidden="true"></span>
+          <div class="c5pd-crosscard__body">
+            <span class="c5pd-crosscard__when">w roku · wiosna i jesień</span>
+            <h3 class="c5pd-crosscard__name"><a href="carbohumic.html">CARBOHUMIC niefiltrowany</a></h3>
+            <p>Płynne kwasy humusowe podajesz podlewaniem, bez rozkopywania. Producent zaleca stosowanie CARBOMAT ECO razem z CARBOHUMIC – jeden jest trwały, ale wolny, drugi działa niemal od razu.</p>
+            <div class="c5pd-crosscard__foot"><a class="c5-btn c5-btn--light c5-btn--sm" href="carbohumic.html">zobacz produkt</a></div>
+          </div>
+        </article>
+
+        <article class="c5pd-crosscard">
+          <span class="wf-ph" aria-hidden="true"></span>
+          <div class="c5pd-crosscard__body">
+            <span class="c5pd-crosscard__when">w sezonie · wzrost</span>
+            <h3 class="c5pd-crosscard__name"><a href="carbohumic.html">CARBOHUMIC MAXI PLUS</a></h3>
+            <p>Nalistne wzmocnienie w fazie wzrostu, powtarzane kilka razy w sezonie. Uzupełnia rdzeń glebowy, nie zastępuje go.</p>
+            <div class="c5pd-crosscard__foot"><a class="c5-btn c5-btn--light c5-btn--sm" href="carbohumic.html">zobacz produkt</a></div>
+          </div>
+        </article>
+
+        <article class="c5pd-crosscard">
+          <span class="wf-ph" aria-hidden="true"></span>
+          <div class="c5pd-crosscard__body">
+            <span class="c5pd-crosscard__when">ten sam surowiec · po wierzchu</span>
+            <h3 class="c5pd-crosscard__name"><a href="sklep.html?polka=sciolka">CARBOMAT ECO Ściółka</a></h3>
+            <p>Grubsza frakcja do ściółkowania rzędów, rabat i mis drzew. Chroni glebę przed odparowaniem i obniża pH pod uprawy kwasolubne.</p>
+            <div class="c5pd-crosscard__foot"><a class="c5-btn c5-btn--light c5-btn--sm" href="sklep.html?polka=sciolka">zobacz w sklepie</a></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="c5pd-switch" style="border-color:var(--w-gray-900);">
+        <span class="wf-ph" aria-hidden="true"></span>
+        <div class="c5pd-switch__body">
+          <span class="wf-w-semibold">Chcesz zebrać cały koszyk pod swoją uprawę?</span>
+          <span class="wf-t-secondary wf-small">Konfigurator zapyta o uprawę, skalę i cel, a na końcu poda gotowy zestaw z dawkami i liczbą opakowań – jednym kliknięciem do koszyka. Tego nie dublujemy tutaj.</span>
         </div>
-        <button type="button" class="wf-btn wf-btn--secondary" data-jurek-open>Zapytaj dr Jurka</button>
+        <a class="c5-btn c5-btn--dark c5-btn--sm" href="konfigurator.html">otwórz konfigurator</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ =====
+       Pięć pytań wybranych z ośmiu ze strony produktowej – te, które realnie
+       padają przed zakupem. Treść 1:1 z zaakceptowanej wersji live.
+       ⚠️ Liczby „około 3 lata" i „około 15%" w pytaniu o obornik i kompost mają
+       w backlogu otwartą pozycję o wskazanie dokumentu źródłowego przez CarboHort;
+       zostają tu 1:1 jak na live, razem z atrybucją do Kwiatkowskiej-Maliny. -->
+  <section class="c5-sec" id="faq" data-chapter="faq">
+    <div class="c5-wrap">
+      <span class="c5-kicker">FAQ</span>
+      <div class="c5-head">
+        <h2 class="c5-h2">Zanim dodasz do koszyka</h2>
+      </div>
+
+      <div class="c5-faq">
+        <div class="c5-faq__item" data-open>
+          <button class="c5-faq__q" aria-expanded="true" aria-controls="faq-1" id="faq-1-h">Przemieszać czy rozsypać? <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="c5-faq__a" id="faq-1" role="region" aria-labelledby="faq-1-h"><div class="c5-faq__ain">Zależy od wariantu: CARBOMAT ECO (frakcje 0,1–8 mm) przemieszaj z glebą lub podłożem, a CARBOMAT ECO Ściółkę (frakcja grubsza) rozsyp na powierzchni równą warstwą 3–5 cm.</div></div>
+        </div>
+        <div class="c5-faq__item">
+          <button class="c5-faq__q" aria-expanded="false" aria-controls="faq-2" id="faq-2-h">Czy CARBOMAT ECO można przedawkować? <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="c5-faq__a" id="faq-2" role="region" aria-labelledby="faq-2-h"><div class="c5-faq__ain">Praktycznie nie – to produkt nienawozowy. Zwróć uwagę tylko na odczyn: pod borówkę i inne kwasolubne wybierz odmianę 4,5–5,0 pH; odmiana uniwersalna ma 6,0–6,5 pH.</div></div>
+        </div>
+        <div class="c5-faq__item">
+          <button class="c5-faq__q" aria-expanded="false" aria-controls="faq-3" id="faq-3-h">Kiedy zobaczę efekt? <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="c5-faq__a" id="faq-3" role="region" aria-labelledby="faq-3-h"><div class="c5-faq__ain">Strukturę i lepsze gospodarowanie wodą – już w pierwszym sezonie; budowę próchnicy – w horyzoncie 2–5 lat. Trwały wkład lignitu pozostaje kilkanaście do ponad 20 lat.</div></div>
+        </div>
+        <div class="c5-faq__item">
+          <button class="c5-faq__q" aria-expanded="false" aria-controls="faq-4" id="faq-4-h">Czym różni się od obornika i kompostu? <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="c5-faq__a" id="faq-4" role="region" aria-labelledby="faq-4-h"><div class="c5-faq__ain">CARBOMAT ECO to gotowa, trwała próchnica, a obornik i kompost mineralizują się w około 3 lata i tylko około 15% przechodzi w trwałą próchnicę (Kwiatkowska-Malina, Politechnika Warszawska i IUNG). Wkład zostaje w glebie kilkanaście do ponad 20 lat.</div></div>
+        </div>
+        <div class="c5-faq__item">
+          <button class="c5-faq__q" aria-expanded="false" aria-controls="faq-5" id="faq-5-h">Czy zastąpi torf w podłożu? <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+          <div class="c5-faq__a" id="faq-5" role="region" aria-labelledby="faq-5-h"><div class="c5-faq__ain">Tak, jako komponent podłoża – w mieszankach zalecany udział to 10–20% objętości. To trwały, organiczny następca torfu; może też zastąpić perlit i wermikulit w napowietrzaniu podłoży.</div></div>
+        </div>
+      </div>
+
+      <div class="c5-ask" style="margin-top:clamp(2.5rem,5vw,4rem);">
+        <p class="c5-ask__lead">Nie znalazłeś odpowiedzi na swoje pytanie?<br>Zadaj je poniżej i uzyskaj natychmiastową, profesjonalną i precyzyjną odpowiedź!</p>
+        <!-- ⚠️ Treść tabletek robocza – do recenzji razem z resztą copy. -->
+        <div class="c5-ask__box" data-ask-box>
+          <input type="text" data-ask-input placeholder="Zapytaj dr Jurka o dobór odmiany, ilość i Twoją uprawę…" aria-label="Zadaj pytanie dr. Jurkowi">
+          <div class="c5-ask__chips" role="group" aria-label="Przykładowe pytania">
+            <button type="button" class="c5-ask__chip" data-ask-chip>Którą odmianę pH wybrać do mojej uprawy?</button>
+            <button type="button" class="c5-ask__chip" data-ask-chip>Ile worków potrzebuję na 100 m²?</button>
+            <button type="button" class="c5-ask__chip" data-ask-chip>Z czym połączyć CARBOMAT ECO?</button>
+            <button type="button" class="c5-ask__chip" data-ask-chip>Czy nadaje się do pomidorów?</button>
+            <button type="button" class="c5-ask__chip" data-ask-chip>Mam 3 ha i nie wiem, ile kupić</button>
+          </div>
+        </div>
+        <div><button type="button" class="c5-btn c5-btn--light" data-jurek-open>Zapytaj wirtualnego dr Jurka</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAS PRO ===== -->
+  <section class="c5-sec c5-pro">
+    <div class="c5-pro__photo" aria-hidden="true"><span class="wf-ph"></span></div>
+    <div class="c5-wrap">
+      <div class="c5-pro__grid">
+        <h2>Prowadzisz uprawę profesjonalną – sad, plantację, pole lub szkółkę?</h2>
+        <p>Przygotujemy ofertę i Twoją cenę – także na palety i duże opakowania (big bag 1,5 m³). Pierwsze zamówienie możesz złożyć w sklepie, a po realizacji zakładamy konto i kolejne robisz po swojej cenie.</p>
+        <div class="c5-btnrow">
+          <a class="c5-btn c5-btn--inv" href="kontakt.html">Zapytaj o ofertę</a>
+          <a class="c5-pro__link" href="platforma-b2b.html">Masz konto? Zaloguj się</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA KOŃCOWE ===== -->
+  <section class="c5-sec">
+    <div class="c5-wrap">
+      <div class="c5-cta">
+        <h2 class="c5-h2 c5-h2--center">Gotów zainwestować w glebę na lata?</h2>
+        <div class="c5-btnrow">
+          <a class="c5-btn c5-btn--dark" href="#kup">dodaj do koszyka</a>
+          <a class="c5-btn c5-btn--light" href="sklep.html">wróć do sklepu</a>
+        </div>
       </div>
     </div>
   </section>
@@ -474,9 +813,9 @@
   </div>
 </footer>
 
-<!-- ===== dr Jurek — pływający dok ===== -->
+<!-- ===== dr Jurek – pływający dok (ukryty do przewinięcia) ===== -->
 <div class="cw-jurek-backdrop" data-jurek-backdrop data-open="false" aria-hidden="true"></div>
-<div class="cw-jurek" data-jurek-dock data-open="false">
+<div class="cw-jurek cx-dockhide" data-jurek-dock data-open="false">
   <div class="cw-jurek__panel" role="dialog" aria-label="Wirtualny dr Jurek">
     <div class="cw-jurek__head">
       <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
@@ -496,65 +835,81 @@
   </form>
 </div>
 
-<script src="cw.js"></script>
 
-<!-- ===== PDP — warianty, cena/kanał, koszyk (page-local) ===== -->
+<script src="cw.js"></script>
+<script src="c5.js"></script>
+
+<!-- ===== PDP – wybór odmiany i pojemności, cena, koszyk (page-local) =====
+     Cena zależy od DWÓCH osi naraz (odmiana × opakowanie), bo Darek prosił,
+     żeby kwoty big bagów były przypisane do odmian pH, a nie podawane jako
+     widełki. Kwoty siedzą w atrybutach data-price-* przy przyciskach
+     opakowań – jedno miejsce do podmiany, gdy przyjdzie nowy cennik. -->
 <script>
 (function () {
-  var group = document.querySelector("[data-variants]");
-  if (!group) return;
+  "use strict";
+  var box = document.getElementById("kup");
+  if (!box) return;
 
-  var variantBtns = Array.prototype.slice.call(group.querySelectorAll("[data-variant]"));
-  var priceOut = document.querySelector("[data-price-out]");
-  var packOut = document.querySelector("[data-pack-out]");
-  var blockDrobnica = document.querySelector("[data-price-drobnica]");
-  var blockPaleta = document.querySelector("[data-price-paleta]");
-  var addCta = document.querySelector("[data-add-cta]");
-  var inquireCta = document.querySelector("[data-inquire-cta]");
-  var feedback = document.querySelector("[data-add-feedback]");
+  var variantBtns = Array.prototype.slice.call(box.querySelectorAll("[data-variant]"));
+  var packBtns    = Array.prototype.slice.call(box.querySelectorAll("[data-pack]"));
+  var priceOut    = box.querySelector("[data-price-out]");
+  var priceNote   = box.querySelector("[data-price-note]");
+  var packNote    = box.querySelector("[data-pack-note]");
+  var addBtn      = box.querySelector("[data-add]");
+  var addFb       = box.querySelector("[data-add-fb]");
 
-  function selectVariant(btn) {
-    variantBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
-    var inquire = btn.getAttribute("data-inquire") === "true";
-    if (feedback) feedback.hidden = true;
+  var VARIANT_LABEL = { uniwersalny: "odmiana pH 6,0–6,5", kwasny: "odmiana pH 4,5–5,0" };
+  var PACK_LABEL    = { w20: "worek 20 l", bb1000: "big bag 1000 l", bb1500: "big bag 1500 l" };
 
-    if (inquire) {
-      if (blockDrobnica) blockDrobnica.hidden = true;
-      if (blockPaleta) blockPaleta.hidden = false;
-      if (addCta) addCta.hidden = true;
-      if (inquireCta) inquireCta.hidden = false;
-    } else {
-      if (blockDrobnica) blockDrobnica.hidden = false;
-      if (blockPaleta) blockPaleta.hidden = true;
-      if (addCta) {
-        addCta.hidden = false;
-        addCta.setAttribute("data-name", btn.getAttribute("data-name") || "");
-        addCta.setAttribute("data-price", btn.getAttribute("data-price") || "");
-      }
-      if (inquireCta) inquireCta.hidden = true;
-      if (priceOut) priceOut.textContent = btn.getAttribute("data-price-label") || "";
-      if (packOut) packOut.textContent = (btn.getAttribute("data-pack") || "") + " · cena do potwierdzenia";
+  var state = { variant: "uniwersalny", pack: "w20" };
+
+  function currentPackBtn() {
+    for (var i = 0; i < packBtns.length; i++) {
+      if (packBtns[i].getAttribute("data-pack") === state.pack) return packBtns[i];
     }
+    return packBtns[0];
   }
 
-  variantBtns.forEach(function (btn) {
-    btn.addEventListener("click", function () { selectVariant(btn); });
+  function render() {
+    variantBtns.forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-variant") === state.variant ? "true" : "false");
+    });
+    packBtns.forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-pack") === state.pack ? "true" : "false");
+    });
+
+    var btn = currentPackBtn();
+    var price = btn ? btn.getAttribute("data-price-" + state.variant) : null;
+    if (priceOut)  priceOut.textContent  = price ? (price + " zł") : "cena do potwierdzenia";
+    if (priceNote) priceNote.textContent = "cena brutto · " + PACK_LABEL[state.pack] + " · " + VARIANT_LABEL[state.variant];
+    /* Big bag = paleta: dokładamy zdanie o ofercie na większe ilości. */
+    if (packNote) packNote.hidden = state.pack === "w20";
+    if (addFb) addFb.textContent = "";
+  }
+
+  variantBtns.forEach(function (b) {
+    b.addEventListener("click", function () { state.variant = b.getAttribute("data-variant"); render(); });
+  });
+  packBtns.forEach(function (b) {
+    b.addEventListener("click", function () { state.pack = b.getAttribute("data-pack"); render(); });
   });
 
-  if (addCta) {
-    addCta.addEventListener("click", function () {
+  if (addBtn) {
+    addBtn.addEventListener("click", function () {
       try {
-        var n = parseInt(sessionStorage.getItem("cw_cart") || "0", 10) || 0;
-        n += 1;
+        var n = (parseInt(sessionStorage.getItem("cw_cart") || "0", 10) || 0) + 1;
         sessionStorage.setItem("cw_cart", String(n));
         Array.prototype.slice.call(document.querySelectorAll("[data-cart-count]")).forEach(function (el) {
-          el.textContent = String(n);
-          el.hidden = n === 0;
+          el.textContent = String(n); el.hidden = false;
         });
-      } catch (_) {}
-      if (feedback) feedback.hidden = false;
+      } catch (e) { /* brak sessionStorage – licznik zostaje bez zmian */ }
+      if (addFb) {
+        addFb.textContent = "Dodano: CARBOMAT ECO · " + PACK_LABEL[state.pack] + " · " + VARIANT_LABEL[state.variant] + ".";
+      }
     });
   }
+
+  render();
 })();
 </script>
 </body>

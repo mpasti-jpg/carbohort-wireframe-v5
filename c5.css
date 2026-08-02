@@ -1,0 +1,342 @@
+/* =========================================================================
+   c5.css - wspolna warstwa layoutu V5 dla stron produktowych CarboHort
+   Wyekstrahowana 1:1 z bloku <style> we wzorcowej stronie v5/carbomat.html
+   (2026-08-02). carbomat.html celowo NIE zostal ruszony - jest u grafika
+   i pod publicznym adresem; przy najblizszej okazji warto go przepiac na
+   ten plik, zeby nie doszlo do rozjazdu warstwy.
+   Kolejnosc wczytywania: tokens.css -> wireframe.css -> cw.css -> c5.css
+   Plikow kitu (wireframe.css, tokens.css, tabler-sprite.svg) NIE edytujemy.
+   ========================================================================= */
+/* =====================================================================
+   CARBOMAT ECO – V5 (2026-07-24). Layout wg makiet Mateusza (Figma
+   „wireframes" → /carbomat, node 3:584) + treść 1:1 wg dokumentu Darka
+   „Produkty na stronę" 24.07. Nowy język układu: ostre narożniki,
+   pełnoekranowe sekcje, kicker + centralny H2, ciemna sekcja parametrów.
+   Prefiks c5-*; chrome (navbar/mega/stopka) bez zmian. Tylko tokeny --w-*
+   i skala szarości. Animacje celowo MINIMALNE – dopracujemy je osobno,
+   sekcja po sekcji (polecenie Mateusza 24.07).
+   ===================================================================== */
+:root { --cx-subnav-h: 64px; --cx-chrome: var(--cx-subnav-h); --c5-acc: .2s; --c5-acc-fade: .14s; }
+
+/* Górne menu serwisu NIE jest przyklejone (decyzja Mateusza 24.07) – scrolluje
+   się razem ze stroną; do góry ekranu klei się wyłącznie subnawigacja. Kit
+   pozostaje nietknięty – to nadpisanie tylko w obrębie tej strony. */
+.wf-navbar{position:static;}
+
+/* --- Subnawigacja produktu (Figma node 9:224): pigułki do lewej + „kup teraz"
+   do prawej; przyklejona do górnej krawędzi ekranu -------------------------- */
+/* Belka bez własnego tła (polecenie Mateusza 24.07) – pływa nad treścią;
+   pointer-events tylko na pigułkach i przycisku, żeby pusty obszar belki
+   nie blokował klikania w treść pod spodem. Pozycja FIXED (nie sticky), bo
+   w pierwszym widoku belki ma nie być – wjeżdża od góry dopiero, gdy główne
+   menu wyjedzie z ekranu (klasa `is-on` z JS). */
+.cx-subnav{position:fixed;left:0;right:0;top:0;z-index:90;pointer-events:none;transform:translateY(-100%);transition:transform .3s var(--w-ease);}
+.cx-subnav.is-on{transform:none;}
+.cx-subnav__in{display:flex;align-items:center;justify-content:space-between;gap:var(--w-space-5);min-height:var(--cx-subnav-h);}
+.cx-subnav__links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0;}
+.cx-subnav__links::-webkit-scrollbar{display:none;}
+/* Pigułki: tło zawsze w 100% kryjące (białe) – wyciszony jest wyłącznie
+   napis i obrys, nie cały element (jak w Figmie: opacity na tekście). */
+.cx-subnav__link{flex:none;pointer-events:auto;padding:8px 15px;font-size:0.8125rem;letter-spacing:-0.01em;color:rgb(0 0 0 / .5);white-space:nowrap;background:var(--w-surface-page);border:1px solid rgb(0 0 0 / .2);text-decoration:none;transition:color var(--w-duration-base) var(--w-ease),border-color var(--w-duration-base) var(--w-ease);}
+.cx-subnav__link:hover{color:rgb(0 0 0 / .8);}
+.cx-subnav__link[aria-current="true"]{color:var(--w-text-primary);border-color:var(--w-gray-900);}
+.cx-subnav__buy{flex:none;pointer-events:auto;padding:8px 15px;font-size:0.8125rem;letter-spacing:.02em;text-transform:uppercase;background:var(--w-gray-900);color:var(--w-text-inverse);border:1px solid rgb(0 0 0 / .2);text-decoration:none;white-space:nowrap;}
+.cx-subnav__buy:hover{background:var(--w-gray-700);}
+/* kotwice lądują pod przyklejoną belką */
+[data-chapter]{scroll-margin-top:calc(var(--cx-subnav-h) + 8px);}
+
+/* --- Wspólne klocki nowego layoutu -------------------------------------- */
+.c5-wrap{max-width:1180px;margin-inline:auto;padding-inline:var(--w-space-5);}
+.c5-sec{padding-block:clamp(3.5rem,7vw,6.25rem);}
+.c5-kicker{display:block;font-size:0.875rem;font-weight:var(--w-weight-medium);letter-spacing:.03em;text-transform:uppercase;margin-bottom:clamp(2rem,4vw,3.5rem);}
+.c5-h1{font-size:clamp(2.1rem,4vw,3.125rem);line-height:1.12;font-weight:var(--w-weight-medium);letter-spacing:-0.01em;}
+.c5-h2{font-size:clamp(1.7rem,3.2vw,2.5rem);line-height:1.15;font-weight:var(--w-weight-medium);letter-spacing:-0.01em;max-width:784px;}
+.c5-h2--center{margin-inline:auto;text-align:center;}
+.c5-lead{font-size:1rem;color:var(--w-text-secondary);max-width:710px;}
+.c5-lead--center{margin-inline:auto;text-align:center;}
+.c5-head{display:flex;flex-direction:column;gap:clamp(1.25rem,2.6vw,2.25rem);}
+.c5-muted{color:var(--w-text-secondary);}
+
+/* Przyciski nowego języka: ostre narożniki, etykiety jak w makiecie */
+.c5-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 45px;font:inherit;font-size:1rem;font-weight:var(--w-weight-medium);letter-spacing:-0.01em;border:1px solid rgb(0 0 0 / .2);border-radius:0;cursor:pointer;text-decoration:none;transition:background var(--w-duration-base) var(--w-ease),color var(--w-duration-base) var(--w-ease),border-color var(--w-duration-base) var(--w-ease);}
+.c5-btn--dark{background:var(--w-gray-900);color:var(--w-text-inverse);border-color:var(--w-gray-900);}
+.c5-btn--dark:hover{background:var(--w-gray-700);border-color:var(--w-gray-700);}
+.c5-btn--light{background:var(--w-surface-page);color:var(--w-text-primary);}
+.c5-btn--light:hover{border-color:var(--w-border-strong);}
+.c5-btn--sm{padding:10px 25px;font-size:0.8125rem;}
+.c5-btn--inv{background:var(--w-surface-page);color:var(--w-text-primary);border-color:var(--w-surface-page);}
+.c5-btn--inv:hover{background:var(--w-gray-100);}
+.c5-btn .wf-icon{width:16px;height:16px;opacity:.55;}
+.c5-btnrow{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* --- HERO ----------------------------------------------------------------- */
+.c5-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:center;padding-block:clamp(2.5rem,5vw,4.5rem) clamp(2rem,4vw,3rem);min-height:min(42rem,calc(100svh - var(--cx-chrome)));}
+.c5-hero__copy{display:flex;flex-direction:column;gap:clamp(1.25rem,2.4vw,2rem);max-width:585px;}
+.c5-hero__copy .c5-kicker{margin-bottom:0;}
+.c5-hero__lead{display:flex;flex-direction:column;gap:var(--w-space-3);font-size:1.125rem;color:var(--w-text-secondary);max-width:486px;}
+.c5-hero__visual{display:flex;flex-direction:column;gap:var(--w-space-4);}
+.c5-hero__visual .wf-ph{aspect-ratio:605/494;width:100%;border-radius:0;}
+/* Placeholdery bez opisów – neutralne pola pod zdjęcia (kadry ustala grafik). */
+.wf-ph__label{display:none;}
+.c5-trust{display:flex;flex-wrap:wrap;gap:var(--w-space-2);align-items:center;font-size:clamp(0.6875rem,0.9vw,0.8125rem);color:var(--w-text-primary);margin:0;padding:0;list-style:none;}
+.c5-trust li{display:inline-flex;align-items:center;gap:var(--w-space-3);white-space:nowrap;}
+.c5-trust li:not(:last-child)::after{content:"|";color:var(--w-text-tertiary);margin-left:var(--w-space-2);}
+
+/* --- PARAMETRY (ciemna sekcja pod hero) ----------------------------------- */
+.c5-params{background:var(--w-gray-600);color:var(--w-text-inverse);}
+.c5-params__title{font-size:clamp(1.4rem,2.4vw,1.875rem);font-weight:var(--w-weight-medium);letter-spacing:-0.01em;text-align:center;margin-bottom:clamp(2.5rem,5vw,4rem);}
+.c5-params__rows{display:flex;flex-direction:column;}
+.c5-params__row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,287px);gap:var(--w-space-4);padding-block:14px;border-bottom:1px solid rgb(255 255 255 / .35);}
+.c5-params__row dt{font-weight:var(--w-weight-medium);font-size:1rem;}
+.c5-params__row dd{margin:0;font-size:1rem;font-weight:var(--w-weight-regular);}
+.c5-params__row .c5-dim{opacity:.65;}
+.c5-params__actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:clamp(2.5rem,5vw,4.25rem);}
+.c5-params .c5-btn--ondark{background:var(--w-gray-900);color:var(--w-text-inverse);border-color:rgb(0 0 0 / .2);}
+.c5-params .c5-btn--ondark:hover{background:var(--w-gray-800);}
+.c5-params__src{text-align:center;font-size:0.75rem;opacity:.55;margin-top:var(--w-space-5);}
+
+/* --- KTÓRY DLA MNIE -------------------------------------------------------- */
+/* Taby wariantów: przyklejone pod subnawigacją, przewijają do bloków, które
+   leżą JEDEN POD DRUGIM (oba widoczne – taby tylko nawigują, nie przełączają).
+   Sticky kończy się wraz z kontenerem `.c5-variants`, więc po ostatnim bloku
+   taby chowają się do góry. */
+.c5-variants{position:relative;margin-top:clamp(2rem,4vw,3.5rem);}
+.c5-ways{position:sticky;top:var(--cx-subnav-h);z-index:80;display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--w-surface-page);padding-block:var(--w-space-3);}
+.c5-way{display:flex;align-items:center;gap:var(--w-space-5);padding:25px 29px;min-height:110px;font:inherit;font-size:1.125rem;text-align:left;background:var(--w-gray-900);color:var(--w-text-inverse);border:0;border-radius:0;cursor:pointer;transition:background var(--w-duration-base) var(--w-ease),color var(--w-duration-base) var(--w-ease);}
+.c5-way[aria-selected="false"]{background:var(--w-gray-100);color:var(--w-text-primary);}
+.c5-way[aria-selected="false"]:hover{background:var(--w-gray-200);}
+.c5-way__ico{flex:none;display:grid;place-items:center;width:60px;height:60px;border:1px solid currentColor;border-radius:var(--w-radius-circle);}
+.c5-way .wf-icon{width:28px;height:28px;}
+.c5-variant + .c5-variant{margin-top:clamp(3rem,7vw,6rem);}
+.c5-variant__name{font-size:clamp(2rem,3.6vw,3rem);font-weight:var(--w-weight-medium);letter-spacing:-0.01em;}
+.c5-variant__grid{display:grid;grid-template-columns:minmax(0,641fr) minmax(0,486fr);gap:clamp(1.5rem,3vw,3.25rem);align-items:start;margin-top:clamp(2rem,4vw,3rem);}
+.c5-variant__grid > .wf-ph{aspect-ratio:641/523;width:100%;border-radius:0;position:sticky;top:calc(var(--cx-subnav-h) + var(--c5-tabs-h, 140px) + var(--w-space-5));}
+.c5-variant__info{display:flex;flex-direction:column;gap:var(--w-space-5);font-size:1rem;}
+.c5-variant__info .c5-label{font-weight:var(--w-weight-semibold);}
+.c5-variant__info ul{margin:var(--w-space-1) 0 0;padding-left:1.35rem;display:flex;flex-direction:column;gap:var(--w-space-1);}
+.c5-variant__block{display:flex;flex-direction:column;gap:var(--w-space-1);}
+/* Cennik: wiersz z miniaturą, nazwą, ceną i dodaniem do koszyka */
+.c5-price{display:flex;flex-direction:column;margin-top:var(--w-space-2);}
+.c5-price__row{display:grid;grid-template-columns:103px minmax(0,1fr) auto;gap:var(--w-space-4);align-items:center;padding-block:15px;border-top:1px solid var(--w-border-default);}
+.c5-price__row > .wf-ph{width:103px;aspect-ratio:103/84;border-radius:0;}
+.c5-price__body{display:flex;flex-direction:column;gap:8px;align-items:flex-start;}
+.c5-price__name{font-size:1rem;}
+.c5-price__val{font-weight:var(--w-weight-semibold);font-size:1rem;text-align:right;align-self:start;padding-top:4px;}
+/* Alert borówkowy: ramka z obrazkiem i CTA */
+.c5-alert{display:grid;grid-template-columns:168px minmax(0,1fr);gap:clamp(1.25rem,3vw,3rem);align-items:center;border:1px solid var(--w-gray-900);padding:29px;margin-top:clamp(2.5rem,5vw,4rem);}
+.c5-alert > .wf-ph{width:168px;aspect-ratio:1;border-radius:0;}
+.c5-alert__body{display:flex;flex-direction:column;gap:var(--w-space-3);align-items:flex-start;}
+
+/* --- CZYM JEST (akordeon 5 tematów + wizual) -------------------------------- */
+.c5-facts{display:grid;grid-template-columns:minmax(0,486fr) minmax(0,486fr);gap:clamp(2rem,6vw,10rem);align-items:start;margin-top:clamp(2rem,4.5vw,4rem);}
+.c5-facts__visual{position:sticky;top:calc(var(--cx-chrome) + var(--w-space-5));}
+/* Ilustracje danych – jedna karta na temat, wspólny wzorzec: znacznik, grafika,
+   podpis ze źródłem. Widoczna tylko karta aktywnego tematu. */
+.c5-viz{margin:0;display:none;flex-direction:column;gap:var(--w-space-5);border:1px solid var(--w-border-default);background:var(--w-surface-page);padding:clamp(1.25rem,2.4vw,2rem);min-height:392px;}
+.c5-viz[data-on="true"]{display:flex;animation:c5-vizin .22s var(--w-ease);}
+@keyframes c5-vizin{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.c5-viz__tag{font-size:0.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--w-text-tertiary);}
+.c5-viz__body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:var(--w-space-4);}
+.c5-viz__body svg:not(.wf-icon){width:100%;height:auto;color:var(--w-text-primary);}
+.c5-viz__cap{font-size:0.75rem;line-height:1.45;color:var(--w-text-tertiary);}
+.c5-viz__num{font-size:clamp(2rem,4vw,2.75rem);font-weight:var(--w-weight-bold);line-height:1;letter-spacing:-0.02em;}
+.c5-viz__ring{display:flex;align-items:center;gap:clamp(1rem,3vw,2rem);}
+.c5-viz__ring svg:not(.wf-icon){width:min(160px,44%);flex:none;}
+.c5-viz__list{display:flex;flex-direction:column;gap:var(--w-space-3);margin:0;padding:0;list-style:none;font-size:var(--w-font-sm-size);}
+.c5-viz__list li{display:flex;gap:var(--w-space-3);align-items:flex-start;}
+.c5-viz__list .wf-icon{flex:none;margin-top:2px;color:var(--w-icon-default);}
+.c5-viz .wf-table{font-size:var(--w-font-sm-size);}
+.c5-viz .c5-bar{grid-template-columns:minmax(6.25rem,31%) 1fr minmax(4.5rem,auto);font-size:0.8125rem;gap:var(--w-space-2);}
+.c5-fact{border-bottom:1px solid var(--w-border-default);}
+.c5-fact:first-child{border-top:1px solid var(--w-border-default);}
+.c5-fact__btn{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--w-space-4);width:100%;padding:18px 0;background:none;border:0;font:inherit;font-size:1.25rem;font-weight:var(--w-weight-medium);letter-spacing:-0.01em;text-align:left;cursor:pointer;color:var(--w-text-primary);}
+.c5-fact__btn .wf-icon{flex:none;margin-top:6px;transition:transform var(--w-duration-base) var(--w-ease);}
+.c5-fact__btn[aria-expanded="true"] .wf-icon{transform:rotate(180deg);}
+/* Rozwijanie/zwijanie: siatka 0fr→1fr (animowalna wysokość bez JS-owego
+   mierzenia). Wszystkie akordeony na stronie używają tego samego wzorca. */
+.c5-fact__panel{overflow:hidden;height:0;opacity:0;transition:height var(--c5-acc) var(--w-ease),opacity var(--c5-acc-fade) var(--w-ease);}
+.c5-fact[data-open="true"] .c5-fact__panel{opacity:1;}
+.c5-fact__panelin{overflow:hidden;min-height:0;padding-bottom:22px;display:flex;flex-direction:column;gap:var(--w-space-4);font-size:1rem;color:var(--w-text-secondary);}
+.c5-fact__panel ul{margin:0;padding-left:1.35rem;display:flex;flex-direction:column;gap:var(--w-space-2);}
+/* wykres humifikacji i tabela metali wewnątrz paneli */
+.c5-barchart{display:flex;flex-direction:column;gap:var(--w-space-3);}
+.c5-bar{display:grid;grid-template-columns:minmax(7.5rem,34%) 1fr minmax(5.2rem,auto);gap:var(--w-space-3);align-items:center;font-size:var(--w-font-sm-size);}
+.c5-bar__track{height:12px;background:var(--w-gray-100);border:1px solid var(--w-border-subtle);overflow:hidden;}
+.c5-bar__fill{height:100%;width:var(--bw);background:var(--w-gray-900);}
+.c5-fact__panel .wf-table th,.c5-fact__panel .wf-table td{padding-block:var(--w-space-2);}
+
+/* --- JAK STOSOWAĆ (sceny z kartami na zdjęciu) ------------------------------ */
+.c5-recipes{display:flex;flex-direction:column;gap:clamp(2.5rem,5vw,4.5rem);margin-top:clamp(2rem,4.5vw,4rem);}
+.c5-recipe__prod{font-size:1.25rem;font-weight:var(--w-weight-medium);letter-spacing:.01em;text-transform:uppercase;}
+.c5-recipe__sub{font-size:1.25rem;font-weight:var(--w-weight-medium);margin-top:var(--w-space-6);}
+.c5-scene{position:relative;margin-top:var(--w-space-4);}
+.c5-scene > .wf-ph{aspect-ratio:1180/670;width:100%;border-radius:0;}
+.c5-scene__cards{position:absolute;left:clamp(1rem,4vw,58px);right:clamp(1rem,4vw,58px);bottom:clamp(1rem,3.5vw,45px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),486px));gap:24px;align-items:end;}
+.c5-scene__card{background:var(--w-surface-page);border:1px solid rgb(0 0 0 / .2);padding:24px 27px;font-size:0.875rem;display:flex;flex-direction:column;gap:6px;text-align:left;}
+.c5-scene__card p{margin:0;}
+.c5-scene__card ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:4px;}
+.c5-scene__card .c5-label{font-weight:var(--w-weight-semibold);}
+.c5-scene__card.is-on{border-color:var(--w-gray-900);}
+/* Akordeon kart recept: nieaktywna karta = sam pasek tytułu (treść zwinięta),
+   klik rozwija i podmienia zdjęcie sceny (etykietę placeholdera). */
+.c5-scene__card:not(.is-on){cursor:pointer;}
+.c5-scene__cardhead{all:unset;display:block;font:inherit;font-weight:var(--w-weight-semibold);color:var(--w-text-primary);cursor:inherit;}
+.c5-scene__card:not(.is-on) .c5-scene__cardhead{color:rgb(0 0 0 / .45);}
+.c5-scene__cardbody{overflow:hidden;height:0;opacity:0;transition:height var(--c5-acc) var(--w-ease),opacity var(--c5-acc-fade) var(--w-ease);}
+.c5-scene__card.is-on .c5-scene__cardbody{opacity:1;}
+.c5-scene__cardbodyin{overflow:hidden;min-height:0;display:flex;flex-direction:column;gap:6px;}
+@media (max-width:899px){
+  .c5-scene__cards{position:static;margin-top:var(--w-space-3);}
+  .c5-scene > .wf-ph{aspect-ratio:16/9;}
+}
+
+/* --- DAWKOWANIE (kierunek: konfigurator) ----------------------------------- */
+.c5-dose{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,486px);gap:clamp(2rem,5vw,5rem);align-items:center;margin-top:clamp(1.5rem,3vw,2.5rem);}
+.c5-dose__list{margin:0;padding-left:1.35rem;display:flex;flex-direction:column;gap:var(--w-space-2);color:var(--w-text-secondary);max-width:486px;}
+.c5-dose__col{display:flex;flex-direction:column;gap:clamp(1.5rem,3vw,2.5rem);align-items:flex-start;}
+.c5-dose .wf-ph{aspect-ratio:486/297;width:100%;border-radius:0;}
+
+/* --- SEZON: oś czasu (akordeon) + siatka + pas PRO -------------------------- */
+/* Oś czasu sezonu: wiersz = tytuł (lewa) · packshot (środek) · opis (prawa).
+   Panel ma display:contents, więc jego dzieci wpadają wprost w siatkę wiersza.
+   Bez strzałek – rozwijaniem steruje scroll (patrz .c5-season-pin niżej). */
+.c5-season{display:flex;flex-direction:column;margin-top:clamp(2rem,4.5vw,4rem);background:var(--w-surface-page);}
+.c5-season__row{border-top:1px solid var(--w-border-default);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.66fr);gap:clamp(1.5rem,4vw,4rem);align-items:start;padding-block:clamp(1.5rem,2.6vw,2.25rem);}
+.c5-season__head{grid-column:1;padding:0;background:none;border:0;font:inherit;font-size:1.5rem;font-weight:var(--w-weight-medium);letter-spacing:-0.01em;text-align:left;color:var(--w-text-primary);cursor:pointer;}
+.c5-season__panel{grid-column:2;overflow:hidden;height:0;opacity:0;transition:height var(--c5-acc) var(--w-ease),opacity var(--c5-acc-fade) var(--w-ease);}
+.c5-season__row[data-open="true"] .c5-season__panel{opacity:1;}
+.c5-season__panelin{overflow:hidden;min-height:0;display:grid;grid-template-columns:209px minmax(0,1fr);gap:clamp(1.5rem,4vw,4rem);align-items:start;}
+.c5-season__panelin > .wf-ph{width:100%;aspect-ratio:209/170;border-radius:0;}
+.c5-season__info{display:flex;flex-direction:column;gap:var(--w-space-3);align-items:flex-start;max-width:441px;}
+.c5-season__info h3{font-size:1.125rem;font-weight:var(--w-weight-medium);}
+/* Pin: blok przykleja się DOŁEM do krawędzi ekranu, gdy widoczne są wszystkie
+   trzy kroki; kolejne fazy scrolla otwierają je po kolei (obsługa w JS).
+   Rozpórka MUSI stać przed blokiem – sticky z `bottom` podciąga element w górę
+   z jego pozycji statycznej, więc blok musi być na końcu kontenera.
+   Wysokości ustawia JS; bez JS / na mobile: zwykły akordeon na klik. */
+.c5-season-pin{position:relative;}
+.c5-season-pin__spacer{display:none;}
+@media (min-width:900px) and (prefers-reduced-motion: no-preference){
+  .cx-js .c5-season-pin__spacer{display:block;}
+  .cx-js .c5-season-pin > .c5-season{position:sticky;bottom:clamp(1.5rem,5vh,3rem);margin-top:0;z-index:1;}
+  /* Nagłówek trzyma się góry przez cały cykl kroków, a potem – zamiast zniknąć –
+     jest WYPYCHANY w górę przez dolną krawędź swojego kontenera, czyli odjeżdża
+     naturalnie razem z krokami. Kontener jest absolutny (nie zajmuje miejsca
+     w biegu), a jego wysokość liczy JS tak, by wypychanie zaczęło się dokładnie
+     w chwili, gdy blok kroków odkleja się od dołu. */
+  .cx-js .c5-season-headwrap{position:absolute;top:0;left:0;right:0;}
+  .cx-js .c5-season-head{position:sticky;top:calc(var(--cx-subnav-h) + clamp(0.75rem,2.5vh,1.75rem));z-index:70;background:var(--w-surface-page);padding-block:clamp(0.75rem,2vh,1.5rem);}
+}
+.c5-band{background:var(--w-surface-subtle);}
+.c5-band__title{font-size:1.5rem;font-weight:var(--w-weight-medium);letter-spacing:-0.01em;}
+.c5-grid-scroll{margin-top:clamp(1.5rem,3vw,2.5rem);}
+.c5-chart{min-width:640px;display:grid;grid-template-columns:minmax(7.5rem,20%) repeat(5,1fr);}
+.c5-chart__cell{border-top:1px solid var(--w-border-default);min-height:52px;display:flex;align-items:center;justify-content:center;gap:var(--w-space-2);padding:var(--w-space-2);}
+.c5-chart__cell--head{border-top:0;min-height:0;align-items:flex-end;}
+.c5-chart__cell--label{justify-content:flex-start;}
+.c5-dot{width:12px;height:12px;border-radius:var(--w-radius-pill);background:var(--w-gray-500);flex:none;}
+.c5-dot--carbomat{width:14px;height:14px;background:var(--w-gray-900);}
+.c5-dot--niefiltr{background:var(--w-surface-page);border:2px solid var(--w-gray-900);}
+.c5-dot--maxi{background:var(--w-gray-500);}
+.c5-dot--calbor{border-radius:2px;transform:rotate(45deg);background:var(--w-gray-900);width:11px;height:11px;}
+/* Legenda = filtry siatki: klik podświetla wystąpienia danego produktu */
+.c5-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--w-space-5);margin-top:var(--w-space-4);}
+.c5-legend__item{display:flex;gap:var(--w-space-3);align-items:center;text-align:left;font:inherit;background:none;border:0;padding:0;cursor:pointer;}
+.c5-legend__item > .wf-ph{width:89px;aspect-ratio:89/73;flex:none;border-radius:0;transition:outline-color var(--w-duration-base) var(--w-ease);outline:2px solid transparent;outline-offset:2px;}
+.c5-legend__item[aria-pressed="true"] > .wf-ph{outline-color:var(--w-gray-900);}
+.c5-legend[data-filtering] .c5-legend__item[aria-pressed="false"]{opacity:.45;}
+.c5-legend__item:hover{opacity:1;}
+.c5-legend__txt{display:flex;flex-direction:column;gap:2px;font-size:0.875rem;font-weight:var(--w-weight-medium);}
+.c5-legend__txt .c5-dot{margin-bottom:2px;}
+/* wygaszone kropki przy aktywnym filtrze */
+.c5-dot.is-off{opacity:.12;}
+/* Pas PRO wg Figmy 9:152 – ciemne tło, treść na lewej połowie, foto na prawej */
+.c5-pro{position:relative;background:var(--w-gray-600);color:var(--w-text-inverse);overflow:hidden;}
+.c5-pro__photo{position:absolute;inset:0 0 0 50%;}
+.c5-pro__photo .wf-ph{width:100%;height:100%;border:0;border-radius:0;background:var(--w-gray-500);}
+.c5-pro .c5-wrap{position:relative;z-index:1;}
+.c5-pro__grid{display:flex;flex-direction:column;gap:22px;max-width:486px;}
+.c5-pro__grid h2{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:var(--w-weight-medium);letter-spacing:-0.01em;}
+.c5-pro__grid p{color:var(--w-text-inverse);opacity:.6;}
+.c5-pro__grid .c5-btnrow{margin-top:clamp(2rem,5vw,4.5rem);flex-wrap:nowrap;align-items:center;gap:var(--w-space-2);}
+.c5-pro__link{white-space:nowrap;}
+.c5-pro__link{color:var(--w-text-inverse);text-decoration:underline;text-underline-offset:3px;font-weight:var(--w-weight-medium);padding:12px 24px;}
+
+/* --- FAQ: pytanie z lewej, odpowiedź z prawej ------------------------------- */
+.c5-faq{display:flex;flex-direction:column;margin-top:clamp(1.5rem,3vw,2.25rem);}
+.c5-faq__item{border-top:1px solid var(--w-border-default);position:relative;}
+.c5-faq__item:last-child{border-bottom:1px solid var(--w-border-default);}
+.c5-faq__q{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--w-space-4);width:100%;padding:26px 0;background:none;border:0;font:inherit;font-size:1.125rem;font-weight:var(--w-weight-medium);letter-spacing:-0.01em;text-align:left;color:var(--w-text-primary);cursor:pointer;}
+.c5-faq__q .wf-icon{flex:none;margin-top:4px;transition:transform var(--w-duration-base) var(--w-ease);}
+.c5-faq__q[aria-expanded="true"] .wf-icon{transform:rotate(180deg);}
+.c5-faq__a{overflow:hidden;height:0;opacity:0;transition:height var(--c5-acc) var(--w-ease),opacity var(--c5-acc-fade) var(--w-ease);}
+.c5-faq__item[data-open] .c5-faq__a{opacity:1;}
+.c5-faq__ain{overflow:hidden;min-height:0;padding-bottom:26px;font-size:1rem;color:var(--w-text-secondary);}
+@media (min-width:900px){
+  /* stały układ dwukolumnowy – bez skoku przy otwieraniu (kolumna odpowiedzi
+     jest zawsze, tylko zwinięta do zera) */
+  .c5-faq__item{display:grid;grid-template-columns:minmax(0,1fr) 515px;gap:var(--w-space-10);align-items:start;}
+  .c5-faq__q{grid-column:1;}
+  .c5-faq__a{grid-column:2;}
+  /* strzałka przy prawej krawędzi wiersza; tekst odpowiedzi z odstępem od niej */
+  .c5-faq__q .wf-icon{position:absolute;right:0;top:30px;}
+  .c5-faq__ain{padding-top:26px;padding-right:60px;}
+}
+/* moduł „zadaj pytanie dr Jurkowi" */
+.c5-ask{max-width:784px;margin-inline:auto;display:flex;flex-direction:column;gap:var(--w-space-5);}
+.c5-ask__lead{font-size:1.125rem;font-weight:var(--w-weight-medium);}
+.c5-ask__box{border:1px solid rgb(0 0 0 / .3);padding:27px;display:flex;flex-direction:column;gap:var(--w-space-8);background:var(--w-surface-page);cursor:pointer;}
+.c5-ask__box input{border:0;outline:none;font:inherit;font-size:1rem;color:var(--w-text-primary);background:transparent;width:100%;cursor:pointer;}
+.c5-ask__box input::placeholder{color:var(--w-text-tertiary);}
+/* Tabletki z proponowanymi pytaniami (zaokrąglone – jak w makiecie) */
+.c5-ask__chips{display:flex;flex-wrap:wrap;gap:12px;}
+.c5-ask__chip{font:inherit;font-size:0.9375rem;padding:10px 22px;background:var(--w-surface-page);border:1px solid rgb(0 0 0 / .3);border-radius:var(--w-radius-pill);color:var(--w-text-primary);cursor:pointer;transition:border-color var(--w-duration-base) var(--w-ease);}
+.c5-ask__chip:hover{border-color:var(--w-gray-900);}
+
+/* --- CTA końcowe ------------------------------------------------------------ */
+.c5-cta{display:flex;flex-direction:column;align-items:center;gap:clamp(1.75rem,3.5vw,2.75rem);text-align:center;}
+
+/* --- Dok dr Jurka: pojawia się po zejściu z hero ----------------------------- */
+.cw-jurek{transition:opacity .3s ease,visibility .3s ease;}
+.cw-jurek.cx-dockhide{opacity:0;visibility:hidden;pointer-events:none;}
+
+/* --- Responsywność ----------------------------------------------------------- */
+@media (max-width:899px){
+  .c5-hero{grid-template-columns:1fr;min-height:0;}
+  /* taby: bez przyklejania (zjadłyby pół ekranu) – zostają zwykłymi skrótami */
+  .c5-ways{grid-template-columns:1fr;position:static;}
+  .c5-pro__photo{position:static;inset:auto;margin-top:clamp(2rem,6vw,3rem);height:220px;}
+  /* FIX 2026-08-02: pas PRO miał na mobile `flex-wrap:nowrap` (potrzebne na
+     desktopie, żeby „Masz konto? Zaloguj się" stało obok przycisku). Przy 375 px
+     rząd ma 387 px przy kontenerze 335 px, więc link był przycinany przez
+     `overflow:hidden` sekcji. Defekt dotyczył WSZYSTKICH stron V5 z tym pasem
+     (carbohumic, carbomat-mata, carbomat-humic, produkty), nie tylko sklepu –
+     dlatego naprawa w warstwie wspólnej. Strony poziomego scrolla nie było,
+     bo sekcja przycina zawartość, i dlatego dotychczasowe QA tego nie łapało. */
+  .c5-pro__grid .c5-btnrow{flex-wrap:wrap;}
+  .c5-variant__grid{grid-template-columns:1fr;}
+  .c5-variant__grid > .wf-ph{position:static;aspect-ratio:16/10;}
+  .c5-facts{grid-template-columns:1fr;}
+  .c5-facts__visual{position:static;order:-1;}
+  .c5-dose{grid-template-columns:1fr;}
+  .c5-dose .wf-ph{order:-1;}
+  .c5-season__row{grid-template-columns:1fr;gap:var(--w-space-4);}
+  .c5-season__panel{grid-column:auto;}
+  .c5-season__panelin{grid-template-columns:1fr;gap:var(--w-space-4);}
+  .c5-season__panelin > .wf-ph{max-width:209px;}
+  .c5-alert{grid-template-columns:1fr;}
+  .c5-params__row{grid-template-columns:minmax(0,1fr) minmax(0,45%);}
+}
+@media (max-width:599px){
+  .c5-price__row{grid-template-columns:72px minmax(0,1fr);grid-template-rows:auto auto;}
+  .c5-price__row > .wf-ph{width:72px;grid-row:1 / span 2;}
+  .c5-price__val{grid-column:2;text-align:left;padding-top:0;}
+  .c5-params__row{grid-template-columns:1fr;gap:2px;}
+}
+@media (prefers-reduced-motion: reduce){
+  .c5-btn,.c5-way,.c5-fact__btn .wf-icon,.c5-faq__q .wf-icon{transition:none;}
+  /* bez animacji rozwijania – stany przełączają się natychmiast */
+  .c5-fact__panel,.c5-scene__cardbody,.c5-season__panel,.c5-faq__a{transition:none;}
+  .c5-viz[data-on="true"]{animation:none;}
+  .cw-jurek{transition:none;}
+}

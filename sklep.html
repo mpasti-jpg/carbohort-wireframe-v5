@@ -3,15 +3,163 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carbohort — Sklep</title>
-<meta name="description" content="Jeden sklep Carbohort dla kupujących dla siebie i dla profesjonalistów. Filtruj poprawiacze gleby z lignitu wg grupy, potrzeby, formy i opakowania — drobnica do koszyka, paleta/1000 L jako zapytanie B2B.">
+<title>Sklep – produkty do poprawy gleby z lignitu | Carbohort</title>
+<meta name="description" content="Sklep CarboHort: CARBOMAT ECO, CARBOMAT ECO Ściółka, CARBOMAT HUMIC, CARBOHUMIC i produkty nalistne. Zacznij od gotowej półki – ogród, borówka, sad, pole, ściółkowanie – albo filtruj po odczynie, sposobie aplikacji i opakowaniu.">
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="wireframe.css">
 <link rel="stylesheet" href="cw.css">
+<link rel="stylesheet" href="c5.css">
+<style>
+/* =====================================================================
+   SKLEP – przebudowa na warstwę V5 (2026-08-02).
+   Wspólne klocki layoutu siedzą w c5.css; tutaj wyłącznie to, czego wzorzec
+   stron produktowych nie ma: pasek półek, siatka znaczników funkcji, sekcja
+   zestawów, kolumna faset i siatka kart produktowych.
+
+   ZASADA PORZĄDKUJĄCA (werdykt panelu taksonomii, 02.08): przy dziesięciu
+   kartach górny rząd NIE jest filtrem – nie ma czego odsiewać. Jest witryną
+   PÓŁEK: każda półka ma własny adres (?polka=), własny nagłówek, własne
+   zdanie wejściowe i własny zestaw wykluczeń. Klasyczne fasety zostają
+   w kolumnie bocznej dla tych, którzy wiedzą, czego szukają.
+
+   Prefiks c5sk-*, BEM, wyłącznie tokeny --w-*, border-radius:0.
+   ===================================================================== */
+
+/* Pułapka wykryta w tym projekcie dwukrotnie (konfigurator 05.07, kalkulator
+   10.07): element z display:flex nadpisuje domyślne [hidden]{display:none}
+   przeglądarki. Reguła scoped, żeby nie ruszać kitu. */
+.c5sk-grid [hidden], .c5sk-note[hidden], .c5sk-empty[hidden], .c5sk-chips [hidden] { display: none !important; }
+
+/* Górne menu serwisu nie jest przyklejone (jak na stronach produktowych) –
+   do góry ekranu klei się wyłącznie pasek półek. */
+.wf-navbar { position: static; }
+
+/* --- HERO sklepu ---------------------------------------------------------- */
+/* Klient (21.07): „strona główna sklepu ma wyglądać atrakcyjnie, a nie jak
+   typowy sklep firmowy". Stąd hero z prawdziwym leadem i wyszukiwarką,
+   a nie od razu siatka kafli. */
+.c5sk-hero { display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem,5vw,4rem); align-items: center; padding-block: clamp(2.5rem,5vw,4rem) clamp(2rem,4vw,3rem); }
+@media (min-width: 900px) { .c5sk-hero { grid-template-columns: minmax(0,7fr) minmax(0,5fr); } }
+.c5sk-hero__copy { display: flex; flex-direction: column; gap: clamp(1.25rem,2.4vw,1.75rem); max-width: 585px; }
+.c5sk-hero__copy .c5-kicker { margin-bottom: 0; }
+.c5sk-hero__visual .wf-ph { aspect-ratio: 4/3; width: 100%; border-radius: 0; }
+
+/* Wyszukiwarka – klient 21.07: „wyszukiwarka w sklepie jest potrzebna,
+   obsługuje klienta, który zna produkt". */
+.c5sk-search { display: flex; align-items: center; gap: var(--w-space-3); border: 1px solid var(--w-gray-900); background: var(--w-surface-page); padding: 14px 18px; max-width: 486px; }
+/* Pierścień fokusa przenosimy z pola na całą ramkę – `outline:none` na inpucie
+   bez zamiennika kasowałby jedyny widoczny wskaźnik fokusa w tej kontrolce. */
+.c5sk-search:focus-within { outline: 2px solid var(--w-gray-900); outline-offset: 2px; }
+.c5sk-search input { flex: 1; min-width: 0; border: 0; outline: none; font: inherit; font-size: 1rem; background: transparent; color: var(--w-text-primary); }
+.c5sk-search input::placeholder { color: var(--w-text-tertiary); }
+.c5sk-search .wf-icon { flex: none; opacity: .5; }
+
+/* --- PASEK PÓŁEK ---------------------------------------------------------- */
+.c5sk-shelfbar { position: sticky; top: 0; z-index: 85; background: var(--w-surface-page); border-bottom: 1px solid var(--w-border-default); }
+.c5sk-shelfbar__in { display: flex; align-items: center; gap: var(--w-space-4); padding-block: var(--w-space-3); }
+.c5sk-shelves { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; min-width: 0; padding-block: 2px; }
+.c5sk-shelves::-webkit-scrollbar { display: none; }
+.c5sk-shelf { flex: none; padding: 10px 18px; font: inherit; font-size: 0.875rem; letter-spacing: -0.01em; white-space: nowrap; background: var(--w-surface-page); color: var(--w-text-primary); border: 1px solid rgb(0 0 0 / .25); border-radius: 0; cursor: pointer; transition: background var(--w-duration-base) var(--w-ease), color var(--w-duration-base) var(--w-ease), border-color var(--w-duration-base) var(--w-ease); }
+.c5sk-shelf:hover { border-color: var(--w-gray-900); }
+.c5sk-shelf[aria-pressed="true"] { background: var(--w-gray-900); color: var(--w-text-inverse); border-color: var(--w-gray-900); }
+.c5sk-shelfbar__hint { flex: none; display: none; font-size: 0.75rem; color: var(--w-text-tertiary); }
+@media (min-width: 1100px) { .c5sk-shelfbar__hint { display: block; } }
+
+/* Cele przewijania muszą lądować POD lepkim paskiem półek (ok. 73 px),
+   analogicznie do reguły [data-chapter] w c5.css. */
+.c5sk-shelfhead, #lista { scroll-margin-top: 88px; }
+
+/* --- NAGŁÓWEK PÓŁKI (zmienia się po kliknięciu) --------------------------- */
+.c5sk-shelfhead { display: flex; flex-direction: column; gap: var(--w-space-4); max-width: 784px; }
+.c5sk-shelfhead h2 { font-size: clamp(1.7rem,3.2vw,2.5rem); line-height: 1.15; font-weight: var(--w-weight-medium); letter-spacing: -0.01em; }
+
+/* --- ZNACZNIKI FUNKCJI („wybierz według funkcji", zamówienie Darka 27.07) -- */
+.c5sk-funcs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,15rem),1fr)); gap: 10px; margin-top: clamp(1.5rem,3vw,2.25rem); }
+.c5sk-func { display: flex; align-items: center; gap: var(--w-space-4); padding: 20px 22px; text-align: left; font: inherit; font-size: 1rem; background: var(--w-gray-100); color: var(--w-text-primary); border: 0; border-radius: 0; cursor: pointer; transition: background var(--w-duration-base) var(--w-ease); }
+.c5sk-func:hover { background: var(--w-gray-200); }
+.c5sk-func[aria-pressed="true"] { background: var(--w-gray-900); color: var(--w-text-inverse); }
+.c5sk-func__ico { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid currentColor; border-radius: var(--w-radius-circle); }
+.c5sk-func__ico .wf-icon { width: 20px; height: 20px; }
+
+/* --- ZESTAWY -------------------------------------------------------------- */
+.c5sk-sets { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--w-space-5); margin-top: clamp(2rem,4vw,3rem); }
+@media (min-width: 900px) { .c5sk-sets { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.c5sk-set { display: flex; flex-direction: column; gap: var(--w-space-4); border: 1px solid var(--w-gray-900); padding: clamp(1.5rem,2.6vw,2rem); background: var(--w-surface-page); }
+.c5sk-set--empty { border-style: dashed; border-color: var(--w-border-default); }
+.c5sk-set__items { display: flex; gap: var(--w-space-3); }
+.c5sk-set__items .wf-ph { width: 88px; aspect-ratio: 88/72; flex: none; border-radius: 0; }
+.c5sk-set__name { font-size: 1.25rem; font-weight: var(--w-weight-medium); letter-spacing: -0.01em; }
+.c5sk-set__foot { display: flex; flex-wrap: wrap; gap: var(--w-space-3); align-items: center; margin-top: auto; padding-top: var(--w-space-2); }
+
+/* --- UKŁAD LISTY: fasety + siatka ----------------------------------------- */
+.c5sk-list { display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem,4vw,3rem); margin-top: clamp(2rem,4vw,3rem); align-items: start; }
+@media (min-width: 1000px) { .c5sk-list { grid-template-columns: 258px minmax(0,1fr); } }
+
+.c5sk-facets { display: flex; flex-direction: column; gap: var(--w-space-5); }
+@media (min-width: 1000px) { .c5sk-facets { position: sticky; top: 84px; max-height: calc(100svh - 110px); overflow-y: auto; padding-right: var(--w-space-2); } }
+.c5sk-facet { border-top: 1px solid var(--w-border-default); padding-top: var(--w-space-4); }
+.c5sk-facet__title { display: flex; align-items: center; justify-content: space-between; gap: var(--w-space-3); width: 100%; font: inherit; font-size: 0.875rem; font-weight: var(--w-weight-semibold); letter-spacing: .01em; text-transform: uppercase; background: none; border: 0; padding: 0 0 var(--w-space-3); cursor: pointer; color: var(--w-text-primary); text-align: left; }
+.c5sk-facet__title .wf-icon { flex: none; width: 16px; height: 16px; transition: transform var(--w-duration-base) var(--w-ease); }
+.c5sk-facet__title[aria-expanded="false"] .wf-icon { transform: rotate(-90deg); }
+.c5sk-facet__body { display: flex; flex-direction: column; gap: 10px; padding-bottom: var(--w-space-2); }
+.c5sk-facet__body[hidden] { display: none; }
+.c5sk-opt { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9375rem; line-height: 1.35; cursor: pointer; color: var(--w-text-primary); }
+.c5sk-opt input { flex: none; margin-top: 3px; accent-color: var(--w-gray-900); width: 15px; height: 15px; }
+.c5sk-opt__note { display: block; font-size: 0.8125rem; color: var(--w-text-tertiary); }
+.c5sk-facet__src { font-size: 0.75rem; color: var(--w-text-tertiary); margin-top: var(--w-space-2); }
+
+/* --- TOOLBAR NAD SIATKĄ --------------------------------------------------- */
+.c5sk-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--w-space-4); padding-bottom: var(--w-space-4); border-bottom: 1px solid var(--w-border-default); }
+.c5sk-count { font-size: 1rem; }
+.c5sk-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--w-space-4); }
+.c5sk-chip { display: inline-flex; align-items: center; gap: 8px; font: inherit; font-size: 0.8125rem; padding: 7px 14px; background: var(--w-gray-100); color: var(--w-text-primary); border: 0; border-radius: var(--w-radius-pill); cursor: pointer; }
+.c5sk-chip .wf-icon { width: 14px; height: 14px; opacity: .55; }
+.c5sk-chip:hover { background: var(--w-gray-200); }
+.c5sk-chip--clear { background: transparent; text-decoration: underline; text-underline-offset: 3px; padding-inline: 6px; }
+
+/* Zdanie wykluczające – nigdy nie chowamy produktu po cichu */
+.c5sk-note { display: flex; gap: var(--w-space-3); align-items: flex-start; border: 1px solid var(--w-gray-900); padding: 16px 18px; margin-top: var(--w-space-5); font-size: 0.9375rem; }
+.c5sk-note .wf-icon { flex: none; margin-top: 2px; }
+.c5sk-note__body { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+
+.c5sk-empty { border: 1px dashed var(--w-border-default); padding: clamp(2rem,4vw,3rem); text-align: center; display: flex; flex-direction: column; gap: var(--w-space-3); align-items: center; margin-top: var(--w-space-6); }
+
+/* --- SIATKA KART ---------------------------------------------------------- */
+.c5sk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%,16.5rem),1fr)); gap: var(--w-space-5); margin-top: var(--w-space-6); }
+.c5sk-card { display: flex; flex-direction: column; border: 1px solid var(--w-border-default); background: var(--w-surface-page); }
+.c5sk-card__ph { aspect-ratio: 1; width: 100%; border-radius: 0; }
+.c5sk-card__body { display: flex; flex-direction: column; gap: var(--w-space-3); padding: clamp(1rem,1.8vw,1.35rem); flex: 1; }
+.c5sk-card__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.c5sk-tag { font-size: 0.6875rem; letter-spacing: .02em; text-transform: uppercase; padding: 4px 9px; border: 1px solid rgb(0 0 0 / .25); color: var(--w-text-secondary); }
+.c5sk-tag--solid { background: var(--w-gray-900); color: var(--w-text-inverse); border-color: var(--w-gray-900); }
+.c5sk-card__name { font-size: 1.0625rem; font-weight: var(--w-weight-medium); letter-spacing: -0.01em; }
+.c5sk-card__name a { color: inherit; text-decoration: none; }
+.c5sk-card__name a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.c5sk-card__desc { font-size: 0.875rem; color: var(--w-text-secondary); }
+.c5sk-card__price { display: flex; flex-direction: column; gap: 2px; margin-top: auto; padding-top: var(--w-space-2); }
+.c5sk-card__val { font-size: 1.125rem; font-weight: var(--w-weight-semibold); }
+.c5sk-card__val--quiet { font-size: 1rem; font-weight: var(--w-weight-medium); color: var(--w-text-secondary); display: inline-flex; align-items: center; gap: 8px; }
+.c5sk-card__val--quiet .wf-icon { width: 16px; height: 16px; opacity: .5; }
+.c5sk-card__packs { font-size: 0.8125rem; color: var(--w-text-tertiary); }
+.c5sk-card__cta { display: flex; flex-wrap: wrap; gap: 6px; }
+.c5sk-card__cta .c5-btn { flex: 1 1 auto; padding-inline: 14px; }
+.c5sk-fb { font-size: 0.75rem; color: var(--w-text-secondary); }
+
+/* Przełącznik kolumny faset – tylko na wąskich ekranach. Bez niego użytkownik
+   mobilny przewija przez dziewięć grup filtrów, zanim dojdzie do produktów. */
+.c5sk-filtertoggle { display: none; align-items: center; justify-content: space-between; gap: var(--w-space-3); width: 100%; font: inherit; font-size: 0.9375rem; font-weight: var(--w-weight-medium); padding: 14px 18px; background: var(--w-surface-page); color: var(--w-text-primary); border: 1px solid var(--w-gray-900); border-radius: 0; cursor: pointer; }
+.c5sk-filtertoggle .wf-icon { flex: none; transition: transform var(--w-duration-base) var(--w-ease); }
+.c5sk-filtertoggle[aria-expanded="true"] .wf-icon { transform: rotate(180deg); }
+
+/* --- Responsywność -------------------------------------------------------- */
+@media (max-width: 999px) {
+  .c5sk-filtertoggle { display: flex; }
+  .c5sk-facets { display: none; border-top: 1px solid var(--w-border-default); padding-top: var(--w-space-5); }
+  .c5sk-facets.is-open { display: flex; }
+}
+</style>
 </head>
 <body>
-<a class="wf-sr-only" href="#main">Przejdź do treści</a>
-
 <!-- ===== Tabler icon sprite (paste once per kit rule) ===== -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true" id="wf-icon-sprite">
 <symbol id="ti-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6 -6" /></symbol>
@@ -24,24 +172,14 @@
 <symbol id="ti-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" />
   <path d="M5 12l6 6" />
   <path d="M5 12l6 -6" /></symbol>
-<symbol id="ti-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" />
-  <path d="M18 11l-6 -6" />
-  <path d="M6 11l6 -6" /></symbol>
-<symbol id="ti-arrow-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" />
-  <path d="M18 13l-6 6" />
-  <path d="M6 13l6 6" /></symbol>
 <symbol id="ti-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" />
   <path d="M6 6l12 12" /></symbol>
 <symbol id="ti-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10" /></symbol>
-<symbol id="ti-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" />
-  <path d="M5 12l14 0" /></symbol>
-<symbol id="ti-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" /></symbol>
 <symbol id="ti-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
   <path d="M21 21l-6 -6" /></symbol>
 <symbol id="ti-menu-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l16 0" />
   <path d="M4 12l16 0" />
   <path d="M4 18l16 0" /></symbol>
-<symbol id="ti-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227" /></symbol>
 <symbol id="ti-arrows-sort" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l4 -4l4 4m-4 -4v14" />
   <path d="M21 15l-4 4l-4 -4m4 4v-14" /></symbol>
 <symbol id="ti-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
@@ -50,19 +188,9 @@
   <path d="M15 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
   <path d="M17 17h-11v-14h-2" />
   <path d="M6 5l14 1l-1 7h-13" /></symbol>
-<symbol id="ti-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
-  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></symbol>
 <symbol id="ti-info-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
   <path d="M12 9h.01" />
   <path d="M11 12h1v4h1" /></symbol>
-<symbol id="ti-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" />
-  <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
-  <path d="M12 16h.01" /></symbol>
-<symbol id="ti-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
-  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
-  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></symbol>
-<symbol id="ti-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9" />
-  <path d="M5 21v-7" /></symbol>
 <symbol id="ti-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />
   <path d="M3 7l9 6l9 -6" /></symbol>
 <symbol id="ti-message-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9h8" />
@@ -70,18 +198,9 @@
   <path d="M9 18h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-3l-3 3l-3 -3" /></symbol>
 <symbol id="ti-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14l11 -11" />
   <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></symbol>
-<symbol id="ti-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-  <path d="M13.5 6.5l4 4" /></symbol>
-<symbol id="ti-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l16 0" />
-  <path d="M10 11l0 6" />
-  <path d="M14 11l0 6" />
-  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></symbol>
 <symbol id="ti-external-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
   <path d="M11 13l9 -9" />
   <path d="M15 4h5v5" /></symbol>
-<symbol id="ti-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-  <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></symbol>
 <symbol id="ti-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" />
   <path d="M16 3v4" />
   <path d="M8 3v4" />
@@ -91,7 +210,30 @@
 <symbol id="ti-dots" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
   <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
   <path d="M18 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></symbol>
+<symbol id="ti-stack-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l-8 4l8 4l8 -4l-8 -4" /><path d="M4 12l8 4l8 -4" /><path d="M4 16l8 4l8 -4" /></symbol>
+<symbol id="ti-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3l6 0" /><path d="M10 9l4 0" /><path d="M10 3v6l-4.5 8a1.5 1.5 0 0 0 1.3 2.5h10.4a1.5 1.5 0 0 0 1.3 -2.5l-4.5 -8v-6" /></symbol>
+<symbol id="ti-magnet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-8a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v8a3 3 0 0 0 6 0v-8a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v8a7 7 0 0 1 -14 0" /><path d="M4 8l5 0" /><path d="M15 8l4 0" /></symbol>
+<symbol id="ti-droplet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7.502 19.423c2.602 2.105 6.395 2.105 8.996 0c2.602 -2.105 3.262 -5.708 1.566 -8.546l-4.89 -7.26c-.42 -.625 -1.287 -.803 -1.936 -.397a1.376 1.376 0 0 0 -.41 .397l-4.893 7.26c-1.695 2.838 -1.035 6.441 1.567 8.546z" /></symbol>
+<symbol id="ti-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21c.5 -4.5 2.5 -8 7 -10" /><path d="M9 18c6.218 0 10.5 -3.288 11 -12v-2h-4.014c-9 0 -11.986 4 -12 9c0 1 0 3 2 5h3z" /></symbol>
+<symbol id="ti-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></symbol>
+<symbol id="ti-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227" /></symbol>
+<symbol id="ti-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6" />
+  <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+  <path d="M8 11v-4a4 4 0 1 1 8 0v4" /></symbol>
+<symbol id="ti-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" />
+  <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
+  <path d="M12 16h.01" /></symbol>
+<symbol id="ti-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+  <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></symbol>
+<symbol id="ti-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l14 0" /></symbol>
+<symbol id="ti-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l16 0" />
+  <path d="M10 11l0 6" />
+  <path d="M14 11l0 6" />
+  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></symbol>
 </svg>
+
+<a class="wf-skiplink" href="#main">Przejdź do treści</a>
 
 <!-- ===== NAVBAR ===== -->
 <header class="wf-navbar">
@@ -99,7 +241,7 @@
     <a class="cw-brand" href="home.html">Carbohort</a>
     <nav class="cw-nav" aria-label="Główna">
       <div class="cw-haspopup">
-        <button class="cw-nav-trigger" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-produkty">Nasze produkty <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+        <button class="cw-nav-trigger wf-w-semibold" data-mega-trigger aria-haspopup="true" aria-expanded="false" aria-controls="mega-produkty">Nasze produkty <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
         <div class="cw-mega cw-mega--wide" id="mega-produkty" data-open="false" role="region" aria-label="Nasze produkty">
           <div class="cw-mega__head">
             <span class="wf-overline wf-t-tertiary">Produkty Carbohort</span>
@@ -186,7 +328,7 @@
     </nav>
     <div class="wf-cluster wf-gap-2">
       <a class="wf-btn wf-btn--primary wf-btn--sm" href="konfigurator.html">Konfigurator</a>
-      <a class="wf-btn wf-btn--ghost wf-btn--sm wf-w-semibold" href="sklep.html" aria-current="page">Sklep</a>
+      <a class="wf-btn wf-btn--ghost wf-btn--sm" href="sklep.html" aria-current="page">Sklep</a>
       <a class="wf-btn wf-btn--ghost wf-btn--sm wf-inline" href="platforma-b2b.html"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-user"></use></svg> Zaloguj</a>
       <a class="wf-btn wf-btn--ghost wf-btn--icon wf-badge--count cw-cart" href="koszyk.html" aria-label="Koszyk, 0 produktów"><svg class="wf-icon" aria-hidden="true"><use href="#ti-shopping-cart"></use></svg><span class="wf-count" data-cart-count>0</span></a>
       <button class="wf-btn wf-btn--ghost wf-btn--icon cw-navtoggle" data-navtoggle aria-controls="mobilenav" aria-expanded="false" aria-label="Otwórz menu"><svg class="wf-icon" aria-hidden="true"><use href="#ti-menu-2"></use></svg></button>
@@ -199,248 +341,616 @@
     <a class="wf-navitem" href="centrum-wiedzy.html">Centrum wiedzy</a>
     <a class="wf-navitem" href="o-firmie.html">O nas</a>
     <a class="wf-navitem" href="kontakt.html">Kontakt</a>
-    <a class="wf-navitem" href="sklep.html">Sklep</a>
+    <a class="wf-navitem wf-w-semibold" href="sklep.html" aria-current="page">Sklep</a>
     <a class="wf-navitem" href="platforma-b2b.html">Zaloguj</a>
   </nav>
 </header>
+<!-- Przyciemnienie pod otwartym mega-menu. cw.js wiesza na nim zamykanie klikiem
+     obok – bez tego elementu menu zostaje otwarte. Stoi tak na 30 innych stronach V5. -->
 <div class="cw-scrim" data-cw-scrim data-open="false" aria-hidden="true"></div>
+
 
 <main id="main">
 
-  <!-- ===== NAGŁÓWEK + BREADCRUMB ===== -->
-  <section class="wf-section wf-section--sm">
-    <div class="wf-container wf-stack wf-stack--4">
-      <nav class="wf-breadcrumb" aria-label="Ścieżka">
+  <!-- ===== HERO SKLEPU =====
+       id="hero" jest wymagane przez c5.js – to od wysokości hero zależy moment,
+       w którym z dołu wjeżdża dok dr Jurka. -->
+  <section id="hero">
+    <div class="c5-wrap">
+      <nav class="wf-breadcrumb" aria-label="Ścieżka" style="padding-top:var(--w-space-5);">
         <ol>
-          <li><a class="wf-link--quiet" href="home.html">Start</a></li>
+          <li><a class="wf-link--quiet" href="home.html">Strona główna</a></li>
           <li><span class="wf-breadcrumb__sep" aria-hidden="true"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-chevron-right"></use></svg></span></li>
           <li><span aria-current="page" class="wf-w-semibold">Sklep</span></li>
         </ol>
       </nav>
-      <div class="wf-stack wf-stack--3" style="max-width:680px;">
-        <span class="wf-overline">Sklep</span>
-        <h1 class="wf-h1">Jeden sklep — dla siebie i dla profesjonalistów</h1>
-        <p class="wf-lead wf-t-secondary">Przeglądaj produkty wg grupy, potrzeby, formy i opakowania. Drobne opakowania kupujesz w koszyku z jawną ceną; palety i 1000 L to ścieżka ofertowa — „Twoja cena" widoczna po zalogowaniu w panelu B2B.</p>
-      </div>
-      <div class="wf-alert">
-        <span class="wf-alert__icon"><svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-info-circle"></use></svg></span>
-        <div><span class="wf-alert__title">Opakowanie = kanał sprzedaży.</span> <span class="wf-small wf-t-secondary">Ten sam produkt w małym opakowaniu trafia do koszyka z ceną jawną; w palecie / 1000 L prowadzi do zapytania ofertowego B2B (cena po zalogowaniu, rabaty indywidualne). Filtr „Opakowanie = kanał" zawęża widok do Twojego trybu zakupu.</span></div>
+
+      <div class="c5sk-hero">
+        <div class="c5sk-hero__copy">
+          <span class="c5-kicker">Sklep CarboHort</span>
+          <h1 class="c5-h1">Wszystko, czym poprawisz swoją&nbsp;glebę</h1>
+          <p class="c5-lead">Produkty z polskiego lignitu – od worka na działkę po big bagi i mauzery na pole. Worki i big bagi kupujesz od razu, z ceną widoczną na karcie. Przy większych ilościach, regularnych dostawach i produktach bez cennika przygotujemy ofertę i Twoją cenę.</p>
+
+          <!-- Wyszukiwarka: obsługuje klienta, który zna nazwę produktu (klient 21.07).
+               W makiecie filtruje siatkę po nazwie i opisie karty. -->
+          <label class="c5sk-search">
+            <svg class="wf-icon" aria-hidden="true"><use href="#ti-search"></use></svg>
+            <input type="search" data-shop-search placeholder="Szukaj produktu, np. CARBOMAT ECO, ściółka, humic" aria-label="Szukaj w sklepie">
+          </label>
+
+          <ul class="c5-trust">
+            <li>Polski, rodzinny producent</li>
+            <li>Certyfikaty ekologiczne – zakres per produkt</li>
+            <li>Badania akredytowanego laboratorium</li>
+          </ul>
+        </div>
+        <div class="c5sk-hero__visual">
+          <div class="wf-ph" role="img" aria-label="Zdjęcie otwierające sklep – opakowania CarboHort"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== SKLEP — filtry + siatka ===== -->
-  <section class="wf-section wf-section--subtle">
-    <div class="wf-container wf-split wf-split--sidebar">
+  <!-- ===== PASEK PÓŁEK =====
+       Nie filtr, tylko witryna półek: pojedynczy wybór (radio), własny adres,
+       własny nagłówek i lead. Uzasadnienie w komentarzu na górze pliku. -->
+  <div class="c5sk-shelfbar">
+    <div class="c5-wrap c5sk-shelfbar__in">
+      <div class="c5sk-shelves" role="group" aria-label="Gotowe półki produktów" data-shelves>
+        <button type="button" class="c5sk-shelf" data-shelf="" aria-pressed="true">Wszystkie produkty</button>
+        <button type="button" class="c5sk-shelf" data-shelf="ogrod" aria-pressed="false">Ogród i warzywnik</button>
+        <button type="button" class="c5sk-shelf" data-shelf="borowka" aria-pressed="false">Borówka i kwasolubne</button>
+        <button type="button" class="c5sk-shelf" data-shelf="sciolka" aria-pressed="false">Ściółkowanie zamiast kory</button>
+        <button type="button" class="c5sk-shelf" data-shelf="sad" aria-pressed="false">Sad i plantacja jagodowa</button>
+        <button type="button" class="c5sk-shelf" data-shelf="pole" aria-pressed="false">Pole i uprawy towarowe</button>
+        <button type="button" class="c5sk-shelf" data-shelf="nasadzenia" aria-pressed="false">Sadzenie, szkółka i zieleń</button>
+        <button type="button" class="c5sk-shelf" data-shelf="sprzet" aria-pressed="false">Podam przez opryskiwacz lub kroplowanie</button>
+      </div>
+      <span class="c5sk-shelfbar__hint">Wybierz jedną półkę</span>
+    </div>
+  </div>
 
-      <!-- LEWA — filtry -->
-      <aside aria-label="Filtry produktów">
-        <div class="wf-stack wf-stack--6">
-
-          <div class="wf-stack wf-stack--2">
-            <span class="wf-overline wf-t-tertiary">Segment</span>
-            <div class="wf-segmented" role="group" aria-label="Preset segmentu" data-presets>
-              <button type="button" class="wf-btn" data-preset="all" aria-pressed="true">Wszystko</button>
-              <button type="button" class="wf-btn" data-preset="prywatny" aria-pressed="false">Dla siebie</button>
-              <button type="button" class="wf-btn" data-preset="pro" aria-pressed="false">PRO</button>
-            </div>
-          </div>
-
-          <div class="wf-stack wf-stack--3">
-            <span class="wf-overline wf-t-tertiary">Grupa produktu</span>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="grupa" value="carbomat"> CARBOMAT (sypkie)</label>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="grupa" value="carbohumic"> CARBOHUMIC (płynne)</label>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="grupa" value="carbomat-humic"> CARBOMAT HUMIC</label>
-          </div>
-
-          <div class="wf-stack wf-stack--3">
-            <span class="wf-overline wf-t-tertiary">Wg potrzeby</span>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="potrzeba" value="retencja"> Retencja wody</label>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="potrzeba" value="prochnica"> Próchnica / struktura</label>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="potrzeba" value="jakosc"> Jakość owocu (Ca+B)</label>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="potrzeba" value="start"> Start / wzrost</label>
-          </div>
-
-          <div class="wf-stack wf-stack--3">
-            <span class="wf-overline wf-t-tertiary">Forma</span>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="forma" value="sypki"> Sypka (doglebowa)</label>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="forma" value="plynny"> Płynna (doglebowa)</label>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="forma" value="nalistny"> Nalistna</label>
-          </div>
-
-          <div class="wf-stack wf-stack--3">
-            <span class="wf-overline wf-t-tertiary">Opakowanie = kanał</span>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="opak" value="drobnica"> Drobnica (do koszyka)</label>
-            <label class="wf-choice"><input class="wf-checkbox" type="checkbox" data-facet="opak" value="paleta"> Paleta / 1000 L (zapytanie)</label>
-          </div>
-
-          <div class="wf-divider"></div>
-
-          <div class="cw-ask">
-            <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
-            <div class="cw-ask__txt wf-stack wf-stack--1">
-              <span class="wf-w-semibold wf-small">Nie wiesz, co wybrać?</span>
-              <span class="wf-small wf-t-secondary">Konfigurator dobierze produkty i dawki w kilku pytaniach.</span>
-            </div>
-            <a class="wf-btn wf-btn--secondary wf-btn--sm" href="konfigurator.html">Otwórz Konfigurator</a>
-          </div>
-        </div>
-      </aside>
-
-      <!-- PRAWA — toolbar + chipy + siatka -->
-      <div class="wf-stack wf-stack--5">
-
-        <div class="wf-cluster wf-cluster--between wf-items-center">
-          <p class="wf-body"><span class="wf-w-bold" data-shop-count>8</span> <span class="wf-t-secondary">produktów</span></p>
-          <a class="wf-link--quiet wf-inline wf-small" href="konfigurator.html">Konfigurator dobierze zestaw <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
-        </div>
-
-        <div class="wf-cluster wf-gap-2 wf-items-center" data-chips aria-label="Aktywne filtry">
-          <span class="wf-small wf-t-tertiary" data-chips-empty>Brak aktywnych filtrów — pokazujemy wszystko.</span>
-        </div>
-
-        <div class="wf-empty" data-shop-empty hidden>
-          <span class="wf-w-semibold">Brak produktów dla wybranych filtrów.</span>
-          <span class="wf-small wf-t-secondary">Wyczyść filtry lub poproś o dobór w Konfiguratorze.</span>
-        </div>
-
-        <div class="wf-grid" style="--wf-grid-min: 16rem;" data-shop-grid>
-
-          <!-- 1. CARBOMAT Eco — drobnica · dla siebie -->
-          <article class="wf-card" data-seg="both" data-grupa="carbomat" data-potrzeba="retencja prochnica" data-forma="sypki" data-opak="drobnica">
-            <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CARBOMAT — worek 20 L</span></div>
-            <div class="wf-card__body wf-stack wf-stack--3">
-              <div class="wf-cluster wf-gap-2"><span class="wf-badge wf-badge--outline">Dla siebie</span><span class="wf-badge wf-badge--outline">sypki · doglebowy</span></div>
-              <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CARBOMAT Eco</a></h3>
-              <p class="wf-small wf-t-secondary">Sypki poprawiacz gleby — retencja wody i struktura. Opakowanie domowe / działkowe.</p>
-              <!-- Cena realna brutto od Darka (AC #30867, 21.07) -->
-              <p class="wf-body"><span class="wf-w-semibold">od 43 zł</span> <span class="wf-small wf-t-tertiary">· worek 20 L</span></p>
-              <div class="wf-cluster wf-gap-2">
-                <button type="button" class="wf-btn wf-btn--primary wf-btn--sm" data-add data-name="CARBOMAT Eco · 20 L" data-price="89">Dodaj do koszyka</button>
-                <a class="wf-btn wf-btn--ghost wf-btn--sm" href="pdp.html">Zobacz</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- 2. CARBOMAT — paleta PRO -->
-          <article class="wf-card" data-seg="pro" data-grupa="carbomat" data-potrzeba="retencja prochnica" data-forma="sypki" data-opak="paleta">
-            <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CARBOMAT — big-bag / paleta</span></div>
-            <div class="wf-card__body wf-stack wf-stack--3">
-              <div class="wf-cluster wf-gap-2"><span class="wf-badge wf-badge--solid">PRO</span><span class="wf-badge wf-badge--outline">B2B</span><span class="wf-badge wf-badge--outline">paleta</span></div>
-              <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CARBOMAT — paleta (big-bag)</a></h3>
-              <p class="wf-small wf-t-secondary">To samo, w opakowaniu polowym. Kanał B2B — dawka ~200 kg/ha.</p>
-              <p class="wf-body wf-inline"><svg class="wf-icon wf-icon--sm wf-icon--muted" aria-hidden="true"><use href="#ti-lock"></use></svg> <span class="wf-w-semibold">Cena widoczna w zamówieniu</span></p>
-              <p class="wf-small wf-t-secondary"><span class="wf-w-semibold">Twoja cena po zalogowaniu</span> — rabat indywidualny w panelu B2B.</p>
-              <div class="wf-cluster wf-gap-2">
-                <a class="wf-btn wf-btn--primary wf-btn--sm" href="platforma-b2b.html">Zapytaj o ofertę</a>
-                <a class="wf-btn wf-btn--ghost wf-btn--sm" href="pdp.html">Zobacz</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- 3. CARBOHUMIC — drobnica · dla siebie -->
-          <article class="wf-card" data-seg="both" data-grupa="carbohumic" data-potrzeba="prochnica retencja" data-forma="plynny" data-opak="drobnica">
-            <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CARBOHUMIC — kanister 5 L</span></div>
-            <div class="wf-card__body wf-stack wf-stack--3">
-              <div class="wf-cluster wf-gap-2"><span class="wf-badge wf-badge--outline">Dla siebie</span><span class="wf-badge wf-badge--outline">płynny · doglebowy</span></div>
-              <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CARBOHUMIC</a></h3>
-              <p class="wf-small wf-t-secondary">Płynne kondycjonowanie gleby — kwasy humusowe. Kanister do ogrodu.</p>
-              <p class="wf-body"><span class="wf-w-semibold">od 149 zł</span> <span class="wf-small wf-t-tertiary">· kanister 5 L</span></p>
-              <div class="wf-cluster wf-gap-2">
-                <button type="button" class="wf-btn wf-btn--primary wf-btn--sm" data-add data-name="CARBOHUMIC · 5 L" data-price="149">Dodaj do koszyka</button>
-                <a class="wf-btn wf-btn--ghost wf-btn--sm" href="pdp.html">Zobacz</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- 4. CARBOHUMIC — 1000 L PRO -->
-          <article class="wf-card" data-seg="pro" data-grupa="carbohumic" data-potrzeba="prochnica retencja" data-forma="plynny" data-opak="paleta">
-            <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CARBOHUMIC — paletopojemnik 1000 L</span></div>
-            <div class="wf-card__body wf-stack wf-stack--3">
-              <div class="wf-cluster wf-gap-2"><span class="wf-badge wf-badge--solid">PRO</span><span class="wf-badge wf-badge--outline">B2B</span><span class="wf-badge wf-badge--outline">1000 L</span></div>
-              <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CARBOHUMIC — 1000 L (mauzer)</a></h3>
-              <p class="wf-small wf-t-secondary">Płynny, w paletopojemniku — aplikacja pasowa / fertygacja. Kanał B2B.</p>
-              <p class="wf-body wf-inline"><svg class="wf-icon wf-icon--sm wf-icon--muted" aria-hidden="true"><use href="#ti-lock"></use></svg> <span class="wf-w-semibold">Cena widoczna w zamówieniu</span></p>
-              <p class="wf-small wf-t-secondary"><span class="wf-w-semibold">Twoja cena po zalogowaniu</span> — wycena per gospodarstwo.</p>
-              <div class="wf-cluster wf-gap-2">
-                <a class="wf-btn wf-btn--primary wf-btn--sm" href="platforma-b2b.html">Zapytaj o ofertę</a>
-                <a class="wf-btn wf-btn--ghost wf-btn--sm" href="pdp.html">Zobacz</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- 5. CARBOMAT HUMIC — drobnica both -->
-          <article class="wf-card" data-seg="both" data-grupa="carbomat-humic" data-potrzeba="prochnica start" data-forma="sypki" data-opak="drobnica">
-            <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CARBOMAT HUMIC – opakowanie 1 l</span></div>
-            <div class="wf-card__body wf-stack wf-stack--3">
-              <div class="wf-cluster wf-gap-2"><span class="wf-badge wf-badge--outline">Dla siebie</span><span class="wf-badge wf-badge--outline">węgiel aktywowany</span></div>
-              <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CARBOMAT HUMIC</a></h3>
-              <!-- FIX 2026-07-21: usunięte WiO/ROiZ i opakowania 1 l/2 l (brak w kanonie, jak na stronie produktu) oraz placeholderowa cena „od 26 zł" – realnych cen HUMIC Darek jeszcze nie podał -->
-              <p class="wf-small wf-t-secondary">Węgiel aktywowany z lignitu – kondycjonuje glebę, dostarcza potas i podnosi pH. Do warzywnika, rabat i roślin w domu; na polu w dawkach kg/ha.</p>
-              <p class="wf-body"><span class="wf-w-semibold">cena wkrótce</span> <span class="wf-small wf-t-tertiary">· opakowania detaliczne w potwierdzeniu</span></p>
-              <div class="wf-cluster wf-gap-2">
-                <a class="wf-btn wf-btn--primary wf-btn--sm" href="pdp.html">Zobacz produkt</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- 6. CARBOMAT HUMIC — paleta PRO -->
-          <article class="wf-card" data-seg="pro" data-grupa="carbomat-humic" data-potrzeba="prochnica start" data-forma="sypki" data-opak="paleta">
-            <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CARBOMAT HUMIC — paleta</span></div>
-            <div class="wf-card__body wf-stack wf-stack--3">
-              <div class="wf-cluster wf-gap-2"><span class="wf-badge wf-badge--solid">Dla sklepów</span><span class="wf-badge wf-badge--outline">paleta</span></div>
-              <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CARBOMAT HUMIC — paleta</a></h3>
-              <p class="wf-small wf-t-secondary">Zbiorcze opakowania dla sklepów i sieci ogrodniczych. Zamówienia hurtowe z wyceną indywidualną.</p>
-              <p class="wf-body wf-inline"><svg class="wf-icon wf-icon--sm wf-icon--muted" aria-hidden="true"><use href="#ti-lock"></use></svg> <span class="wf-w-semibold">Cena widoczna w zamówieniu</span></p>
-              <p class="wf-small wf-t-secondary"><span class="wf-w-semibold">Twoja cena po zalogowaniu</span> — rabat per klient w panelu B2B.</p>
-              <div class="wf-cluster wf-gap-2">
-                <a class="wf-btn wf-btn--primary wf-btn--sm" href="platforma-b2b.html">Zapytaj o ofertę</a>
-                <a class="wf-btn wf-btn--ghost wf-btn--sm" href="pdp.html">Zobacz</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- 7. MAXI PLUS — nalistny · dla siebie -->
-          <article class="wf-card" data-seg="both" data-grupa="carbohumic" data-potrzeba="start" data-forma="nalistny" data-opak="drobnica">
-            <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">MAXI PLUS — butelka 1 L</span></div>
-            <div class="wf-card__body wf-stack wf-stack--3">
-              <div class="wf-cluster wf-gap-2"><span class="wf-badge wf-badge--outline">Dla siebie</span><span class="wf-badge wf-badge--outline">nalistny · wejściowy</span></div>
-              <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">MAXI PLUS</a></h3>
-              <p class="wf-small wf-t-secondary">Tani nalistny dokarmiacz — start i wzrost. „Drugi rzut" obok rdzenia glebowego.</p>
-              <p class="wf-body"><span class="wf-w-semibold">od 49 zł</span> <span class="wf-small wf-t-tertiary">· butelka 1 L</span></p>
-              <div class="wf-cluster wf-gap-2">
-                <button type="button" class="wf-btn wf-btn--primary wf-btn--sm" data-add data-name="MAXI PLUS · 1 L" data-price="49">Dodaj do koszyka</button>
-                <a class="wf-btn wf-btn--ghost wf-btn--sm" href="pdp.html">Zobacz</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- 8. CALBOR — nalistny Ca+B, both -->
-          <article class="wf-card" data-seg="both" data-grupa="carbohumic" data-potrzeba="jakosc" data-forma="nalistny" data-opak="drobnica">
-            <div class="wf-ph wf-ph--1x1" aria-hidden="true"><span class="wf-ph__label">CALBOR — butelka 1 L</span></div>
-            <div class="wf-card__body wf-stack wf-stack--3">
-              <div class="wf-cluster wf-gap-2"><span class="wf-badge wf-badge--outline">Dla siebie</span><span class="wf-badge wf-badge--outline">PRO</span><span class="wf-badge wf-badge--outline">nalistny · Ca+B</span></div>
-              <h3 class="wf-h5"><a class="wf-link--quiet" href="pdp.html">CALBOR</a></h3>
-              <p class="wf-small wf-t-secondary">Wapń + bor — jakość i trwałość owocu. Większe opakowania w kanale B2B.</p>
-              <p class="wf-body"><span class="wf-w-semibold">od 69 zł</span> <span class="wf-small wf-t-tertiary">· butelka 1 L</span></p>
-              <div class="wf-cluster wf-gap-2">
-                <button type="button" class="wf-btn wf-btn--primary wf-btn--sm" data-add data-name="CALBOR · 1 L" data-price="69">Dodaj do koszyka</button>
-                <a class="wf-btn wf-btn--ghost wf-btn--sm" href="pdp.html">Zobacz</a>
-              </div>
-            </div>
-          </article>
-
-        </div>
-
-        <div class="wf-card">
-          <div class="wf-card__body wf-stack wf-stack--2">
-            <h3 class="wf-h5">Ten sam produkt, dwa kanały</h3>
-            <p class="wf-small wf-t-secondary">Część produktów występuje w dwóch kartach: drobnica (do koszyka, cena jawna) oraz paleta / 1000 L (zapytanie ofertowe B2B, cena po zalogowaniu) — bo opakowanie wyznacza kanał. Preset „Dla siebie / PRO" i filtr opakowania porządkują widok już na wejściu. Partner produktów nalistnych zostanie oznaczony na karcie produktu.</p>
-          </div>
-        </div>
-
+  <!-- ===== NAGŁÓWEK PÓŁKI + FUNKCJE ===== -->
+  <section class="c5-sec">
+    <div class="c5-wrap">
+      <div class="c5sk-shelfhead">
+        <h2 data-shelf-title>Zacznij od gotowej półki</h2>
+        <p class="c5-lead" data-shelf-lead>Mamy niewiele produktów i każdy z nich robi coś innego. Zamiast kazać Ci przekopywać listę, ustawiliśmy gotowe półki – wybierz tę, która opisuje Twoją sytuację, a zobaczysz tylko to, co ma tam sens. Dokładne dawki policzysz w konfiguratorze.</p>
       </div>
 
+      <!-- Znaczniki „wybierz według funkcji" – zamówienie Darka z 27.07.
+           Brzmienie 1:1 z mega-menu serwisu (te same sześć etykiet stoi dziś na
+           każdej podstronie i w produkty.html) – świadomie NIE bierzemy siedmiu
+           celów konfiguratora, żeby nie wprowadzać trzeciego słownika. -->
+      <div class="c5sk-funcs" role="group" aria-label="Wybierz według funkcji" data-funcs>
+        <button type="button" class="c5sk-func" data-func="retencja" aria-pressed="false"><span class="c5sk-func__ico"><svg class="wf-icon" aria-hidden="true"><use href="#ti-droplet"></use></svg></span> Zatrzymać wodę / susza</button>
+        <button type="button" class="c5sk-func" data-func="prochnica" aria-pressed="false"><span class="c5sk-func__ico"><svg class="wf-icon" aria-hidden="true"><use href="#ti-stack-2"></use></svg></span> Odbudować próchnicę</button>
+        <button type="button" class="c5sk-func" data-func="jakosc" aria-pressed="false"><span class="c5sk-func__ico"><svg class="wf-icon" aria-hidden="true"><use href="#ti-leaf"></use></svg></span> Jakość i trwałość owocu</button>
+        <button type="button" class="c5sk-func" data-func="start" aria-pressed="false"><span class="c5sk-func__ico"><svg class="wf-icon" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></span> Lepszy start i wzrost</button>
+        <button type="button" class="c5sk-func" data-func="ph" aria-pressed="false"><span class="c5sk-func__ico"><svg class="wf-icon" aria-hidden="true"><use href="#ti-flask"></use></svg></span> Uregulować pH gleby</button>
+        <button type="button" class="c5sk-func" data-func="bez-torfu" aria-pressed="false"><span class="c5sk-func__ico"><svg class="wf-icon" aria-hidden="true"><use href="#ti-magnet"></use></svg></span> Podłoże bez torfu</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ZESTAWY I PROMOCJE =====
+       Sekcja zamówiona wprost przez klienta 21.07 („sekcje promocji i zestawów").
+       ⚠️ Uwaga merytoryczna: kolumna „Łączymy produkt z" w bazie produktów została
+       13.06 świadomie zostawiona pusta, a tabeli mieszalności nie ma. Dlatego
+       publikujemy JEDEN zestaw – ten, który ma pokrycie w karcie producenta
+       („Zalecane stosowanie CARBOMATU ECO w połączeniu z produktem CARBOHUMIC")
+       i w poradniku sadowniczym. Reszta czeka na dane od CarboHort. -->
+  <section class="c5-sec c5-band">
+    <div class="c5-wrap">
+      <span class="c5-kicker">Zestawy i promocje</span>
+      <div class="c5-head">
+        <h2 class="c5-h2">Kupowane razem, bo razem działają lepiej</h2>
+        <p class="c5-lead">CARBOMAT ECO jest produktem stałym i potrzebuje czasu, zanim zacznie pracować. CARBOHUMIC to już rozpuszczone, aktywne kwasy humusowe – działa niemal od razu, ale mniej trwale. Producent zaleca stosowanie ich razem.</p>
+      </div>
+
+      <div class="c5sk-sets">
+        <article class="c5sk-set">
+          <div class="c5sk-set__items" aria-hidden="true">
+            <span class="wf-ph"></span>
+            <span class="wf-ph"></span>
+          </div>
+          <div class="wf-stack wf-stack--2">
+            <span class="c5sk-set__name">Baza + płyn: CARBOMAT ECO i CARBOHUMIC</span>
+            <p class="wf-small wf-t-secondary">Trwały fundament, który zakładasz raz, plus płynne uzupełnienie, które podajesz w sezonie bez rozkopywania gleby. Zalecenie z karty producenta.</p>
+          </div>
+          <div class="c5sk-set__foot">
+            <!-- ⚠️ Cena zestawu wymaga ceny CARBOHUMIC – jej nie mamy. Nie wymyślamy
+                 kwot ani widełek (decyzja Mateusza 02.08). -->
+            <span class="wf-small wf-t-tertiary">Cena zestawu po uzupełnieniu cennika CARBOHUMIC ⚠️</span>
+            <a class="c5-btn c5-btn--light c5-btn--sm" href="pdp.html">Zobacz produkty zestawu</a>
+          </div>
+        </article>
+
+        <article class="c5sk-set c5sk-set--empty">
+          <div class="wf-stack wf-stack--2">
+            <span class="c5sk-set__name wf-t-tertiary">Miejsce na zestawy sezonowe i promocje</span>
+            <p class="wf-small wf-t-secondary">Tu wejdą pakiety sezonowe („zakładam plantację", „jesienne poprawianie gleby") i oferty dostępne wyłącznie w sklepie – to one mają przeciągnąć klientów z Allegro wartością, a nie ceną.</p>
+            <p class="wf-small wf-t-tertiary">⚠️ Czekamy na decyzję CarboHort: które produkty wolno łączyć w program i czy mamy dane o synergii, czy to wyłącznie wygoda zakupowa.</p>
+          </div>
+          <div class="c5sk-set__foot">
+            <a class="c5-btn c5-btn--light c5-btn--sm" href="konfigurator.html">Zbierz własny zestaw w konfiguratorze</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LISTA PRODUKTÓW: fasety + siatka ===== -->
+  <section class="c5-sec" id="lista">
+    <div class="c5-wrap">
+      <span class="c5-kicker">Wszystkie produkty</span>
+
+      <div class="c5sk-list">
+
+        <!-- KOLUMNA FASET ------------------------------------------------- -->
+        <div>
+        <button type="button" class="c5sk-filtertoggle" data-facets-toggle aria-expanded="false" aria-controls="fasety">
+          <span>Filtry <span class="wf-t-tertiary" data-facets-count></span></span>
+          <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg>
+        </button>
+        <aside class="c5sk-facets" id="fasety" aria-label="Filtry produktów">
+
+          <!-- Odczyn zawsze pierwszy i zawsze rozwinięty: to jedyny filtr, którego
+               pomyłka realnie szkodzi roślinie (CARBOMAT HUMIC pod borówkę). -->
+          <div class="c5sk-facet" style="border-top:0;padding-top:0;">
+            <button type="button" class="c5sk-facet__title" aria-expanded="true" aria-controls="f-ph">Odczyn produktu (pH) <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5sk-facet__body" id="f-ph">
+              <label class="c5sk-opt"><input type="checkbox" data-facet="ph" value="kwasny"> <span>4,5–5,0 – kwaśny<span class="c5sk-opt__note">pod borówkę i inne kwasolubne</span></span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="ph" value="uniwersalny"> <span>6,0–6,5 – uniwersalny<span class="c5sk-opt__note">dla większości grup roślin</span></span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="ph" value="podnosi"> <span>9–11 – podnosi odczyn<span class="c5sk-opt__note">nie pod rośliny kwasolubne</span></span></label>
+            </div>
+          </div>
+
+          <div class="c5sk-facet">
+            <button type="button" class="c5sk-facet__title" aria-expanded="true" aria-controls="f-aplikacja">Sposób aplikacji <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5sk-facet__body" id="f-aplikacja">
+              <label class="c5sk-opt"><input type="checkbox" data-facet="aplikacja" value="mieszanie"> <span>Wymieszanie z glebą lub podłożem</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="aplikacja" value="sciolkowanie"> <span>Ściółkowanie – rozsypanie bez mieszania</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="aplikacja" value="polewanie"> <span>Polewanie z beczki lub mauzera</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="aplikacja" value="konewka"> <span>Podlewanie konewką</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="aplikacja" value="opryskiwacz"> <span>Opryskiwacz, belka, zraszacz</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="aplikacja" value="kroplowanie"> <span>Kroplowanie i fertygacja</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="aplikacja" value="podloze"> <span>Gotowe podłoże uprawowe</span></label>
+            </div>
+          </div>
+
+          <div class="c5sk-facet">
+            <button type="button" class="c5sk-facet__title" aria-expanded="true" aria-controls="f-uprawa">Uprawa <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5sk-facet__body" id="f-uprawa">
+              <label class="c5sk-opt"><input type="checkbox" data-facet="uprawa" value="sad"> <span>Sad</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="uprawa" value="jagodowe"> <span>Jagodowe (w tym borówka)</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="uprawa" value="warzywa"> <span>Warzywa</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="uprawa" value="rolnicze"> <span>Zboża, kukurydza, rzepak</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="uprawa" value="ogrod"> <span>Ogród przydomowy i działka</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="uprawa" value="ozdobne"> <span>Rośliny ozdobne, iglaki, rabaty</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="uprawa" value="szkolka"> <span>Szkółka i zieleń urządzona</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="uprawa" value="bezglebowe"> <span>Uprawy pod osłonami i bezglebowe</span></label>
+            </div>
+            <!-- Bez „trawnika": klient wprost 21.07 – „bez sztucznych kategorii,
+                 np. trawniki odpadają". ⚠️ Kolizja z wcześniejszą decyzją D35,
+                 która eksponowała trawnik – do rozstrzygnięcia z Darkiem. -->
+          </div>
+
+          <div class="c5sk-facet">
+            <button type="button" class="c5sk-facet__title" aria-expanded="true" aria-controls="f-funkcja">Co osiągasz <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5sk-facet__body" id="f-funkcja">
+              <label class="c5sk-opt"><input type="checkbox" data-facet="funkcja" value="retencja"> <span>Zatrzymać wodę / susza</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="funkcja" value="prochnica"> <span>Odbudować próchnicę</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="funkcja" value="jakosc"> <span>Jakość i trwałość owocu</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="funkcja" value="start"> <span>Lepszy start i wzrost</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="funkcja" value="ph"> <span>Uregulować pH gleby</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="funkcja" value="bez-torfu"> <span>Podłoże bez torfu</span></label>
+            </div>
+          </div>
+
+          <!-- To ta faseta, a nie żadna etykieta „PRO", rozdziela profesjonalistę
+               od nieprofesjonalisty. Preset „Dla siebie / PRO" ze starej makiety
+               został wygaszony – klasyfikował klienta po skali wbrew D46. -->
+          <div class="c5sk-facet">
+            <button type="button" class="c5sk-facet__title" aria-expanded="true" aria-controls="f-opak">Opakowanie i sposób zakupu <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5sk-facet__body" id="f-opak">
+              <label class="c5sk-opt"><input type="checkbox" data-facet="kanal" value="koszyk"> <span>W koszyku, cena jawna</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="kanal" value="oferta"> <span>Zapytaj o ofertę / Twoja cena po zalogowaniu</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="opak" value="drobne"> <span>Drobne: butelka 1 l, baniak 5 l, worek 20 l, kanister 20 l</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="opak" value="duze"> <span>Duże: beczka 200 l, big bag 1000 i 1500 l, mauzer 1000 l</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="opak" value="paleta"> <span>Od palety w górę</span></label>
+            </div>
+          </div>
+
+          <div class="c5sk-facet">
+            <button type="button" class="c5sk-facet__title" aria-expanded="false" aria-controls="f-linia">Linia produktowa <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5sk-facet__body" id="f-linia" hidden>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="linia" value="carbomat-eco"> <span>CARBOMAT ECO</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="linia" value="carbomat-eco-sciolka"> <span>CARBOMAT ECO Ściółka</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="linia" value="carbomat-humic"> <span>CARBOMAT HUMIC</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="linia" value="carbohumic"> <span>CARBOHUMIC doglebowy</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="linia" value="carbohumic-nalistny"> <span>CARBOHUMIC nalistny (MAXI PLUS, CALBOR)</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="linia" value="carbomat-mata"> <span>CARBOMAT Mata Uprawowa</span></label>
+            </div>
+          </div>
+
+          <div class="c5sk-facet">
+            <button type="button" class="c5sk-facet__title" aria-expanded="false" aria-controls="f-postac">Postać i dostępna frakcja <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5sk-facet__body" id="f-postac" hidden>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="postac" value="sypki"> <span>Sypki</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="postac" value="plynny"> <span>Płynny</span></label>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="postac" value="mata"> <span>Rękaw uprawowy</span></label>
+              <p class="c5sk-facet__src">Frakcje CARBOMAT ECO: 0,1–2 · 2–4 · 4–8 mm; Ściółka 8–20 mm ⚠️. Frakcję przydzielamy według bieżącej dostępności – o konkretną możesz poprosić przy zamówieniu, nie jest osobnym produktem.</p>
+            </div>
+          </div>
+
+          <div class="c5sk-facet">
+            <button type="button" class="c5sk-facet__title" aria-expanded="false" aria-controls="f-cert">Certyfikat ekologiczny <svg class="wf-icon" aria-hidden="true"><use href="#ti-chevron-down"></use></svg></button>
+            <div class="c5sk-facet__body" id="f-cert" hidden>
+              <label class="c5sk-opt"><input type="checkbox" data-facet="cert" value="eko"> <span>Dopuszczony w produkcji ekologicznej<span class="c5sk-opt__note">IUNG · FiBL · SKAAL – zakres per produkt</span></span></label>
+            </div>
+          </div>
+        </aside>
+        </div>
+
+        <!-- SIATKA --------------------------------------------------------- -->
+        <div>
+          <div class="c5sk-toolbar">
+            <p class="c5sk-count">Pokazujemy <span class="wf-w-bold" data-shop-shown>10</span> z <span data-shop-total>10</span> produktów</p>
+            <a class="wf-link--quiet wf-inline wf-small" href="konfigurator.html">Policz dawkę i liczbę opakowań <svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-arrow-right"></use></svg></a>
+          </div>
+
+          <div class="c5sk-chips" data-chips aria-label="Aktywne filtry"></div>
+
+          <!-- Wykluczenia półek: produkt zdejmowany z listy dostaje ZDANIE,
+               nigdy nie znika po cichu. -->
+          <div class="c5sk-note" data-note-borowka hidden>
+            <svg class="wf-icon" aria-hidden="true"><use href="#ti-alert-triangle"></use></svg>
+            <div class="c5sk-note__body">
+              <span class="wf-w-semibold">CARBOMAT HUMIC nie jest tu pokazany.</span>
+              <span class="wf-t-secondary">Ma odczyn 9–11, czyli podnosi pH gleby – pod borówkę, wrzosowate, różaneczniki i azalie go nie stosuj. Do tych roślin służy CARBOMAT ECO w odmianie 4,5–5,0.</span>
+            </div>
+          </div>
+          <div class="c5sk-note" data-note-sprzet hidden>
+            <svg class="wf-icon" aria-hidden="true"><use href="#ti-alert-triangle"></use></svg>
+            <div class="c5sk-note__body">
+              <span class="wf-w-semibold">Nie wszystko przejdzie przez filtry i dysze.</span>
+              <span class="wf-t-secondary">Zdjęliśmy z tej listy CARBOHUMIC niefiltrowany (20 mesh) oraz produkty sypkie. Cytat z karty producenta: „Produktu niefiltrowanego nie stosujemy do fertygacji ani urządzeń z filtrami".</span>
+            </div>
+          </div>
+          <div class="c5sk-note" data-note-pole hidden>
+            <svg class="wf-icon" aria-hidden="true"><use href="#ti-alert-triangle"></use></svg>
+            <div class="c5sk-note__body">
+              <span class="wf-w-semibold">CALBOR nie jest tu pokazany.</span>
+              <span class="wf-t-secondary">Decyzja MRiRW G-1733/25 dopuszcza go wyłącznie w uprawach sadowniczych – nie w uprawach polowych, warzywach ani na roślinach ozdobnych.</span>
+            </div>
+          </div>
+
+          <div class="c5sk-empty" data-shop-empty hidden>
+            <span class="wf-w-semibold">Żaden produkt nie spełnia tych warunków.</span>
+            <span class="wf-small wf-t-secondary">Rozluźnij filtry albo pozwól, żeby dobrał je za Ciebie konfigurator.</span>
+            <a class="c5-btn c5-btn--light c5-btn--sm" href="konfigurator.html">Dobierz właściwe produkty</a>
+          </div>
+
+          <!-- ================= KARTY =================
+               Zasada: jedna karta = jeden produkt handlowy. Opakowanie jest
+               opcją NA karcie i przełącznikiem kanału, nigdy osobnym kaflem
+               (stara makieta dublowała CARBOMAT jako „drobnica" i „paleta").
+               `data-polka` to JAWNA lista – przynależność do półki zawiera
+               decyzje prawne i redakcyjne, których nie da się wyliczyć z faset.
+               Ceny wyłącznie CARBOMAT ECO (Darek, AC #30867, 21.07); przy
+               pozostałych produktach nie wymyślamy kwot (decyzja Mateusza 02.08). -->
+          <div class="c5sk-grid" data-grid>
+
+            <!-- 1. CARBOMAT ECO – odmiana uniwersalna -->
+            <article class="c5sk-card"
+              data-name="CARBOMAT ECO odmiana uniwersalna pH 6,0-6,5 sypki lignit dodatek do gleby podłoże"
+              data-linia="carbomat-eco" data-ph="uniwersalny" data-postac="sypki"
+              data-aplikacja="mieszanie" data-funkcja="retencja prochnica start bez-torfu"
+              data-uprawa="sad jagodowe warzywa rolnicze ogrod ozdobne szkolka"
+              data-opak="drobne duze paleta" data-kanal="koszyk oferta" data-cert="eko"
+              data-polka="ogrod sad pole nasadzenia">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">sypki · doglebowy</span><span class="c5sk-tag">pH 6,0–6,5</span></div>
+                <h3 class="c5sk-card__name"><a href="pdp.html">CARBOMAT ECO · odmiana uniwersalna</a></h3>
+                <p class="c5sk-card__desc">Surowy lignit do wymieszania z glebą lub podłożem. Odczyn dla większości grup roślin. Zakładasz raz – pracuje kolejne sezony.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val">od 43 zł</span>
+                  <span class="c5sk-card__packs">worek 20 l · big bag 1000 l 650 zł · big bag 1500 l 850 zł</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <button type="button" class="c5-btn c5-btn--dark c5-btn--sm" data-add data-label="CARBOMAT ECO uniwersalny · worek 20 l">dodaj do koszyka</button>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="pdp.html">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 2. CARBOMAT ECO – odmiana kwaśna.
+                 Dwie karty zamiast jednej, bo (a) Darek prosił, żeby ceny big bagów
+                 były przypisane do odmian pH, a nie podawane jako widełki, i (b) półka
+                 „Borówka i kwasolubne" musi pokazać wyłącznie odmianę kwaśną. -->
+            <article class="c5sk-card"
+              data-name="CARBOMAT ECO odmiana kwaśna pH 4,5-5,0 borówka wrzosowate różaneczniki azalie kwasolubne"
+              data-linia="carbomat-eco" data-ph="kwasny" data-postac="sypki"
+              data-aplikacja="mieszanie" data-funkcja="retencja prochnica ph"
+              data-uprawa="jagodowe ogrod ozdobne szkolka sad"
+              data-opak="drobne duze paleta" data-kanal="koszyk oferta" data-cert="eko"
+              data-polka="ogrod borowka sad pole nasadzenia">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">sypki · doglebowy</span><span class="c5sk-tag c5sk-tag--solid">pH 4,5–5,0</span></div>
+                <h3 class="c5sk-card__name"><a href="pdp.html">CARBOMAT ECO · odmiana kwaśna</a></h3>
+                <p class="c5sk-card__desc">Ten sam surowiec o niższym odczynie – pod borówkę, żurawinę, wrzosowate, różaneczniki i azalie. Odmiana uniwersalna mogłaby podnieść pH ponad ich tolerancję.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val">od 43 zł</span>
+                  <span class="c5sk-card__packs">worek 20 l · big bag 1000 l 600 zł · big bag 1500 l 800 zł</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <button type="button" class="c5-btn c5-btn--dark c5-btn--sm" data-add data-label="CARBOMAT ECO kwaśny · worek 20 l">dodaj do koszyka</button>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="pdp.html">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 3. CARBOMAT ECO Ściółka – pełna nazwa obowiązkowa (zasada vaulta) -->
+            <article class="c5sk-card"
+              data-name="CARBOMAT ECO Ściółka sciolka zamiast kory mulcz warstwa borówka rzędy rabaty"
+              data-linia="carbomat-eco-sciolka" data-ph="kwasny" data-postac="sypki"
+              data-aplikacja="sciolkowanie" data-funkcja="retencja ph"
+              data-uprawa="jagodowe ogrod ozdobne szkolka sad"
+              data-opak="drobne duze paleta" data-kanal="koszyk oferta" data-cert="eko"
+              data-polka="ogrod borowka sciolka sad nasadzenia">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">ściółka · bez mieszania</span><span class="c5sk-tag">frakcja 8–20 mm ⚠️</span></div>
+                <h3 class="c5sk-card__name"><a href="pdp.html">CARBOMAT ECO Ściółka</a></h3>
+                <p class="c5sk-card__desc">Grubsza frakcja do rozsypania warstwą 3–5 cm, bez mieszania. W przeciwieństwie do kory nie powoduje głodu azotowego, a przy okazji obniża pH pod rośliny kwasolubne.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val">od 43 zł</span>
+                  <span class="c5sk-card__packs">worek 20 l · big bag 1000 l 600 zł · big bag 1500 l 800 zł</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <button type="button" class="c5-btn c5-btn--dark c5-btn--sm" data-add data-label="CARBOMAT ECO Ściółka · worek 20 l">dodaj do koszyka</button>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="pdp.html">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 4. CARBOMAT HUMIC – brak opakowań detalicznych i cen.
+                 ⚠️ Rejestracja G-1528/24 zna ten produkt jako „działka i dom",
+                 a pozycjonujemy go na pole. Do potwierdzenia z Darkiem. -->
+            <article class="c5sk-card"
+              data-name="CARBOMAT HUMIC węgiel aktywowany potas pH 9-11 pole strip-till kondycjoner"
+              data-linia="carbomat-humic" data-ph="podnosi" data-postac="sypki"
+              data-aplikacja="mieszanie" data-funkcja="start ph prochnica"
+              data-uprawa="rolnicze warzywa ogrod ozdobne"
+              data-opak="duze paleta" data-kanal="oferta" data-cert="eko"
+              data-polka="pole">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">sypki · aktywowany</span><span class="c5sk-tag c5sk-tag--solid">pH 9–11</span></div>
+                <h3 class="c5sk-card__name"><a href="carbomat-humic.html">CARBOMAT HUMIC</a></h3>
+                <p class="c5sk-card__desc">Kondycjoner, potas i biostymulator w jednym – działa od pierwszych dni i podnosi odczyn zakwaszonej gleby. Na pole w dawkach kg/ha; nie pod rośliny kwasolubne.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val c5sk-card__val--quiet"><svg class="wf-icon" aria-hidden="true"><use href="#ti-lock"></use></svg> Cena i opakowania w potwierdzeniu</span>
+                  <span class="c5sk-card__packs">⚠️ CarboHort nie podał jeszcze opakowań handlowych ani cennika</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <a class="c5-btn c5-btn--dark c5-btn--sm" href="kontakt.html">zapytaj o ofertę</a>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="carbomat-humic.html">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 5. CARBOHUMIC niefiltrowany -->
+            <article class="c5sk-card"
+              data-name="CARBOHUMIC niefiltrowany doglebowy płynny próchnica w płynie beczka mauzer polewanie 20 mesh"
+              data-linia="carbohumic" data-ph="" data-postac="plynny"
+              data-aplikacja="polewanie" data-funkcja="prochnica retencja"
+              data-uprawa="sad jagodowe warzywa rolnicze szkolka ozdobne"
+              data-opak="drobne duze paleta" data-kanal="oferta" data-cert="eko"
+              data-polka="borowka sad pole nasadzenia">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">płynny · doglebowy</span><span class="c5sk-tag">20 mesh</span></div>
+                <h3 class="c5sk-card__name"><a href="carbohumic.html#wariant-niefiltrowany">CARBOHUMIC niefiltrowany</a></h3>
+                <p class="c5sk-card__desc">„Intensywna odbudowa gleby i budowanie trwałej próchnicy". Podajesz polewaniem z beczki lub mauzera. Nie stosujemy go do fertygacji ani urządzeń z filtrami.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val c5sk-card__val--quiet"><svg class="wf-icon" aria-hidden="true"><use href="#ti-lock"></use></svg> Sprawdź dostępność i cenę</span>
+                  <span class="c5sk-card__packs">kanister 20 l · beczka 200 l · mauzer 1000 l ⚠️ cennik w przygotowaniu</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <a class="c5-btn c5-btn--dark c5-btn--sm" href="kontakt.html">zapytaj o ofertę</a>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="carbohumic.html#wariant-niefiltrowany">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 6. CARBOHUMIC filtrowany -->
+            <article class="c5sk-card"
+              data-name="CARBOHUMIC filtrowany biostymulacja oprysk kroplowanie fertygacja 187 mesh płynny"
+              data-linia="carbohumic" data-ph="" data-postac="plynny"
+              data-aplikacja="opryskiwacz kroplowanie polewanie" data-funkcja="prochnica start"
+              data-uprawa="sad jagodowe warzywa rolnicze szkolka ozdobne bezglebowe"
+              data-opak="drobne duze paleta" data-kanal="oferta" data-cert="eko"
+              data-polka="borowka sad pole nasadzenia sprzet">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">płynny · doglebowy i nalistny</span><span class="c5sk-tag">187 mesh</span></div>
+                <h3 class="c5sk-card__name"><a href="carbohumic.html#wariant-filtrowany">CARBOHUMIC filtrowany</a></h3>
+                <p class="c5sk-card__desc">„Bieżąca biostymulacja roślin i środowiska glebowego". Przechodzi przez opryskiwacze, belki herbicydowe, zraszacze i linie kroplujące.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val c5sk-card__val--quiet"><svg class="wf-icon" aria-hidden="true"><use href="#ti-lock"></use></svg> Sprawdź dostępność i cenę</span>
+                  <span class="c5sk-card__packs">baniak 5 l · kanister 20 l · beczka 200 l · mauzer 1000 l ⚠️ cennik w przygotowaniu</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <a class="c5-btn c5-btn--dark c5-btn--sm" href="kontakt.html">zapytaj o ofertę</a>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="carbohumic.html#wariant-filtrowany">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 7. CARBOHUMIC OGRÓD – linia konsumencka (Flora i Sad wycofane 21.07) -->
+            <article class="c5sk-card"
+              data-name="CARBOHUMIC OGRÓD hobby działka podlewanie konewka butelka baniak"
+              data-linia="carbohumic" data-ph="" data-postac="plynny"
+              data-aplikacja="konewka polewanie" data-funkcja="prochnica start"
+              data-uprawa="ogrod warzywa ozdobne jagodowe"
+              data-opak="drobne" data-kanal="oferta" data-cert="eko"
+              data-polka="ogrod borowka nasadzenia">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">płynny · do ogrodu</span></div>
+                <h3 class="c5sk-card__name"><a href="carbohumic.html#wariant-ogrod">CARBOHUMIC OGRÓD</a></h3>
+                <p class="c5sk-card__desc">Wersja pod ogród i działkę – rozcieńczasz z wodą i podlewasz konewką, co 10–14 dni. Ta sama próchnica w płynie, w opakowaniu, które udźwigniesz sam.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val c5sk-card__val--quiet"><svg class="wf-icon" aria-hidden="true"><use href="#ti-lock"></use></svg> Sprawdź dostępność i cenę</span>
+                  <span class="c5sk-card__packs">butelka 1 l · baniak 5 l ⚠️ cennik w przygotowaniu</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <a class="c5-btn c5-btn--dark c5-btn--sm" href="kontakt.html">zapytaj o ofertę</a>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="carbohumic.html#wariant-ogrod">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 8. MAXI PLUS -->
+            <article class="c5sk-card"
+              data-name="CARBOHUMIC MAXI PLUS nalistny biostymulator masa liściowa oprysk"
+              data-linia="carbohumic-nalistny" data-ph="" data-postac="plynny"
+              data-aplikacja="opryskiwacz" data-funkcja="start"
+              data-uprawa="sad jagodowe warzywa rolnicze ozdobne"
+              data-opak="drobne duze" data-kanal="oferta" data-cert=""
+              data-polka="sad pole sprzet">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">płynny · nalistny</span></div>
+                <h3 class="c5sk-card__name"><a href="carbohumic.html#doglebowo-czy-nalistnie">CARBOHUMIC MAXI PLUS</a></h3>
+                <p class="c5sk-card__desc">Nalistna biostymulacja w fazie wzrostu – kwasy huminowe i fulwowe z leonardytu, pracują na masę liściową rośliny.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val c5sk-card__val--quiet"><svg class="wf-icon" aria-hidden="true"><use href="#ti-lock"></use></svg> Sprawdź dostępność i cenę</span>
+                  <span class="c5sk-card__packs">⚠️ Opakowania i cennik do potwierdzenia; brak tabeli parametrów</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <a class="c5-btn c5-btn--dark c5-btn--sm" href="kontakt.html">zapytaj o ofertę</a>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="carbohumic.html#doglebowo-czy-nalistnie">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 9. CALBOR – twarde ograniczenie uprawowe z decyzji MRiRW G-1733/25.
+                 Reguła kodowana: nigdy poza kontekstem sadowniczym. -->
+            <article class="c5sk-card"
+              data-name="CARBOHUMIC CALBOR wapń bor jakość owocu kaliber trwałość pozbiorcza sad"
+              data-linia="carbohumic-nalistny" data-ph="" data-postac="plynny"
+              data-aplikacja="opryskiwacz" data-funkcja="jakosc"
+              data-uprawa="sad" data-opak="drobne duze" data-kanal="oferta" data-cert=""
+              data-polka="sad sprzet" data-tylko-sad="1">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">płynny · nalistny</span><span class="c5sk-tag c5sk-tag--solid">tylko sady</span></div>
+                <h3 class="c5sk-card__name"><a href="carbohumic.html#doglebowo-czy-nalistnie">CARBOHUMIC CALBOR</a></h3>
+                <p class="c5sk-card__desc">Wapń i bor w chelacie kwasów humusowych – jakość, kaliber i trwałość owocu po zbiorze. Rejestracja obejmuje wyłącznie uprawy sadownicze.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val c5sk-card__val--quiet"><svg class="wf-icon" aria-hidden="true"><use href="#ti-lock"></use></svg> Sprawdź dostępność i cenę</span>
+                  <span class="c5sk-card__packs">⚠️ Opakowania i cennik do potwierdzenia; nazwa handlowa do ustalenia (CALBOR vs CALBOR PLUS)</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <a class="c5-btn c5-btn--dark c5-btn--sm" href="kontakt.html">zapytaj o ofertę</a>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="carbohumic.html#doglebowo-czy-nalistnie">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- 10. CARBOMAT Mata Uprawowa
+                 ⚠️ OTWARTE: czy mata w ogóle wchodzi do sklepu, czy zostaje wyłącznie
+                 ścieżką leadową. Do czasu decyzji stoi tu z CTA w całości leadowym
+                 (sprzedaż od palety w górę) – zgodnie z jej stroną produktową. -->
+            <article class="c5sk-card"
+              data-name="CARBOMAT Mata Uprawowa rękaw uprawa bezglebowa podłoże wełna mineralna kokos paleta"
+              data-linia="carbomat-mata" data-ph="uniwersalny" data-postac="mata"
+              data-aplikacja="podloze" data-funkcja="bez-torfu retencja"
+              data-uprawa="bezglebowe jagodowe warzywa szkolka"
+              data-opak="paleta" data-kanal="oferta" data-cert=""
+              data-polka="nasadzenia">
+              <span class="wf-ph c5sk-card__ph" aria-hidden="true"></span>
+              <div class="c5sk-card__body">
+                <div class="c5sk-card__tags"><span class="c5sk-tag">rękaw · uprawa bezglebowa</span><span class="c5sk-tag c5sk-tag--solid">od palety</span></div>
+                <h3 class="c5sk-card__name"><a href="carbomat-mata.html">CARBOMAT Mata Uprawowa</a></h3>
+                <p class="c5sk-card__desc">Rękaw 100 × 20 × 8 cm z lignitu i włókna kokosowego – wieloletnia alternatywa dla wełny mineralnej i maty kokosowej. Sprzedaż od palety w górę.</p>
+                <div class="c5sk-card__price">
+                  <span class="c5sk-card__val c5sk-card__val--quiet"><svg class="wf-icon" aria-hidden="true"><use href="#ti-lock"></use></svg> Wycena indywidualna</span>
+                  <span class="c5sk-card__packs">⚠️ Liczba mat na palecie i cena palety nieustalone</span>
+                </div>
+                <div class="c5sk-card__cta">
+                  <a class="c5-btn c5-btn--dark c5-btn--sm" href="kontakt.html">zapytaj o ofertę</a>
+                  <a class="c5-btn c5-btn--light c5-btn--sm" href="carbomat-mata.html">zobacz</a>
+                </div>
+              </div>
+            </article>
+
+          </div>
+
+          <p class="c5sk-fb" style="margin-top:var(--w-space-6);">Produkty partnerskie (mikoryza, ocet drzewny, Vinassa, PURE ONE) wejdą do tej listy po ustaleniu minimalnej karty atrybutów: odczyn, postać, sposób aplikacji, uprawa, funkcja, opakowanie, kanał i certyfikat. Bez nich nie wpięją się w filtry. ⚠️</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAS PRO =====
+       Profesjonalista trafiający pierwszy raz musi zobaczyć, że to nie jest sklep
+       „tylko dla działkowców" – ale bez bramki i bez etykietowania go (D13, D46).
+       Copy 1:1 ze strony produktowej CARBOMAT ECO. -->
+  <section class="c5-sec c5-pro">
+    <div class="c5-pro__photo" aria-hidden="true"><span class="wf-ph"></span></div>
+    <div class="c5-wrap">
+      <div class="c5-pro__grid">
+        <h2>Prowadzisz uprawę profesjonalną – sad, plantację, pole lub szkółkę?</h2>
+        <p>Przygotujemy ofertę i Twoją cenę – także na palety i duże opakowania (big bag 1,5 m³). Pierwsze zamówienie możesz złożyć w sklepie, a po realizacji zakładamy konto i kolejne robisz po swojej cenie.</p>
+        <div class="c5-btnrow">
+          <a class="c5-btn c5-btn--inv" href="kontakt.html">Zapytaj o ofertę</a>
+          <a class="c5-pro__link" href="platforma-b2b.html">Masz konto? Zaloguj się</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== dr JUREK ===== -->
+  <section class="c5-sec">
+    <div class="c5-wrap">
+      <div class="c5-ask">
+        <p class="c5-ask__lead">Nie wiesz, który produkt jest dla Ciebie?</p>
+        <p class="c5-muted">Zapytaj wprost – asystent zna cały asortyment, wie, na której stronie jesteś, i wskaże konkretny produkt oraz opakowanie. Także wieczorem i w weekend.</p>
+        <!-- Mechanika jak na stronach produktowych (c5.js): klik w ramkę otwiera dok,
+             klik w tabletkę dodatkowo wpisuje pytanie do pola doka.
+             ⚠️ Treść tabletek robocza – do recenzji razem z resztą copy. -->
+        <div class="c5-ask__box" data-ask-box>
+          <input type="text" data-ask-input placeholder="Np. mam 30 arów borówki na piachu – od czego zacząć?" aria-label="Zadaj pytanie dr. Jurkowi">
+          <div class="c5-ask__chips" role="group" aria-label="Przykładowe pytania">
+            <button type="button" class="c5-ask__chip" data-ask-chip>Co kupić na start do ogrodu?</button>
+            <button type="button" class="c5-ask__chip" data-ask-chip>Czym różni się CARBOMAT HUMIC od CARBOHUMIC?</button>
+            <button type="button" class="c5-ask__chip" data-ask-chip>Mam 3 ha i nie wiem, ile kupić</button>
+            <button type="button" class="c5-ask__chip" data-ask-chip>Który produkt pod borówkę?</button>
+            <button type="button" class="c5-ask__chip" data-ask-chip>Co podam przez opryskiwacz?</button>
+          </div>
+        </div>
+        <div><button type="button" class="c5-btn c5-btn--light" data-jurek-open>Zapytaj wirtualnego dr Jurka</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA KOŃCOWE ===== -->
+  <section class="c5-sec c5-band">
+    <div class="c5-wrap">
+      <div class="c5-cta">
+        <h2 class="c5-h2 c5-h2--center">Wolisz, żeby ktoś dobrał to za Ciebie?</h2>
+        <p class="c5-lead c5-lead--center">Konfigurator zada kilka pytań o uprawę i skalę, a na końcu poda gotowy zestaw produktów z dawkami i liczbą opakowań – jednym kliknięciem do koszyka.</p>
+        <div class="c5-btnrow">
+          <a class="c5-btn c5-btn--dark" href="konfigurator.html">dobierz właściwe produkty</a>
+          <a class="c5-btn c5-btn--light" href="produkty.html">poznaj całą gamę</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -483,9 +993,9 @@
   </div>
 </footer>
 
-<!-- ===== dr Jurek — pływający dok ===== -->
+<!-- ===== dr Jurek – pływający dok (ukryty do przewinięcia) ===== -->
 <div class="cw-jurek-backdrop" data-jurek-backdrop data-open="false" aria-hidden="true"></div>
-<div class="cw-jurek" data-jurek-dock data-open="false">
+<div class="cw-jurek cx-dockhide" data-jurek-dock data-open="false">
   <div class="cw-jurek__panel" role="dialog" aria-label="Wirtualny dr Jurek">
     <div class="cw-jurek__head">
       <span class="wf-ph wf-ph--avatar" aria-hidden="true"></span>
@@ -505,115 +1015,203 @@
   </form>
 </div>
 
-<script src="cw.js"></script>
 
-<!-- ===== Filtrowanie sklepu (page-local) ===== -->
+<script src="cw.js"></script>
+<script src="c5.js"></script>
+
+<!-- ===== SKLEP – półki, fasety, wyszukiwarka (page-local) =====
+     Logika jest lokalna dla tej strony, żeby nie obciążać wspólnego c5.js.
+     Model stanu: jedna półka (pojedynczy wybór) + fasety (wielokrotny wybór)
+     + fraza z wyszukiwarki. Półka dodatkowo zmienia nagłówek, lead i adres. -->
 <script>
 (function () {
-  var grid = document.querySelector("[data-shop-grid]");
+  "use strict";
+  var grid = document.querySelector("[data-grid]");
   if (!grid) return;
-  var cards = Array.prototype.slice.call(grid.querySelectorAll("[data-seg]"));
-  var presetBtns = Array.prototype.slice.call(document.querySelectorAll("[data-preset]"));
-  var facetBoxes = Array.prototype.slice.call(document.querySelectorAll("[data-facet]"));
-  var countEl = document.querySelector("[data-shop-count]");
-  var chipsWrap = document.querySelector("[data-chips]");
-  var chipsEmpty = document.querySelector("[data-chips-empty]");
-  var emptyEl = document.querySelector("[data-shop-empty]");
+
+  var cards      = Array.prototype.slice.call(grid.querySelectorAll(".c5sk-card"));
+  var shelfBtns  = Array.prototype.slice.call(document.querySelectorAll("[data-shelf]"));
+  var funcBtns   = Array.prototype.slice.call(document.querySelectorAll("[data-func]"));
+  var boxes      = Array.prototype.slice.call(document.querySelectorAll("[data-facet]"));
+  var searchEl   = document.querySelector("[data-shop-search]");
+  var shownEl    = document.querySelector("[data-shop-shown]");
+  var totalEl    = document.querySelector("[data-shop-total]");
+  var emptyEl    = document.querySelector("[data-shop-empty]");
+  var chipsWrap  = document.querySelector("[data-chips]");
+  var titleEl    = document.querySelector("[data-shelf-title]");
+  var leadEl     = document.querySelector("[data-shelf-lead]");
+
+  /* Definicje półek. Przynależność produktu do półki rozstrzyga WYŁĄCZNIE
+     `data-polka` na karcie – to jawna lista, bo zawiera decyzje prawne
+     i redakcyjne, których nie da się wyliczyć z faset (np. CALBOR tylko sady,
+     CARBOMAT HUMIC nigdy pod kwasolubne).
+     Świadomie NIE zaznaczamy przy wejściu żadnych faset: skoro i tak nie
+     poszerzają zbioru, w rzędzie aktywnych filtrów kłamałyby o tym, co jest
+     na liście (półka borówkowa pokazywałaby chip „pH 6,0–6,5", choć odmiany
+     uniwersalnej na niej nie ma).
+     `note` wskazuje zdanie wykluczające – produkt zdejmowany z listy zawsze
+     dostaje wyjaśnienie, nigdy nie znika po cichu. */
+  var SHELVES = {
+    "": {
+      title: "Zacznij od gotowej półki",
+      lead: "Mamy niewiele produktów i każdy z nich robi coś innego. Zamiast kazać Ci przekopywać listę, ustawiliśmy gotowe półki – wybierz tę, która opisuje Twoją sytuację, a zobaczysz tylko to, co ma tam sens. Dokładne dawki policzysz w konfiguratorze."
+    },
+    ogrod: {
+      title: "Ogród i warzywnik",
+      lead: "Grządki, rabaty, krzewy i drzewka przy domu. Opakowania, które udźwigniesz sam, z ceną widoczną od razu i zakupem w koszyku."
+    },
+    borowka: {
+      title: "Borówka i rośliny kwasolubne",
+      lead: "Borówka, żurawina, różaneczniki, azalie i wrzosy potrzebują niskiego odczynu. Pokazujemy tylko to, co możesz pod nie bezpiecznie zastosować.",
+      note: "borowka"
+    },
+    sciolka: {
+      title: "Ściółkowanie zamiast kory",
+      lead: "Warstwa 3–5 cm rozsypana bez mieszania. W przeciwieństwie do kory nie powoduje głodu azotowego, wzbogaca glebę w materię organiczną i tworzy siedlisko dla pożytecznych mikroorganizmów."
+    },
+    sad: {
+      title: "Sad i plantacja jagodowa",
+      lead: "Od zakładania nasadzeń, przez glebę w rzędach, po jakość i trwałość owocu po zbiorze. Drobne opakowania kupisz od razu, przy paletach przygotujemy ofertę."
+    },
+    pole: {
+      title: "Pole i uprawy towarowe",
+      lead: "Dawki liczone na hektar, aplikacja sprzętem, wysyłka paletowa. Ceny dużych opakowań ustalamy indywidualnie – po pierwszym zamówieniu zakładamy konto i kolejne robisz po swojej cenie.",
+      note: "pole"
+    },
+    nasadzenia: {
+      title: "Sadzenie, szkółka i zieleń",
+      lead: "Dołek, bryła korzeniowa, kwatera kontenerowa i misy drzew. Do przetargów i specyfikacji dołączamy kartę produktu, analizę laboratoryjną i certyfikaty."
+    },
+    sprzet: {
+      title: "Podam przez opryskiwacz lub kroplowanie",
+      lead: "Tylko to, co przejdzie przez filtry i dysze. Reszta asortymentu jest z tej listy zdjęta, żeby nie zatkać instalacji.",
+      note: "sprzet"
+    }
+  };
 
   var FACET_LABELS = {
-    grupa: { "carbomat": "CARBOMAT", "carbohumic": "CARBOHUMIC", "carbomat-humic": "CARBOMAT HUMIC" },
-    potrzeba: { "retencja": "Retencja wody", "prochnica": "Próchnica / struktura", "jakosc": "Jakość owocu", "start": "Start / wzrost" },
-    forma: { "sypki": "Sypka", "plynny": "Płynna", "nalistny": "Nalistna" },
-    opak: { "drobnica": "Drobnica", "paleta": "Paleta / 1000 L" }
+    ph:        { kwasny: "pH 4,5–5,0", uniwersalny: "pH 6,0–6,5", podnosi: "pH 9–11" },
+    aplikacja: { mieszanie: "Wymieszanie z glebą", sciolkowanie: "Ściółkowanie", polewanie: "Polewanie z beczki", konewka: "Podlewanie konewką", opryskiwacz: "Opryskiwacz", kroplowanie: "Kroplowanie", podloze: "Gotowe podłoże" },
+    uprawa:    { sad: "Sad", jagodowe: "Jagodowe", warzywa: "Warzywa", rolnicze: "Zboża i kukurydza", ogrod: "Ogród", ozdobne: "Rośliny ozdobne", szkolka: "Szkółka i zieleń", bezglebowe: "Uprawa bezglebowa" },
+    funkcja:   { retencja: "Zatrzymać wodę", prochnica: "Odbudować próchnicę", jakosc: "Jakość owocu", start: "Start i wzrost", ph: "Uregulować pH", "bez-torfu": "Podłoże bez torfu" },
+    opak:      { drobne: "Drobne opakowania", duze: "Duże opakowania", paleta: "Od palety" },
+    kanal:     { koszyk: "W koszyku", oferta: "Na zapytanie" },
+    linia:     { "carbomat-eco": "CARBOMAT ECO", "carbomat-eco-sciolka": "CARBOMAT ECO Ściółka", "carbomat-humic": "CARBOMAT HUMIC", carbohumic: "CARBOHUMIC doglebowy", "carbohumic-nalistny": "CARBOHUMIC nalistny", "carbomat-mata": "CARBOMAT Mata Uprawowa" },
+    postac:    { sypki: "Sypki", plynny: "Płynny", mata: "Rękaw uprawowy" },
+    cert:      { eko: "Certyfikat ekologiczny" }
   };
-  var PRESET_LABELS = { prywatny: "Dla siebie", pro: "PRO" };
+  var FACET_KEYS = ["ph", "aplikacja", "uprawa", "funkcja", "opak", "kanal", "linia", "postac", "cert"];
 
-  var state = { preset: "all", facets: { grupa: [], potrzeba: [], forma: [], opak: [] } };
+  var state = { shelf: "", facets: {}, q: "" };
+  FACET_KEYS.forEach(function (k) { state.facets[k] = []; });
 
-  function matchesPreset(card) {
-    if (state.preset === "all") return true;
-    var seg = card.getAttribute("data-seg");
-    if (state.preset === "prywatny") return seg === "prywatny" || seg === "both";
-    if (state.preset === "pro") return seg === "pro" || seg === "both";
+  function has(card, key, value) {
+    return (card.getAttribute("data-" + key) || "").split(/\s+/).indexOf(value) !== -1;
+  }
+
+  function matches(card) {
+    if (state.shelf && !has(card, "polka", state.shelf)) return false;
+
+    /* Reguła twarda, nie redakcyjna (podstawa: decyzja MRiRW G-1733/25):
+       CALBOR znika, gdy użytkownik wskaże JAKĄKOLWIEK uprawę inną niż sad.
+       Gdy uprawy nie wskazał (np. filtruje samą funkcją „jakość owocu"), karta
+       zostaje – bo jest jedynym produktem dla tej potrzeby – ale niesie widoczny
+       znacznik „tylko sady" i zdanie o zakresie rejestracji. Świadomie nie
+       chowamy jej po cichu, zgodnie z zasadą wykluczeń z komentarza wyżej. */
+    if (card.getAttribute("data-tylko-sad") === "1") {
+      var upr = state.facets.uprawa;
+      if (upr.length && upr.indexOf("sad") === -1) return false;
+    }
+
+    for (var i = 0; i < FACET_KEYS.length; i++) {
+      var key = FACET_KEYS[i];
+      var sel = state.facets[key];
+      if (!sel.length) continue;
+      var hit = false;
+      for (var j = 0; j < sel.length; j++) { if (has(card, key, sel[j])) { hit = true; break; } }
+      if (!hit) return false;
+    }
+
+    if (state.q) {
+      /* Szukamy WYŁĄCZNIE po jawnej liście słów kluczowych i nazwie produktu.
+         Indeksowanie całego textContent karty dawało wyniki odwrotne do intencji:
+         zapytanie „fertygacja" trafiało w zdanie „nie stosujemy go do fertygacji". */
+      var nameEl = card.querySelector(".c5sk-card__name");
+      var hay = ((card.getAttribute("data-name") || "") + " " + (nameEl ? nameEl.textContent : "")).toLowerCase();
+      if (hay.indexOf(state.q) === -1) return false;
+    }
     return true;
   }
-  function matchesFacet(card, facet) {
-    var sel = state.facets[facet];
-    if (!sel.length) return true;
-    var vals = (card.getAttribute("data-" + facet) || "").split(/\s+/);
-    for (var i = 0; i < sel.length; i++) {
-      if (vals.indexOf(sel[i]) !== -1) return true; // OR w obrębie fasety
-    }
-    return false;
-  }
-  function matches(card) {
-    if (!matchesPreset(card)) return false;
-    return ["grupa", "potrzeba", "forma", "opak"].every(function (f) { return matchesFacet(card, f); });
-  }
 
-  function removeFacet(facet, value) {
-    state.facets[facet] = state.facets[facet].filter(function (v) { return v !== value; });
-    facetBoxes.forEach(function (b) {
-      if (b.getAttribute("data-facet") === facet && b.value === value) b.checked = false;
+  function syncBoxes() {
+    boxes.forEach(function (b) {
+      b.checked = state.facets[b.getAttribute("data-facet")].indexOf(b.value) !== -1;
     });
-  }
-  function setPreset(p) {
-    state.preset = p;
-    presetBtns.forEach(function (b) {
-      b.setAttribute("aria-pressed", String(b.getAttribute("data-preset") === p));
+    funcBtns.forEach(function (b) {
+      b.setAttribute("aria-pressed", state.facets.funkcja.indexOf(b.getAttribute("data-func")) !== -1 ? "true" : "false");
     });
-  }
-  function clearAll() {
-    setPreset("all");
-    Object.keys(state.facets).forEach(function (f) { state.facets[f] = []; });
-    facetBoxes.forEach(function (b) { b.checked = false; });
-    apply();
   }
 
   function renderChips() {
-    Array.prototype.slice.call(chipsWrap.querySelectorAll(".wf-tag")).forEach(function (c) { c.remove(); });
-    var oldClear = chipsWrap.querySelector("[data-chip-clear]");
-    if (oldClear) oldClear.remove();
-
-    var chips = [];
-    if (state.preset !== "all") {
-      chips.push({ kind: "preset", value: state.preset, label: PRESET_LABELS[state.preset] });
-    }
-    Object.keys(state.facets).forEach(function (facet) {
-      state.facets[facet].forEach(function (value) {
-        chips.push({ kind: "facet", facet: facet, value: value, label: FACET_LABELS[facet][value] });
+    if (!chipsWrap) return;
+    chipsWrap.textContent = "";
+    var any = false;
+    FACET_KEYS.forEach(function (key) {
+      state.facets[key].forEach(function (v) {
+        any = true;
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "c5sk-chip";
+        b.innerHTML = '<span></span><svg class="wf-icon" aria-hidden="true"><use href="#ti-x"></use></svg>';
+        b.firstChild.textContent = (FACET_LABELS[key] && FACET_LABELS[key][v]) || v;
+        b.setAttribute("aria-label", "Usuń filtr: " + b.firstChild.textContent);
+        b.addEventListener("click", function () {
+          state.facets[key] = state.facets[key].filter(function (x) { return x !== v; });
+          syncBoxes(); apply();
+        });
+        chipsWrap.appendChild(b);
       });
     });
-
-    chipsEmpty.hidden = chips.length > 0;
-
-    chips.forEach(function (c) {
-      var tag = document.createElement("span");
-      tag.className = "wf-tag wf-tag--removable";
-      tag.appendChild(document.createTextNode(c.label + " "));
-      var btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "wf-tag__remove";
-      btn.setAttribute("aria-label", "Usuń filtr: " + c.label);
-      btn.innerHTML = '<svg class="wf-icon wf-icon--sm" aria-hidden="true"><use href="#ti-x"></use></svg>';
-      btn.addEventListener("click", function () {
-        if (c.kind === "preset") setPreset("all");
-        else removeFacet(c.facet, c.value);
-        apply();
-      });
-      tag.appendChild(btn);
-      chipsWrap.appendChild(tag);
-    });
-
-    if (chips.length) {
-      var clear = document.createElement("button");
-      clear.type = "button";
-      clear.className = "wf-btn wf-btn--link wf-btn--sm";
-      clear.setAttribute("data-chip-clear", "");
-      clear.textContent = "Wyczyść filtry";
-      clear.addEventListener("click", clearAll);
-      chipsWrap.appendChild(clear);
+    if (state.q) {
+      any = true;
+      var q = document.createElement("button");
+      q.type = "button";
+      q.className = "c5sk-chip";
+      q.innerHTML = '<span></span><svg class="wf-icon" aria-hidden="true"><use href="#ti-x"></use></svg>';
+      q.firstChild.textContent = "„" + state.q + "”";
+      q.setAttribute("aria-label", "Wyczyść wyszukiwanie");
+      q.addEventListener("click", function () { state.q = ""; if (searchEl) searchEl.value = ""; apply(); });
+      chipsWrap.appendChild(q);
     }
+    if (any) {
+      var c = document.createElement("button");
+      c.type = "button";
+      c.className = "c5sk-chip c5sk-chip--clear";
+      c.textContent = "wyczyść filtry";
+      c.addEventListener("click", function () {
+        FACET_KEYS.forEach(function (k) { state.facets[k] = []; });
+        state.q = ""; if (searchEl) searchEl.value = "";
+        syncBoxes(); apply();
+      });
+      chipsWrap.appendChild(c);
+    }
+  }
+
+  function applyShelfCopy() {
+    var def = SHELVES[state.shelf] || SHELVES[""];
+    if (titleEl) titleEl.textContent = def.title;
+    if (leadEl)  leadEl.textContent  = def.lead;
+    shelfBtns.forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-shelf") === state.shelf ? "true" : "false");
+    });
+    /* Przy wejściu z adresu ?polka= aktywna pigułka potrafiła być poza kadrem
+       przewijanego paska – przyciągamy ją do widoku. */
+    var akt = shelfBtns.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0];
+    if (akt && akt.scrollIntoView) { try { akt.scrollIntoView({ block: "nearest", inline: "center" }); } catch (e) {} }
+    ["borowka", "sprzet", "pole"].forEach(function (n) {
+      var el = document.querySelector("[data-note-" + n + "]");
+      if (el) el.hidden = def.note !== n;
+    });
   }
 
   function apply() {
@@ -623,39 +1221,129 @@
       card.hidden = !ok;
       if (ok) shown++;
     });
-    if (countEl) countEl.textContent = String(shown);
+    if (shownEl) shownEl.textContent = String(shown);
+    if (totalEl) totalEl.textContent = String(cards.length);
     if (emptyEl) emptyEl.hidden = shown !== 0;
     renderChips();
+    renderFacetsCount();   /* deklaracja funkcji jest niżej – hoisting */
   }
 
-  presetBtns.forEach(function (b) {
-    b.addEventListener("click", function () { setPreset(b.getAttribute("data-preset")); apply(); });
+  function setShelf(slug, push) {
+    state.shelf = SHELVES[slug] ? slug : "";
+    FACET_KEYS.forEach(function (k) { state.facets[k] = []; });
+    syncBoxes();
+    applyShelfCopy();
+    apply();
+    if (push) {
+      try {
+        var url = state.shelf ? ("sklep.html?polka=" + state.shelf) : "sklep.html";
+        history.replaceState(null, "", url);
+      } catch (e) { /* stary silnik – adres zostaje bez zmian */ }
+    }
+  }
+
+  shelfBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var slug = b.getAttribute("data-shelf");
+      setShelf(slug === state.shelf ? "" : slug, true);
+      var head = document.querySelector("[data-shelf-title]");
+      if (head) head.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   });
-  facetBoxes.forEach(function (b) {
+
+  boxes.forEach(function (b) {
     b.addEventListener("change", function () {
-      var facet = b.getAttribute("data-facet");
-      if (b.checked) { if (state.facets[facet].indexOf(b.value) === -1) state.facets[facet].push(b.value); }
-      else { state.facets[facet] = state.facets[facet].filter(function (v) { return v !== b.value; }); }
+      var key = b.getAttribute("data-facet");
+      if (b.checked) { if (state.facets[key].indexOf(b.value) === -1) state.facets[key].push(b.value); }
+      else { state.facets[key] = state.facets[key].filter(function (v) { return v !== b.value; }); }
+      syncBoxes(); apply();
+    });
+  });
+
+  funcBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var v = b.getAttribute("data-func");
+      var i = state.facets.funkcja.indexOf(v);
+      if (i === -1) state.facets.funkcja.push(v); else state.facets.funkcja.splice(i, 1);
+      syncBoxes(); apply();
+      var list = document.getElementById("lista");
+      if (list) list.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  if (searchEl) {
+    searchEl.addEventListener("input", function () {
+      state.q = searchEl.value.trim().toLowerCase();
       apply();
     });
+  }
+
+  /* Przełącznik całej kolumny faset (tylko wąskie ekrany – na desktopie
+     kolumna jest zawsze widoczna, a przycisk ukryty w CSS). */
+  var facetsToggle = document.querySelector("[data-facets-toggle]");
+  var facetsCol = document.getElementById("fasety");
+  var facetsCount = document.querySelector("[data-facets-count]");
+  if (facetsToggle && facetsCol) {
+    facetsToggle.addEventListener("click", function () {
+      var open = facetsToggle.getAttribute("aria-expanded") === "true";
+      facetsToggle.setAttribute("aria-expanded", open ? "false" : "true");
+      facetsCol.classList.toggle("is-open", !open);
+    });
+  }
+  function renderFacetsCount() {
+    if (!facetsCount) return;
+    var n = 0;
+    FACET_KEYS.forEach(function (k) { n += state.facets[k].length; });
+    facetsCount.textContent = n ? "(" + n + ")" : "";
+  }
+
+  /* Rozwijanie i zwijanie grup faset */
+  Array.prototype.slice.call(document.querySelectorAll(".c5sk-facet__title")).forEach(function (t) {
+    t.addEventListener("click", function () {
+      var open = t.getAttribute("aria-expanded") === "true";
+      t.setAttribute("aria-expanded", open ? "false" : "true");
+      var body = document.getElementById(t.getAttribute("aria-controls"));
+      if (body) body.hidden = open;
+    });
   });
 
-  // Deep-link: sklep.html?grupa=carbomat / ?potrzeba=retencja (linki ze stron produktowych)
-  try {
-    var params = new URLSearchParams(window.location.search);
-    ["grupa", "potrzeba"].forEach(function (facet) {
-      var value = params.get(facet);
-      if (!value) return;
-      facetBoxes.forEach(function (b) {
-        if (b.getAttribute("data-facet") === facet && b.value === value) {
-          b.checked = true;
-          if (state.facets[facet].indexOf(value) === -1) state.facets[facet].push(value);
-        }
-      });
+  /* Koszyk – licznik demonstracyjny, ta sama mechanika co w cw.js */
+  Array.prototype.slice.call(document.querySelectorAll("[data-add]")).forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      try {
+        var n = (parseInt(sessionStorage.getItem("cw_cart") || "0", 10) || 0) + 1;
+        sessionStorage.setItem("cw_cart", String(n));
+        Array.prototype.slice.call(document.querySelectorAll("[data-cart-count]")).forEach(function (el) {
+          el.textContent = String(n); el.hidden = false;
+        });
+      } catch (e) { /* brak sessionStorage – licznik zostaje */ }
+      var old = btn.textContent;
+      btn.textContent = "dodano";
+      setTimeout(function () { btn.textContent = old; }, 1400);
     });
-  } catch (e) { /* stary silnik bez URLSearchParams – filtr startuje pusty */ }
+  });
 
-  apply();
+  /* Wejście z adresu:
+     ?polka=  – gotowa półka (nowy, właściwy sposób linkowania ze stron produktowych)
+     ?grupa= / ?potrzeba= – stare parametry z makiet V4; mapujemy je na fasety,
+     żeby nie zerwać linków, które już stoją w serwisie (np. sklep.html?grupa=carbomat). */
+  try {
+    var p = new URLSearchParams(window.location.search);
+    var polka = p.get("polka");
+    if (polka && SHELVES[polka]) { setShelf(polka, false); }
+    else {
+      /* Strona produktowa CARBOMAT ECO sprzedaje OBA warianty (dodatek do gleby
+         i Ściółkę), więc stary link ?grupa=carbomat musi pokazać obie linie. */
+      var LEGACY = { carbomat: ["carbomat-eco", "carbomat-eco-sciolka"], "carbomat-humic": ["carbomat-humic"], carbohumic: ["carbohumic", "carbohumic-nalistny"] };
+      var g = p.get("grupa");
+      if (g && LEGACY[g]) LEGACY[g].forEach(function (v) { state.facets.linia.push(v); });
+      var n = p.get("potrzeba") || p.get("funkcja");
+      if (n && FACET_LABELS.funkcja[n]) state.facets.funkcja.push(n);
+      syncBoxes(); applyShelfCopy(); apply();
+    }
+  } catch (e) {
+    applyShelfCopy(); apply();
+  }
 })();
 </script>
 </body>
